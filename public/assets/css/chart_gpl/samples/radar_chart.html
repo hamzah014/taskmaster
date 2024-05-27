@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<!-- meta block -->
+		<title>Radar chart - DHTMLX Chart</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+		
+		<link rel="shortcut icon" href="./common/favicon/favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="./common/favicon/icon-16.png" sizes="16x16" />
+		<link rel="icon" href="./common/favicon/icon-32.png" sizes="32x32" />
+		<link rel="icon" href="./common/favicon/icon-48.png" sizes="48x48" />
+		<link rel="icon" href="./common/favicon/icon-96.png" sizes="96x96" />
+		<link rel="icon" href="./common/favicon/icon-144.png" sizes="144x144" />
+		<!-- end meta block -->
+		<script type="text/javascript" src="../codebase/chart.js?v=8.3.0"></script>
+		<link rel="stylesheet" href="../codebase/chart.css?v=8.3.0">
+		
+		<link rel="stylesheet" href="./common/index.css?v=8.3.0">
+		<!-- custom sample head -->
+	</head>
+	<body>
+		<header class="dhx_sample-header">
+			<div class="dhx_sample-header__main">
+				<nav class="dhx_sample-header__breadcrumbs">
+					<ul class="dhx_sample-header-breadcrumbs">
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<a href="./index.html" class="dhx_sample-header-breadcrumbs__link">Back to Chart samples</a>
+						</li>
+					</ul>
+				</nav>
+				<h1 class="dhx_sample-header__title">
+					<div class="dhx_sample-header__content">
+						Radar chart
+					</div>
+				</h1>
+			</div>
+</header>
+		<section class="dhx_sample-container">
+			<div id="chart" style="width: 100%; padding: 20px"></div>
+		</section>
+		<script>
+			const companiesData = [
+				{ month: "01", "A": 20, "B": 52, "company C": 72, },
+				{ month: "02", "A": 5, "B": 33, "company C": 90, },
+				{ month: "03", "A": 55, "B": 30, "company C": 81, },
+				{ month: "04", "A": 30, "B": 11, "company C": 62, },
+				{ month: "05", "A": 27, "B": 14, "company C": 68, },
+				{ month: "06", "A": 32, "B": 31, "company C": 64, },
+				{ month: "07", "A": 50, "B": 22, "company C": 30, },
+				{ month: "08", "A": 12, "B": 19, "company C": 65, },
+				{ month: "09", "A": 10, "B": 24, "company C": 50, },
+				{ month: "10", "A": 17, "B": 40, "company C": 78, }
+			];
+			const config = {
+				type: "radar",
+				css: "dhx_widget--bordered",
+				scales: {
+					"radial": {
+						value: "month",
+						maxTicks: 10
+					}
+				},
+				series: [
+					{
+						id: "A",
+						value: "A",
+						color: "#81C4E8",
+						pointColor: "#81C4E8",
+						label: "Company A",
+					},
+					{
+						id: "B",
+						value: "B",
+						color: "#74A2E7",
+						pointColor: "#74A2E7",
+						label: ({ id }) => `Company ${id}`,
+					},
+					{
+						id: "C",
+						value: "company C",
+						color: "#5E83BA",
+						pointColor: "#5E83BA"
+					}
+				],
+				legend: {
+					series: ["A", "B", "C"],
+					halign: "right",
+					valign: "top"
+				}
+			};
+			const chart = new dhx.Chart("chart", config);
+			chart.data.parse(companiesData);
+		</script>
+	</body>
+</html>

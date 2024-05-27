@@ -1,0 +1,13 @@
+{
+  "name": "dhx-chart-package",
+  "version": "8.3.0",
+  "description": "dhtmlxChart widget",
+  "homepage": "https://docs.dhtmlx.com/chart",
+  "private": true,
+  "bugs": {
+    "url": "https://forum.dhtmlx.com",
+    "email": "support@dhtmlx.com"
+  },
+  "main": "codebase/chart.js",
+  "types": "codebase/chart.d.ts"
+}

@@ -1,0 +1,32 @@
+import { IEventSystem } from "../../ts-common/events";
+import { View } from "../../ts-common/view";
+import { Exporter } from "./helpers/Export";
+import { Selection } from "./helpers/Selection";
+import { IShapeMap } from "./shapes/factory";
+import { ShapesCollection } from "./ShapesCollection";
+import { DataEvents } from "../../ts-data";
+import { DiagramEvents, ICoords, IDiagram, IDiagramConfig, IShape, SelectionEvents } from "./types";
+export declare class Diagram extends View implements IDiagram {
+    version: string;
+    config: IDiagramConfig;
+    events: IEventSystem<DataEvents | SelectionEvents | DiagramEvents>;
+    data: ShapesCollection;
+    selection: Selection;
+    export: Exporter;
+    shapes: IShapeMap;
+    private _htmlevents;
+    private _toolbar;
+    constructor(container: HTMLElement | any, config?: IDiagramConfig);
+    locate(ev: Event): IShape;
+    collapseItem(id: string): void;
+    expandItem(id: string): void;
+    getScrollState(): ICoords;
+    scrollTo(x: number, y: number): void;
+    showItem(id: string): void;
+    protected _render(vm: any): any;
+    protected _init_events(): void;
+    protected _set_defaults(): void;
+    protected _init_struct(): void;
+    private _getContent;
+    private _getPoint;
+}

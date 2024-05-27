@@ -1,0 +1,62 @@
+
+<div id="kt_app_content_container" class="app-container d-flex justify-content-center align-items-center">
+	<div class=" mb-5 mb-xl-5 w-50">
+		<div id="kt_account_settings_profile_details">
+            <div class="row mb-5 d-flex flex-left">
+                <div class="col-md-7 card bg-fancy card-no-border p-3">
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <a href="{{ route('signDocument.index') }}" class="text-dark">
+                                <i class="fas fa-chevron-left fs-2 text-dark"></i><b class="ps-3">Back</b>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row flex-row mb-4 text-center text-line">
+                        <div class="col-md-12">
+                            <h2 class="text-light">Document Detail</h2>
+                        </div>
+                        <hr>
+                    </div>
+                    @csrf
+                    <div class="row p-5">
+                        <div class="col-md-12">
+                            <div class="row mb-4">
+                                <div class="col-md-12 text-light text-bold">
+                                    <label for="">Date Document Signed:</label>
+                                    <input type="text" id="date" class="form-control" autocomplete="off" readonly value="{{ $signDocument->SDMD ?? '-' }}">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-12 text-light text-bold">
+                                    <label for="">Document Signed No.:</label>
+                                    <input type="text" id="docno" class="form-control" autocomplete="off" readonly value="{{ $signDocument->SDNo ?? '-' }}">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-12 text-light text-bold">
+                                    <label for="">Certificate No.:</label>
+                                    <input type="text" id="cretno" class="form-control" autocomplete="off" readonly value="{{ $signDocument->SD_CENo ?? '-' }}">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-12 text-light text-bold">
+                                    <label for="">Signer Name:</label>
+                                    <input type="text" id="signname" class="form-control" autocomplete="off" readonly value="{{ $signDocument->certificate->CEName ?? '-' }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+    <div class="row flex-row mt-5 card p-5 bg-section card-no-border">
+        <div class=" mb-5 mb-xl-5 w-150">
+            <div class="row mb-5 d-flex flex-end">
+                <div class="col-md-5 card bg-fancy card-no-border p-5">
+                    <h1>2</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

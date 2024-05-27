@@ -1,0 +1,30 @@
+import { ISelectionState } from "./types";
+type CompactRange = [number, number, number];
+export declare class SelectionHelper {
+    private _uid;
+    private _events;
+    private _state;
+    private _waitUpdate;
+    private _editor;
+    private _ignoreSelection;
+    private _ignoreSelectionTimeout;
+    private _selectedText;
+    constructor(editor: any, uid: any, events: any);
+    clear(): void;
+    set(state: ISelectionState): void;
+    get(): ISelectionState;
+    getCompact(): CompactRange[];
+    setCompact(compact: CompactRange[]): void;
+    getPosition(selection: ISelectionState): Promise<any>;
+    destructor(): void;
+    isActive(): boolean;
+    isFull(): boolean;
+    update(): boolean;
+    getSelectedText(): string;
+    selectAll(): void;
+    refresh(): boolean;
+    private _initEvents;
+    private _createRange;
+    private _selectionChange;
+}
+export {};

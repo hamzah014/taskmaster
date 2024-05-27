@@ -1,0 +1,153 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.no-border{
+    border-color:transparent !important;
+    border: 1px solid !important;
+}
+
+table  {
+    color:#333;
+    font-family:Helvetica, Arial, sans-serif;
+    border-collapse:collapse;
+    border-spacing:0;
+    border-color:#000;
+    border: 1px solid;
+}
+
+table th {
+    color:inherit;
+    font-weight:bold;
+    padding: 5px 7px 5px 7px;
+    word-break:normal;
+    /*letter-spacing: 0.18em;*/
+    margin: 0;
+    border: 1px solid;
+}
+
+table td {
+    color:inherit;
+    padding: 5px 7px 5px 7px;
+    word-break:normal;
+    /*letter-spacing: 2px;*/
+    margin: 0;
+    vertical-align: center !important;
+    border: 1px solid;
+}
+
+.border-line-all th, .border-line-all td, .border-line-th th, .border-line-td td {
+    border-style:solid;
+    border-width:0.042em;
+    border-color:inherit;
+}
+
+thead {
+    display: table-header-group;
+}
+
+tfoot {
+    display: table-row-group;
+}
+
+tr {
+    page-break-inside: avoid;
+}
+
+/*.page-number:after {
+    counter-increment: pages;
+    content: counter(page);
+}*/
+
+/*Helper*/
+.text-center{
+    text-align:center !important;
+}
+
+.text-right{
+    text-align:right !important;
+}
+
+.text-left{
+    text-align:left !important;
+}
+
+.font-size-8 td, .font-size-8 th {
+    font-size: 0.6875em !important;
+}
+
+.bg-transparent {
+    background-color: transparent !important;
+}
+
+.page_break {
+    page-break-before: always;
+}
+
+.page_break:last-child {
+    page-break-before: avoid;
+}
+
+.text-underline {
+text-decoration-line: underline double;
+/*text-decoration-style: double;*/
+}
+
+.text-overline {
+text-decoration-line: overline solid;
+/*text-decoration-style: solid;*/
+}
+
+.border-upper-bottom{
+    border-top-style: solid;
+    border-bottom: solid;
+}
+
+.nowrap{
+    white-space:nowrap;
+}
+
+.fs-9{
+    font-size: 9px;
+}
+
+.fs-12{
+    font-size: 12px;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.w-50{
+    width: 40% !important;
+}
+.text-bold{
+    font-weight: bold;
+}
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px; 
+}
+.column-6 {
+    float: left;
+    width: 60%;
+    padding: 10px; 
+}
+.column-4 {
+    float: left;
+    width: 40%;
+    padding: 10px; 
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

@@ -1,0 +1,759 @@
+/* Code By Webdevtrick ( https://webdevtrick.com ) */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.combo {
+  display: block;
+  margin-bottom: 1.5em;
+  max-width: 400px;
+  position: relative;
+}
+
+.combo::after {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  content: '';
+  display: block;
+  height: 12px;
+  pointer-events: none;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translate(0, -65%) rotate(45deg);
+  width: 12px;
+}
+
+.combo-input {
+  background-color: #f5f5f5;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  display: block;
+  font-size: 1em;
+  min-height: calc(1.4em + 26px);
+  padding: 12px 16px 14px;
+  text-align: left;
+  width: 100%;
+}
+
+.open .combo-input {
+  border-radius: 4px 4px 0 0;
+}
+
+.combo-input:focus {
+  border-color: #e60023;
+  box-shadow: 0 0 4px 2px #e60023;
+  outline: 5px solid transparent;
+}
+
+.combo-label {
+  display: block;
+  font-size: 20px;
+  font-weight: 100;
+  margin-bottom: 0.25em;
+}
+
+.combo-menu {
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.42);
+  border-radius: 0 0 4px 4px;
+  display: none;
+  max-height: 300px;
+  overflow-y: scroll;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 100;
+}
+
+.open .combo-menu {
+  display: block;
+}
+
+.combo-option {
+  padding: 10px 12px 12px;
+}
+
+.combo-option.option-current,
+.combo-option:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.combo-option.option-selected {
+  padding-right: 30px;
+  position: relative;
+}
+
+.combo-option.option-selected::after {
+  border-bottom: 2px solid #000;
+  border-right: 2px solid #000;
+  content: '';
+  height: 16px;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translate(0, -50%) rotate(45deg);
+  width: 8px;
+}
+
+.selected-options {
+  list-style-type: none;
+  margin: 0;
+  max-width: 400px;
+  padding: 0;
+}
+
+.selected-options li {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.remove-option {
+  background-color: #ff3d3d;
+  border: 1px solid #ff3d3d;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: bold;
+  margin-bottom: 6px;
+  margin-right: 6px;
+  padding: 0.25em 1.75em 0.25em 0.25em;
+  position: relative;
+}
+
+.remove-option:focus {
+  border-color: #baa1dd;
+  box-shadow: 0 0 3px 1px #ff3d3d;
+  outline: 3px solid transparent;
+}
+
+.remove-option::before,
+.remove-option::after {
+  border-right: 2px solid #fff;
+  content: "";
+  height: 1em;
+  right: 0.75em;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+.remove-option::before {
+  transform: translate(0, -50%) rotate(45deg);
+}
+
+.remove-option::after {
+  transform: translate(0, -50%) rotate(-45deg);
+}
+
+.title {
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 12px;
+	color:white;
+	background-color: #5C5C5C;
+}
+.label {
+	font-size: 13px;
+	color:#0F85D9;
+}
+.txtSelected {
+	font-weight: bold;
+	font-size: 11px;
+	color:black;
+	background-color:#BFDCF1;
+}
+.textbox {
+	font-size: 11px;
+	color:black;
+}
+.textbox-pass {
+	font-size: 20px;
+	color:green;
+}
+.textbox-fail {
+	font-size: 20px;
+	color:red;
+}
+.backButton{
+	clear: both;
+	margin: 2px 0px 2px 0px;
+	padding: 0px 10px 0px 10px;
+	border: 0px;
+	background-color: #41B7AC;
+	text-align: center;
+	line-height: 31px;
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: normal;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.backButton:hover {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  transform: translateY(2px);
+}
+.topButton{
+	clear: both;
+	margin: 2px 0px 2px 0px;
+	padding: 0px 10px 0px 10px;
+	border: 0px;
+	background-color: #5E38A4;
+	text-align: center;
+	line-height: 31px;
+	color: #FFFFFF;
+	font-size: 11px;
+	font-weight: normal;
+}
+.topButton:hover {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  transform: translateY(2px);
+}
+.selectedTopButton{
+	clear: both;
+	margin: 2px 0px 2px 0px;
+	padding: 0px 10px 0px 10px;
+	border: 0px;
+	//width: 125px;
+	//height: 31px;
+	background-color: #4FC8FF;
+	text-align: center;
+	line-height: 31px;
+	color: black;
+	font-size: 11px;
+	font-weight: normal;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.selectedTopButton:hover {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  transform: translateY(2px);
+}
+.header {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background-color: #737373;
+	color: white;
+	font-family: 'Exo 2', sans-serif;
+	padding: 5px;
+	z-index: 9999;
+}
+table{
+	margin-bottom: 10px;
+}
+.sponsor{
+	width:100%;
+	border: 1px solid #737373;
+	border-collapse: collapse
+}
+.sponsor td {
+	border: 1px solid #737373;
+	padding: 5px;
+}
+.colHeader {
+	background-color:#B9B9B9;
+	font-weight: bold;
+	font-size: 11px;
+	color:black;
+}
+.featuredBtn.active {
+	background-color: black;
+	color: white;
+}
+.featuredBtn {
+	clear: both;
+	height: 20px;
+	color: black;
+	font-size: 11px;
+	font-weight: normal;
+	font-family: 'Exo 2', sans-serif;
+	background-color: #f4efeb;
+	border: 1px solid #B9B9B9;
+	outline: none;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.featuredBtn:hover {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  transform: translateY(2px);
+}
+
+
+
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+#mySpan:after {
+    display: none;
+}
+
+#mySpan.show-after:after {
+    display: inline;
+}
+
+.instruction {
+    font-size: 12px;
+    text-align: left !important;
+}
+
+.remove-border{
+    border: none;
+}
+.remove-background{
+    background-color: transparent !important;
+
+}
+
+.file-css{
+    padding: 5px;
+    font-size: 14px;
+    min-height: 20px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    max-height: 32px;
+    width: 100%;
+}
+
+
+.tab {
+    overflow: hidden;
+    display: inline-block;
+   // background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: #f1f1f1;
+    float: left;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: 0.3s;
+    outline: none;
+    cursor: pointer;
+    min-width: 110px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.tab .vertical button {
+   width: -webkit-fill-available;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+.tab button.active:hover {
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Style the buttons inside the tab */
+.tabButton {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: 0.3s;
+    outline: none;
+    cursor: pointer;
+    min-height: 40px;
+    width:100%;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Change background color of buttons on hover */
+.tabButton:hover {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Create an active/current tablink class */
+.tabButton.active {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+.tabButton.active:hover {
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Style the buttons inside the tab */
+.tabButtonModal {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: 0.3s;
+    outline: none;
+    cursor: pointer;
+    min-height: 40px;
+    width:100%;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Change background color of buttons on hover */
+.tabButtonModal:hover {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Create an active/current tablink class */
+.tabButtonModal.active {
+    color: #fff;
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+.tabButtonModal.active:hover {
+    background: #2E308B;
+    background: -webkit-linear-gradient(45deg, #2E308B, #1A69CF) !important;
+    background:         linear-gradient(45deg, #2E308B, #1A69CF) !important;
+}
+
+/* Style the tab content */
+.tabcontent-vertical {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-height:300px;
+}
+
+.box-title {
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    border: 1px solid #ccc;
+    background-color: #ccc;
+    color: #000000;
+    font-size:medium;
+}
+
+.box-heading {
+    margin-bottom: 3px;
+    padding: 5px 10px;
+    border: 1px solid #CDE2F5;
+    background-color: #EEF5FB;
+    color: #000000;
+    font-size:small;
+}
+
+.menu{
+    margin:0px;
+    padding:0px;
+}
+.menu td,th{
+    margin:0px;
+    padding:0;
+}
+.menu a{
+    margin:0px;
+    padding:0 15px 0 15px;
+    width:200px;
+}
+
+
+.baseline {
+    position: absolute;
+    border-radius: 2px;
+    opacity: 0.6;
+    margin-top: -7px;
+    height: 12px;
+    background: #ffd180;
+    border: 1px solid rgb(255, 153, 0);
+}
+.submit {
+    border: 2px solid #db2536 !important;
+    color: #db2536 !important;
+    background: #db2536  !important; //#d96c49 !important;
+}
+
+.submit .gantt_task_progress {
+    background: #654EB5;
+}
+
+.critical {
+    border: 2px solid #F74D4D !important;
+    color: #F74D4D !important;
+    background: #F74D4D !important;
+}
+
+.critical .gantt_task_progress {
+    background: #F74D4D;
+}
+
+.late {
+    border: 2px solid #F7EB91 !important;
+    color: #F7EB91 !important;
+    background: #F7EB91 !important;
+}
+
+.late .gantt_task_progress {
+    background: #FBB452;
+}
+
+.normal {
+    border: 2px solid #34C461 !important;
+    color: #34C461 !important;
+    background: #34C461 !important;
+}
+
+.normal .gantt_task_progress {
+    background: #46AF61;
+}
+
+.weekend {
+    background: #f4f7f4;
+}
+
+.gantt_selected .weekend {
+    background: #f7eb91;
+}
+.gantt_task_progress {
+    text-align: left;
+    padding-left: 10px;
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+}
+.deadline {
+    position: absolute;
+    border-radius: 12px;
+    border: 2px solid #585858;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    width: 22px;
+    height: 22px;
+    margin-left: -11px;
+    margin-top: 6px;
+    z-index: 1;
+    background: url("common/deadline_icon.png") center no-repeat;
+}
+
+.overdue-indicator {
+    width: 24px;
+    margin-top: 5px;
+    height: 24px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 17px;
+    color: white;
+    background: rgb(255, 60, 60);
+    line-height: 25px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.status_line {
+    background-color: #0ca30a;
+}
+
+.gantt_task_line {
+    background-color: #db2536 !important;
+    border: 1px solid #000000  !important;
+}
+
+.gantt_task_progress {
+  //  background-color: #0CA30A !important;
+}
+.card .animate{
+    height: 150px;
+}
+
+.text-card {
+    font-size: 18px !important;
+    text-align: center!important;
+    margin-top: 40px !important;
+    place-content: center;
+}
+
+dl dt{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+dl dd{
+    display: inline-block;
+    margin: 0px 10px;
+    padding-bottom: 0;
+    vertical-align: middle;
+}
+dl dt.normal{
+    background: #34C461;
+}
+dl dt.late{
+    background: #F7EB91;
+}
+dl dt.critical{
+    background: #F74D4D;
+}
+dl dt.complete{
+    background: #654EB5;
+}
+dl dt.overdue{
+    background: #555555;
+}
+
+.header-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Adjust background color and opacity */
+    display: none;
+    z-index: 9999; /* Set a high z-index value */
+}
+
+#loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white; /* Adjust background color if needed */
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+    z-index: 10000; /* Set a higher z-index value */
+}
+
+.circle-frame {
+    position: relative;
+    width: 45vmin;
+    height: 45vmin;
+    border-radius: 50%;
+    margin: 5vmin auto; 
+    background-color: white;
+    overflow: hidden;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+#video {
+    width: 100% !important;
+    height: 100%;
+    /* border-radius: 50%; */
+    transform: scale(1.5) scaleX(-1);
+}
+
+#countdown-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3); /* Adjust background color and opacity */
+    z-index: 10000; /* Set a higher z-index value */
+}
+
+#countdown-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    color: white; 
+    z-index: 10001; /* Set a higher z-index value */
+    /* padding-top: 200;
+    background-color: rgba(255, 255, 255, 0.3);  */
+}
+
+#countdown-text {
+    font-weight: 700;
+    font-size: 46px;
+}
+

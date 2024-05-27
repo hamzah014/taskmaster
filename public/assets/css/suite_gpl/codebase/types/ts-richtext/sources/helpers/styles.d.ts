@@ -1,0 +1,10 @@
+import { Block } from "../models/Block";
+import { TextNode } from "../models/TextNode";
+import { IStyle } from "../types";
+export declare function calcTextNodeStyle(modifiers: IStyle): any;
+export declare function calcBlockStyle(modifiers: IStyle): any;
+export declare function blockStyleToTag(style: IStyle): any;
+export declare function blockquoteWrapper(style: IStyle, blockIndex: number): (...args: any[]) => any;
+export declare function getComputedNodeStyle(textNode: TextNode, block: Block, defaultModifiers: any): {};
+export declare function getComputedBlockStyle(block: Block, defaultModifiers: any): {};
+export declare function isEmptyBlockStyle(style: IStyle): boolean;

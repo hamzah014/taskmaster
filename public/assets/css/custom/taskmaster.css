@@ -1,0 +1,241 @@
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x)* .5);
+    padding-left: calc(var(--bs-gutter-x)* .5);
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom: 1px solid black;
+}
+@media (max-width: 991.98px){
+    .app-header {
+        background-color: transparent !important;
+        border-bottom: 1px solid transparent !important;
+    }
+}
+
+.stepper-item{
+    cursor: pointer;
+}
+
+.btn-cyan{
+    background: #20d9f5;
+    color: white;
+}
+.btn-cyan:hover{
+    background-color: #20d9f5 !important;
+    color: white !important;
+}
+.btn-primary{
+    background: #00ADEF !important;
+}
+.btn-gray{
+    background-color: thistle;
+}
+.btn-gray:hover{
+    background-color: thistle;
+    color: black;
+}
+.btn-darkblue{
+    background: #0C4DA1;
+    color: white;
+}
+.btn-darkblue:hover{
+    background: #0C4DA1;
+    color: white;
+}
+.bg-white{
+    background-color: white;
+}
+.bg-dcms{
+    background: #072743;
+}
+.bg-content{
+    background: #072743CC;
+
+}
+.bg-nav{
+    background: #072743 !important;
+}
+.bg-transparent{
+    background: transparent;
+}
+.bg-gray{
+    background-color: rgb(209, 203, 203) !important;
+}
+.border-end-white{
+    border-right: white;
+}
+.border-start-white{
+    border-left: white;
+}
+.border-none{
+    border-color: transparent !important;
+}
+.text-underline{
+    text-decoration: underline !important;
+}
+.bg-section{
+    background: #FFFFFF82;
+}
+.card-no-border{
+	box-shadow: none;
+	border: 0px solid transparent !important;
+
+}
+.overflow-none{
+    overflow: auto;
+}
+.table-head{
+    background: #EA365A;
+}
+.form-control[readonly] {
+    color: var(--bs-gray-500) !important;
+    background-color: var(--bs-gray-200) !important;
+    border-color: var(--bs-gray-300) !important;
+    opacity: 1 !important;
+    pointer-events: none;
+}
+.bg-gray{
+    background: #FFFFFF82;
+}
+
+.tm-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tm-table th {
+    background-color: #EA365A;
+    /* border: 1px solid transparent; */
+    padding: 10px;
+    text-align: left;
+    color: white;
+    font-weight: bold;
+}
+
+.tm-table tr {
+    /* border: 1px solid #ddd; */
+}
+
+.tm-table td {
+    /* border: 1px solid #ddd; */
+    padding: 8px;
+}
+
+.tm-table tr:nth-child(even) {
+    background: #FFFFFFE5;
+
+}
+.tm-table tr:nth-child(odd) {
+    background: #F8F8F8E5;
+}
+
+.page-item.disabled .page-link {
+    color: #eee !important;
+}
+.card-shadow{
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5) !important;
+
+}
+.nav-link-dcms{
+    color: #0C4DA1 !important;
+    background-color: white !important;
+    border-radius: 4px 0px 0px 0px !important;
+    border: 1px 0px 0px 0px !important;
+    font-weight: bold !important;
+    border-color: transparent !important;
+
+}
+.nav-link-dcms.active{
+    background: #0C4DA1 !important;
+    color: white !important;
+    font-weight: bold !important;
+    border-color: transparent !important;
+
+}
+
+.w-15{
+    width: 15% !important;
+}
+.w-35{
+    width: 35% !important;
+}
+.w-65{
+    width: 65% !important;
+}
+.w-10{
+    width: 10% !important;
+}
+.w-5{
+    width: 5% !important;
+}
+
+
+/* LOADER CUSTOM */
+.darksoul-layout
+{
+	margin: auto;
+	display: flex;
+	width: 250px;
+}
+.darksoul-grid
+{
+	margin: auto;
+	margin-right: 1px;
+	width: 50px;
+	height: 50px;
+	display: grid;
+	gap: 0px;
+	grid-template-columns: auto auto;
+	animation: rotate 2s linear 0s infinite;
+}
+.item1
+{
+	margin: auto;
+	width: 15px;
+	height: 15px;
+	border-radius: 0%;
+	background-color: black;
+}
+.item2
+{
+	margin: auto;
+	width: 15px;
+	height: 15px;
+	border-radius: 0%;
+	background-color: black;
+}
+.item3
+{
+	margin: auto;
+	width: 15px;
+	height: 15px;
+	border-radius: 0%;
+	background-color: black;
+}
+.item4
+{
+	margin: auto;
+	width: 15px;
+	height: 15px;
+	border-radius: 0%;
+	background-color: black;
+}
+@keyframes rotate
+{
+	0%{rotate: 0deg; transform: scale(0.6);}
+	50%{ rotate: 100deg; transform: scale(0.4);}
+	100%{rotate: 360deg; transform: scale(0.6);}
+}
+.darksoul-loader-h
+{
+	margin: auto;
+	margin-left: 5px;
+}
+.min-height-none{
+    min-height: 0px !important;
+}
+
+/* END LOADER CUSTOM */
