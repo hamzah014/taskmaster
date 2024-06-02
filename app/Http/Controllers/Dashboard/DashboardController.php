@@ -6,7 +6,10 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
 use App\Models\Project;
+use App\Models\ProjectIdea;
 use App\Models\ProjectMiletstone;
+use App\Models\TaskProject;
+use App\Services\DropdownService;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,16 +21,29 @@ class DashboardController extends Controller{
 
     public function index(){
 
+        $dropdownService = new DropdownService();
 		$user = Auth::user();
 
-        $now = Carbon::now();
+        $projectStatus = $dropdownService->projectStatus();
 
-        $nowDate = Carbon::today();
+        $projectCount = Project::where('PJCB', $user->USCode)->get()->count();
 
-        return view('dashboard.index',compact('user'));
+        $ideaCount = ProjectIdea::where('PICB', $user->USCode)->get()->count();
+
+        $taskCount = TaskProject::where('TPAssignee', $user->USCode)->get()->count();
+
+        $projects = Project::where('PJCB', $user->USCode)->orderBy('PJID', 'DESC')->limit(10)->get();
+
+        // dd($projectCount);
+
+        return view('dashboard.index',
+        compact(
+            'projectCount','ideaCount','taskCount',
+            'projects','projectStatus'
+        ));
 
     }
 
 
-    
+
 }

@@ -18,13 +18,13 @@ use Mail;
 
 class RegisterController extends Controller
 {
-  
+
 	public function index(Request $request){
-	
+
          return view('auth.register');
-    
+
     }
-	
+
     public function create(Request $request){
 
         $messages = [
@@ -55,10 +55,12 @@ class RegisterController extends Controller
 
         try {
             DB::beginTransaction();
-			
+
 			$autoNumber = new AutoNumber();
 			$userCode = $autoNumber->generateUserCode();
 			$token = $autoNumber->generateUserToken();
+
+            $getActivationCode = $this->getActivationCode();
 
             $user = new User();
             $user->USCode       = $userCode;
@@ -67,12 +69,37 @@ class RegisterController extends Controller
             $user->USPwd        = Hash::make($request->password);
             $user->USType       = 'US';
             $user->USResetPwd   = 0;
-            $user->USActive     = 1;
+            $user->USActive     = 0;
             $user->USRegister   = 1;
             $user->US_RLCode    = 1;
             $user->USCB         = $userCode;
             $user->USToken      = $token;
+            $user->USActivationCode = $getActivationCode;
             $user->save();
+
+            $route = route('user.activate',['token' => $getActivationCode, 'email'=>$user->USEmail]);
+
+            // Send Email
+            $emailData = array(
+                'email' => $user->USEmail,
+                'routeActivate' => $route,
+                'domain' => config('app.url'),
+                'name'  => $user->USName ?? '',
+                'token' => $token,
+            );
+
+            try {
+                Mail::send(['html' => 'email.activateAccount'], $emailData, function($message) use ($emailData) {
+                    $message->to($emailData['email'] ,$emailData['email'])->subject('Reset Password');
+                });
+
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Failed to send email.'.$e->getMessage()
+                ], 400);
+            }
 
             DB::commit();
 
@@ -88,93 +115,35 @@ class RegisterController extends Controller
         return response()->json([
             'success' => '1',
             'redirect' => route('login.index'),
-            'message' => 'Your account has been successfully registered.'
+            'message' => 'Your account has been successfully registered. Link for account activation has been sent to your registered email.'
         ]);
     }
-	
-	private function getActivationCode(){
-	  
-	  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	  $randomString = '';
 
-	  for ($i = 0; $i < 20; $i++) {
-		$index = rand(0, strlen($characters) - 1);
-		$randomString .= $characters[$index];
-	  }
+	public function activateUser(Request $request){
 
-	  return $randomString;
-	}
-	
-	public function activate(Request $request, $activationCode = null){
-	
-		$message = 'The account has been activated successfully!';
-		
-        $customer = Customer::where('CSActivationCode',$activationCode)->where('CSActive',1)->orderby('CSID','desc')->first();
-        if ($customer == null){
-			$message = 'Invalid activation link!';
-			return view('auth.login', compact('message'));
-        }
-		
-		if ($customer->CSRegister == 1){
-			$message = 'This account has been activated!';
-			return view('auth.login', compact('message'));
-        }
-		
-        try {
-            DB::beginTransaction();
-			
-            $customer->CSRegister 		= 1;
-            $customer->CSRegisterDate	= carbon::now();
-            $customer->save();
+        $result = 0;
+        $message = "";
+        $token = $request->token ?? 0;
+        $email = $request->email ?? 0;
 
-            DB::commit();
-			
-        }catch (\Throwable $e) {
-            DB::rollback();
-			$message = $e;
+        $user = User::where('USActivationCode', $token)->where('USEmail', $email)->first();
+
+        if($user){
+
+            $user->USActive = 1;
+            $user->save();
+
+            $result = 1;
+
         }
-		
-		return view('auth.login', compact('message'));
+        else{
+
+            $result = 0;
+
+        }
+
+		return view('auth.activeAccount', compact('result'));
     }
-	
-	
-    private function sendMail(Request $request,$user,$customer){
-        
-		if($request->email != null) {
-            $emailLog = new EmailLog();
-            $emailLog->ELCB 	= $user->USCB;
-            $emailLog->ELType 	= 'Register';
-			
-            // Send Email
-            $emailData = array(
-                'id' => $user->USID,
-                'name'  => $request->name ?? '',
-                'email' => $request->email,
-                'activationCode' => $customer->CSActivationCode,
-                'domain' => config('app.url'),
-            );
 
-            try {
-                Mail::send(['html' => 'email.newUser'], $emailData, function($message) use ($emailData) {
-                   // $message->from('parking@example.com', 'noreply');
-                    $message->to($emailData['email'] ,$emailData['name'])->subject('Thank you for your registration');
-                });
-
-                $emailLog->ELMessage = 'Success';
-                $emailLog->ELSentStatus = 1;
-				$emailLog->save();
-            } catch (\Exception $e) {
-//                $e->getLine ()
-                $emailLog->ELMessage = $e->getMessage();
-                $emailLog->ELSentStatus = 2;
-				$emailLog->save();
-				return response()->json([
-					'error' => '1',
-					'message' => 'Sent email is failed!'.$e->getMessage()
-				], 400);
-            }
-
-        }
-    }
 
 }

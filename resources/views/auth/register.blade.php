@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>DCMS</title>
+		<title>Collab Model</title>
 		@include('layouts._partials.head')
 
 		<style>
@@ -30,13 +30,13 @@
 				z-index: 1; /* Ensure content stays above the overlay */
 			}
 		</style>
-	
+
 	</head>
-	
+
 	<body id="kt_body" class="app-blank" style="background-image: url('{{ asset('assets/images/background/background-orange.png') }}');
   background-repeat: no-repeat;
   background-size: cover;">
-		
+
 		<div class="d-flex flex-column flex-root" id="kt_app_root">
 
 			<div class="d-flex flex-column flex-column-fluid flex-lg-row">
@@ -103,7 +103,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="modal fade" tabindex="-1" id="modal-forgot">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
@@ -139,7 +139,7 @@
 		</div>
 
     	@include('layouts.preloader')
-        
+
 		@include('layouts._partials.scripts')
 
 		<script>
@@ -147,7 +147,7 @@
 			var userCode;
 
 		</script>
-		
+
 
 	</body>
 </html>

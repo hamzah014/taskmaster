@@ -84,7 +84,7 @@ class DropdownService
         ->where('PJStatus', 'PROGRESS')
         ->get()->pluck('PJName', 'PJCode')
         ->map(function ($item, $key) {
-            return  $item . " ( ".$key." )"; // Appending MACode to MA_MOFCode
+            return  $item . " ( ".$key." )";
         });
 
         return $project;
@@ -94,7 +94,11 @@ class DropdownService
 
     public function users(){
 
-        $users = User::get()->pluck('USName', 'USCode');
+        $users = User::get()->pluck('USName', 'USCode')
+        ->map(function ($item, $key) {
+            $user = User::where('USCode', $key)->first();
+            return  $item . " ( ".$user->USEmail." )";
+        });
 
         return $users;
 

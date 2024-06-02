@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
-    
+
     <head>
-        <title>DCMS</title>
+        <title>Collab Model</title>
         @include('layouts._partials.head')
 
         <style>
@@ -10,20 +10,20 @@
 
     </head>
 
-	
-	<body id="kt_body" class="app-blank d-block" data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"  
+
+	<body id="kt_body" class="app-blank d-block" data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
     style="background-image: url('{{ asset('assets/images/background/background-orange.png') }}');
   background-repeat: no-repeat;
   background-size: cover;">
-		
+
 		<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
 			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-				
+
 				<div class="d-flex align-items-center flex-column-fluid flex-lg-row-auto justify-content-center">
 					<div class="d-flex flex-column align-items-stretch flex-center rounded-4 w-50 h-100 mt-15 card p-5 bg-forgot-card">
 						<div class="d-flex justify-content-center align-items-center p-10">
 							<div class="form w-100">
-								
+
 								<form id="daftarForm" class="ajax-form"  method="POST" action="{{ route('resetPassword.update',[$token]) }}" enctype="multipart/form-data">
                                     @csrf
 									<div class="text-center mb-11 mt-15">
@@ -62,7 +62,7 @@
 											<div class="form-floating mb-7">
 												<button class="btn btn-dcms text-white" type="submit">Reset Password</button>
 											</div>
-										
+
 										</div>
 									</div>
 								</form>
@@ -72,22 +72,22 @@
 				</div>
 			</div>
 		</div>
-		
-        
+
+
 		@include('layouts.preloader')
 
 	</body>
-    
+
 
     @include('layouts._partials.scripts')
 
-    <script>  
+    <script>
 
 
         function requestOTPReset() {
 
             userCode = $('#userCode').val();
-                    
+
             formData = new FormData();
 
             formData.append('userCode', userCode);
@@ -127,7 +127,7 @@
                                 is_html = true;
                             }
                             toggleLoader();
-                            
+
                             swal.fire({
                                 title: "Success",
                                 text: resp.message,
@@ -136,7 +136,7 @@
                         }
                     }
 
-                    
+
                 },
                 error: function (xhr, status) {
                     toggleLoader();
@@ -192,7 +192,7 @@
                 }
             });
         }
-    
+
     </script>
 
 </html>
