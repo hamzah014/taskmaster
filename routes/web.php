@@ -21,34 +21,11 @@ Route::get('/testemail', [
     'as'    => 'testemail.index'
 ]);
 
-//Route::get('/send-otp', [OtpController::class, 'sendOtp']);
-
 Route::get('/welcome', [
     'uses'  => 'GeneralController@welcome',
     'as'    => 'welcome.index'
 ]);
 
-Route::post('/sendOTP', [
-    'uses'  => 'PublicUser\Auth\RegisterController@sendOTP',
-    'as'    => 'publicUser.register.sendOTP'
-]);
-
-Route::post('/getNotification', [
-    'uses'  => 'GeneralNotificationController@getNotification',
-    'as'    => 'notification.update.getNotification'
-]);
-
-Route::post('/readNotification', [
-    'uses'  => 'GeneralNotificationController@readNotification',
-    'as'    => 'notification.update.readNotification'
-]);
-
-Route::post('/deleteNotification', [
-    'uses'  => 'GeneralNotificationController@deleteNotification',
-    'as'    => 'notification.update.deleteNotification'
-]);
-
-//Route::get('/', 'FileController@index');
 Route::get('/file/{fileGuid}', [
     'uses'  => 'FileController@viewFile',
     'as'    => 'file.view'
@@ -103,6 +80,11 @@ Route::get('/register', [
 Route::post('/register', [
     'uses'  => 'Auth\RegisterController@create',
     'as'    => 'register.create',
+]);
+
+Route::get('/user/activation', [
+    'uses'  => 'Auth\RegisterController@activateUser',
+    'as'    => 'user.activate'
 ]);
 
 Route::get('/password/forgot', [

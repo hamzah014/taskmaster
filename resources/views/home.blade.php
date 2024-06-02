@@ -18,7 +18,7 @@
                     </div>
 
                 </div>
-                
+
                 <div class="row gy-5 g-xl-10 mb-6">
 
                     <div class="col-sm-6 col-xl-3">
@@ -86,109 +86,7 @@
                     </div>
 
                 </div>
-                
-                <div class="row g-5 g-xl-10">
-                    <div class="col-md-6">
-                        <div class="card card-flush h-md-100">
-                            <div class="card-header pt-2">
-                                <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fw-bold text-gray-900">Today Request Certificate</span>
-                                </h3>
-                                <div class="card-toolbar">
-                                    <ul class="nav" id="kt_chart_widget_19_tabs">
-                                        <li class="nav-item">
-                                            <a class="px-4 me-1 text-dark">View all <i class="fas fa-arrow-right text-dark"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="d-flex flex-center">
-                                    <div id="chartdonut" class="w-100 h-100 d-flex flex-center"></div>
-                                </div>
-                                <div class="row d-flex flex-center">
-                                    <div class="col-md-6 col-lg-6 col-sm-12 card p-2 card-shadow">
-                                        <div class="row mb-2 d-flex flex-center">
-                                            <div class="col-lg-9 col-md-9 col-sm-4 fw-bold text-start"><input type="checkbox" disabled class="form-check-input bg-danger opacity-100"> New Request</div>
-                                            <div class="col-lg-3 col-md-3 col-sm-4 fw-bold text-end">{{ $dataTotal['totalNewReq'] }}</div>
-                                        </div>
-                                        <div class="row mb-2 d-flex flex-center">
-                                            <div class="col-lg-9 col-md-9 col-sm-4 fw-bold text-start"><input type="checkbox" disabled class="form-check-input bg-primary opacity-100"> Renew Request</div>
-                                            <div class="col-lg-3 col-md-3 col-sm-4 fw-bold text-end">{{ $dataTotal['totalRenewReq'] }}</div>
-                                        </div>
-                                        <div class="row mb-2 d-flex flex-center">
-                                            <div class="col-lg-9 col-md-9 col-sm-4 text-start fw-bold"><input type="checkbox" disabled class="form-check-input bg-success opacity-100"> Revoke Request</div>
-                                            <div class="col-lg-3 col-md-3 col-sm-4 fw-bold text-end">{{ $dataTotal['totalRevokeReq'] }}</div>
-                                        </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card card-flush h-md-100">
-                            <div class="card-header pt-2">
-                                <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fw-bold text-gray-900">Upcoming Expiration</span>
-                                </h3>
-                                <div class="card-toolbar">
-                                    <ul class="nav" id="kt_chart_widget_19_tabs">
-                                        <li class="nav-item">
-                                            <a class="px-4 me-1 text-dark">View all <i class="fas fa-arrow-right text-dark"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="row p-10">
-                                    <div class="col-md-6 mb-6">
-                                        <div class="card bg-primary p-4 card-shadow h-lg-200px">
-                                            <div class="card-title">
-                                                <h4 class="text-light">Expired</h4>
-                                            </div>
-                                            <div class="card-body text-center p-0 ">
-                                                <h2 class="fw-bold fs-6x text-light">{{ $dataTotal['totalExpiredCert'] }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-6">
-                                        <div class="card bg-danger p-4 card-shadow h-lg-200px">
-                                            <div class="card-title">
-                                                <h4 class=" text-light">7 days</h4>
-                                            </div>
-                                            <div class="card-body text-center p-0 ">
-                                                <h2 class="fw-bold fs-6x text-light">{{ $dataExpired['totalExp7day'] }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-6">
-                                        <div class="card bg-warning p-4 card-shadow h-200px">
-                                            <div class="card-title">
-                                                <h4 class=" text-light">30 days</h4>
-                                            </div>
-                                            <div class="card-body text-center p-0 ">
-                                                <h2 class="fw-bold fs-6x text-light">{{ $dataExpired['totalExp30day'] }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-6">
-                                        <div class="card bg-success p-4 card-shadow h-200px">
-                                            <div class="card-title">
-                                                <h4 class=" text-light">90 days</h4>
-                                            </div>
-                                            <div class="card-body text-center p-0 ">
-                                                <h2 class="fw-bold fs-6x text-light">{{ $dataExpired['totalExp90day'] }}</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-				
 			</div>
 		</div>
 	</div>
@@ -202,11 +100,11 @@
     <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 
-    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>      
+    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script>
         "use strict";
-        
-        var element = document.querySelector('#chartdonut');     
+
+        var element = document.querySelector('#chartdonut');
 
         var height = parseInt(KTUtil.css(element, 'height'));
         var width = parseInt(KTUtil.css(element, 'width'));
@@ -217,9 +115,9 @@
         var data = @json($dataAmtRequest);
 
         var options = {
-            series: data,                 
-            chart: {           
-                fontFamily: 'inherit', 
+            series: data,
+            chart: {
+                fontFamily: 'inherit',
                 type: 'donut',
                 width: width - (width * 0.3),
                 cssClass: 'text-center'
@@ -232,15 +130,15 @@
                             value: {
                                 fontSize: '10px'
                             }
-                        }                        
+                        }
                     }
                 }
             },
             colors: [
                 KTUtil.getCssVariableValue('--bs-danger'),
-                KTUtil.getCssVariableValue('--bs-primary'), 
-                KTUtil.getCssVariableValue('--bs-success'), 
-            ],           
+                KTUtil.getCssVariableValue('--bs-primary'),
+                KTUtil.getCssVariableValue('--bs-success'),
+            ],
             stroke: {
             width: 0
             },
@@ -249,16 +147,16 @@
                 show: false,
             },
             fill: {
-                type: 'false',          
+                type: 'false',
             },
             dataLabels: {
                 enabled: false // Set to false to hide labels
-            }     
-        };                     
+            }
+        };
 
         var chart = new ApexCharts(element, options);
         chart.render();
-        
+
         // Webpack support
         if (typeof module !== 'undefined') {
             module.exports = KTChartsWidget22;

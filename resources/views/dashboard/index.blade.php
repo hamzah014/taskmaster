@@ -7,7 +7,7 @@
 @section('content')
 
 
-<div id="kt_app_content_container" class="app-container d-flex justify-content-center align-items-center">
+<div id="kt_app_content_container" class="app-container">
 	<div class="card mb-5 mb-xl-10 w-100 mt-5">
 		<div id="kt_account_settings_profile_details">
 			<div class="card-body p-9">
@@ -18,38 +18,134 @@
                     </div>
                 </div>
 
+
+                <div class="row gy-5 g-xl-10 mb-10">
+
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card border-dark">
+                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
+                                <div class="d-flex flex-column text-center">
+                                    <div class="m-0">
+                                        <i class="fa fa-solid fa-rocket fs-2 text-primary"></i>
+                                        <span class="fw-bold fs-6 text-dark px-2">My Project</span>
+                                    </div>
+                                    <div class="m-0 text-center">
+                                        <span class="fw-bold fs-4x text-gray-800" data-kt-countup="true" data-kt-countup-value="{{ $projectCount }}">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card border-dark">
+                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
+                                <div class="d-flex flex-column text-center">
+                                    <div class="m-0">
+                                        <i class="fa-solid fa-lightbulb fs-2 text-warning"></i>
+                                        <span class="fw-bold fs-6 text-dark px-2">My Ideas</span>
+                                    </div>
+                                    <div class="m-0">
+                                        <span class="fw-bold fs-4x text-gray-800" data-kt-countup="true" data-kt-countup-value="{{ $ideaCount }}">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card border-dark">
+                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
+                                <div class="d-flex flex-column text-center">
+                                    <div class="m-0">
+                                        <i class="fa-solid fa-list-check fs-2 text-info"></i>
+                                        <span class="fw-bold fs-6 text-dark px-2">My Task</span>
+                                    </div>
+                                    <div class="m-0 text-center">
+                                        <span class="fw-bold fs-4x text-gray-800" data-kt-countup="true" data-kt-countup-value="{{ $taskCount }}">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+			</div>
+		</div>
+	</div>
+
+    <div class="card mb-5 mb-xl-10 w-100 mt-5">
+		<div id="kt_account_settings_profile_details">
+			<div class="card-body p-9">
+
                 <div class="row flex-row mb-5">
                     <div class="col-md-12">
-                        <table class="table table-bordered border-none">
-
-                            <tr>
-                                <td class="text-center w-15 bg-gray">Project</td>
-                                <td class="bg-primary">Project 1</td>
-                                <td class="bg-primary">Project 2</td>
-                                <td class="bg-primary">Project 3</td>
-                                <td class="bg-primary">Project 4</td>
-                            </tr>
-
-                            <tr>
-                                <td class="text-center w-15 bg-gray">Progress</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-
-                            <tr>
-                                <td class="text-center w-15 bg-gray">Risks & Issue</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-
-                        </table>
+                        <h2>Project</h2>
                     </div>
                 </div>
-				
+
+                <div class="row gy-5 g-xl-10 mb-10 d-flex justify-content-center align-items-center">
+
+                    @foreach ( $projects as $index => $project )
+
+                    <div class="col-sm-6 col-xl-6">
+
+                        <div class="card card-xl-stretch mb-xl-8">
+                            <div class="card-header border-0 pt-5">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label fw-bold text-gray-900">{{ $project->PJName }}</span>
+                                    <span class="text-muted mt-1 fw-semibold fs-7">{{ $project->PJCode }}</span>
+                                </h3>
+                                <div class="card-toolbar">
+                                    <a href="{{ route('project.edit',$project->PJCode) }}"><i class="fa-solid fa-rocket fs-2 text-dark text-hover-primary"></i></a>
+                                </div>
+                            </div>
+                            <div class="card-body pt-5">
+
+                                <div class="d-flex align-items-center bg-light-primary rounded p-5 mb-2">
+                                    <i class="fa-solid fa-signal text-primary fs-1 me-5"></i>
+                                    <div class="flex-grow-1 me-2">
+                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Current Status</a>
+                                    </div>
+                                    <span class="fw-bold text-primary py-1">{{ $projectStatus[$project->PJStatus] ?? "Pending" }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-2">
+                                    <i class="fa fa-solid fa-lightbulb fs-1 me-5 text-warning"></i>
+                                    <div class="flex-grow-1 me-2">
+                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Ideas</a>
+                                    </div>
+                                    <span class="fw-bold text-warning py-1">{{ count($project->projectIdea) }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center bg-light-info rounded p-5 mb-2">
+                                    <i class="fa fa-solid fa-list-check fs-1 me-5 text-info"></i>
+                                    <div class="flex-grow-1 me-2">
+                                        <a class="fw-bold text-gray-800 text-hover-info fs-6">Task</a>
+                                    </div>
+                                    <span class="fw-bold text-info py-1">{{ count($project->taskProject) }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center flex-column mt-8 w-100">
+                                    <div class="d-flex justify-content-between fw-bold fs-6 text-dark opacity-50 w-100 mt-auto mb-2">
+                                        <span>Status Progress</span>
+                                        <span>{{ $project->projectPercent() }}%</span>
+                                    </div>
+                                    <div class="h-8px mx-3 w-100 bg-light-danger rounded">
+                                        <div class="bg-danger rounded h-8px" role="progressbar" style="width: {{ $project->projectPercent() }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @endforeach
+
+                </div>
+
 			</div>
 		</div>
 	</div>
@@ -58,4 +154,31 @@
 @endsection
 
 @push('script')
+
+    <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            var containers = document.querySelectorAll(".draggable-zone");
+
+            if (containers.length === 0) {
+                return false;
+            }
+
+            var swappable = new Sortable.default(containers, {
+                draggable: ".draggable",
+                handle: ".draggable .draggable-handle",
+                mirror: {
+                    //appendTo: selector,
+                    appendTo: "body",
+                    constrainDimensions: true
+                }
+            });
+
+        })
+
+    </script>
+
 @endpush

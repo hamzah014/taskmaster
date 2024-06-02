@@ -64,7 +64,7 @@
 
                                     <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                         <td class="content-block" style="text-align: center;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top">
-                                            &copy; 2024 DCMS
+                                            &copy; 2024  Collab Model
                                         </td>
                                     </tr>
                                 </tbody>
