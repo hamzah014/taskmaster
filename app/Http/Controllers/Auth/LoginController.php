@@ -143,7 +143,7 @@ class LoginController extends Controller
 			return response()->json([
 				'success' => '1',
 				'redirect' => route('dashboard.index'),
-				'message' => 'Successfully Login. Welcome to TaskMaster.'
+				'message' => 'Successfully Login. Welcome to CollabTech.'
 			]);
 
 		}else{
