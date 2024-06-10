@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>TaskMaster</title>
+		<title>CollabTech</title>
 		@include('layouts._partials.head')
 
 		<style>
@@ -46,7 +46,7 @@
 							<form class="ajax-form w-100" id="login-form" action="{{ route('login.validate') }}" method="POST">
 								@csrf
 								<div class="text-center mb-11">
-									<img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo-dcms" class="w-50">
+									<img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo-dcms" class="w-65">
 								</div>
 								<div class="fv-row mb-3">
 									<label for="email" class="form-label">Email</label>

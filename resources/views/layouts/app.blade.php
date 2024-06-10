@@ -3,8 +3,8 @@
 <html lang="en">
 
     <head>
-        
-        <title>TaskMaster</title>
+
+        <title>CollabTech</title>
         @include('layouts._partials.head')
         <style>
             .nav-staff{
@@ -17,7 +17,7 @@
     </head>
 
     <body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default"
-        data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on" 
+        data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
         style="background-color:whitesmoke;">
 
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -65,5 +65,5 @@
 
     @include('layouts._partials.scripts')
     @stack('script')
-    
+
 </html>

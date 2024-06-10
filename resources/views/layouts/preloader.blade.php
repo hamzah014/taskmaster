@@ -8,7 +8,7 @@
                         <div class="item3"></div>
                         <div class="item4"></div>
                 </div>
-                <h3 class="darksoul-loader-h">TaskMaster</h3>
+                <h3 class="darksoul-loader-h">CollabTech</h3>
         </div>
 </div>
 

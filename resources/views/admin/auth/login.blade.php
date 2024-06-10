@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>TaskMaster</title>
+		<title>CollabTech</title>
 		@include('layouts._partials.head')
 
 		<style>
