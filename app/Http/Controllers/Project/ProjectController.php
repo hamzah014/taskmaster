@@ -740,6 +740,63 @@ class ProjectController extends Controller
 
     }
 
+    public function updateStatus(Request $request){
+
+        $messages = [
+            // 'name.required' 		=> 'Application name required.',
+
+        ];
+
+        $validation = [
+            // 'name' => 'required',
+        ];
+
+        $request->validate($validation, $messages);
+
+        try {
+
+            $autoNumber = new AutoNumber();
+
+            $id = $request->projectCode;
+            $statusCode = $request->statusCode;
+
+            $user = Auth::user();
+
+            $project = Project::where('PJCode', $id)->first();
+            if(!$project){
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Project not found!'
+                ], 400);
+
+            }
+
+            $status = $statusCode == 'CM' ? 'COMPLETE' : 'CANCEL';
+
+            $project->PJStatus = $status;
+            $project->save();
+
+            return response()->json([
+                'success' => '1',
+                'message' => 'Success',
+                'redirect' => route('project.index')
+            ]);
+
+
+        }catch (\Throwable $e) {
+            DB::rollback();
+
+            Log::info('ERROR', ['$e' => $e]);
+
+            return response()->json([
+                'error' => '1',
+                'message' => 'Error!'.$e->getMessage()
+            ], 400);
+        }
+
+    }
+
     function arrayContainsKey($valueArray, $searchArray) {
 
         $missingKeys = [];

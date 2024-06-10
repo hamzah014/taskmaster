@@ -120,6 +120,6 @@ class Controller extends BaseController
         }
 
         return $randomString;
-      }
+    }
 
 }

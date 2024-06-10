@@ -30,13 +30,13 @@
 				z-index: 1; /* Ensure content stays above the overlay */
 			}
 		</style>
-	
+
 	</head>
-	
+
 	<body id="kt_body" class="app-blank" style="background-image: url('{{ asset('assets/images/background/background-orange.png') }}');
   background-repeat: no-repeat;
   background-size: cover;">
-		
+
 		<div class="d-flex flex-column flex-root" id="kt_app_root">
 
 			<div class="d-flex flex-column flex-column-fluid flex-lg-row">
@@ -78,7 +78,7 @@
 								<div class="d-grid mb-3 d-flex justify-content-center align-items-center">
 									<button type="submit" id="kt_sign_in_submit" class="btn btn-primary text-light w-50">
 										<span class="indicator-label">Login</span>
-										<span class="indicator-progress">Please wait... 
+										<span class="indicator-progress">Please wait...
 										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 									</button>
 								</div>
@@ -88,7 +88,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="modal fade" tabindex="-1" id="modal-forgot">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
@@ -114,7 +114,7 @@
 							</div>
 							<div class="row mt-5">
 								<div class="col-md-12 text-center">
-									<button class="btn btn-dcms" type="submit">Continue</button>
+									<button class="btn btn-primary btn-sm" type="submit">Continue</button>
 								</div>
 							</div>
 						</div>
@@ -124,7 +124,7 @@
 		</div>
 
     	@include('layouts.preloader')
-        
+
 		@include('layouts._partials.scripts')
 
 		<script>
@@ -132,7 +132,7 @@
 			var userCode;
 
 		</script>
-		
+
 
 	</body>
 </html>
