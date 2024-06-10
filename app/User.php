@@ -18,6 +18,7 @@ use App\Models\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as IlluminateAuth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Auth;
 
 
@@ -135,7 +136,7 @@ class User extends Authenticatable implements Auditable
         return 0;
 	}
 
-	public function getProfileURL(): string
+	public function getProfileURL()
 	{
 		$profilePhotoURL = null;
 
@@ -167,6 +168,13 @@ class User extends Authenticatable implements Auditable
             return 0;
         }
 
+    }
+
+    public function generateToken(){
+
+        $token = Str::random(60);
+
+        return hash('sha256', $token);
     }
 
 }

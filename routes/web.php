@@ -262,6 +262,11 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'project.updateInfo'
         ]);
 
+        Route::post('/updateStatus', [
+            'uses' => 'Project\ProjectController@updateStatus',
+            'as' => 'project.updateStatus'
+        ]);
+
         Route::group(['prefix' => 'idea'], function () {
 
             Route::get('/list', [

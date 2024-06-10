@@ -69,7 +69,7 @@ class RegisterController extends Controller
             $user->USPwd        = Hash::make($request->password);
             $user->USType       = 'US';
             $user->USResetPwd   = 0;
-            $user->USActive     = 0;
+            $user->USActive     = 1;
             $user->USRegister   = 1;
             $user->US_RLCode    = 1;
             $user->USCB         = $userCode;

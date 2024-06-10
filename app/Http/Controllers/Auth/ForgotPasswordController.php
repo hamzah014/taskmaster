@@ -27,16 +27,16 @@ class ForgotPasswordController extends Controller
     */
 
     //use SendsPasswordResetEmails;
-	
-	
+
+
 	public function index(Request $request){
-	
+
 		$request->session()->put('status', '');
 		 $message = '';
          return view('auth.forgotPassword', compact('message') );
-    
+
     }
-	
+
     public function sendLink(Request $request){
 
 		$messages = [
@@ -56,11 +56,13 @@ class ForgotPasswordController extends Controller
 
             if($user){
 
-                $tokenResult = $user->createToken('Personal Access Token');
-                $token = $tokenResult->token->id;
-        
+                // $tokenResult = $user->createToken('Personal Access Token');
+                // $token = $tokenResult->token->id;
+
+                $token = $user->generateToken();
+
                 $route = route('resetPassword.reset',[$token, 'email'=>$user->USEmail]);
-        
+
                 // Send Email
                 $emailData = array(
                     'email' => $user->USEmail,
@@ -69,29 +71,29 @@ class ForgotPasswordController extends Controller
                     'name'  => $user->USName ?? '',
                     'token' => $token,
                 );
-                
+
                 try {
                     Mail::send(['html' => 'email.resetPasswordUser'], $emailData, function($message) use ($emailData) {
                         $message->to($emailData['email'] ,$emailData['email'])->subject('Reset Password');
                     });
-        
+
                 } catch (\Exception $e) {
-                    
+
                     return response()->json([
                         'error' => '1',
                         'message' => 'Failed to send email.'.$e->getMessage()
                     ], 400);
                 }
-                    
+
                 return response()->json([
                     'success' => '1',
                     'redirect' => route('login.index'),
                     'message' => 'Link has been sent to your email. Thank you.',
                 ]);
 
-                
+
             }else{
-                
+
                 return response()->json([
                     'error' => '1',
                     'message' => 'Akaun anda tidak dijumpai.'
@@ -100,7 +102,7 @@ class ForgotPasswordController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            
+
             return response()->json([
                 'error' => '1',
                 'message' => 'Ralat ditemukan.'.$e->getMessage()

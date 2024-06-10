@@ -103,12 +103,12 @@
                                                         <div class="stepper-desc">Project idea list</div>
                                                     </div>
                                                 </div>
-                                                @if( in_array($project->PJStatus, ['RISK']) )
+                                                @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
                                                 <div class="stepper-line h-40px"></div>
                                                 @endif
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
 
                                                 <div class="stepper-item" data-kt-stepper-element="nav" data-step="5">
                                                     <div class="stepper-wrapper">
@@ -215,18 +215,33 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    @if( in_array($project->PJStatus, ['PENDING']) )
                                                     <div class="row">
                                                         <div class="col-md-12 text-end">
                                                             <div class="mt-7">
-                                                                <button type="submit" class="btn btn-primary text-nowrap">
-                                                                Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
-                                                                </button>
+
+                                                                @if( in_array($project->PJStatus, ['PENDING']) )
+
+                                                                    <button type="submit" class="btn btn-primary text-nowrap">
+                                                                    Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
+                                                                    </button>
+
+                                                                @else
+
+                                                                    @if( !in_array($project->PJStatus, ['COMPLETE','CANCEL']) )
+
+                                                                    <a class="btn btn-danger text-nowrap" onclick="confirmProjectStatus('CL')">
+                                                                    Project Cancel <i class="fa-solid fa-square-xmark text-white fs-4 ms-1 me-0"></i>
+                                                                    </a>
+                                                                    <a class="btn btn-success text-nowrap" onclick="confirmProjectStatus('CM')">
+                                                                    Project Complete <i class="fa-solid fa-square-check text-white fs-4 ms-1 me-0"></i>
+                                                                    </a>
+
+                                                                    @endif
+
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @endif
 
                                                 </form>
                                             </div>
@@ -462,7 +477,7 @@
                                                 </div>
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
 
                                                 <div class="" data-kt-stepper-element="content" data-step="5">
                                                     <input type="hidden" name="riskCode" id="riskCode" value="{{ $projectRisk ? $projectRisk->PRCode : 0 }}">
@@ -1824,6 +1839,137 @@
 
             $.ajax({
                 url: "{{ route('risk.updateStatusRisk') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+
+                    swal.fire({
+                        title: "Success",
+                        text: resp.message,
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "Okay",
+                        customClass: {
+                            popup: 'swal-popup'
+                        }
+                    }).then((result) => {
+
+                        routeHref = resp.redirect;
+
+                        window.location.href = routeHref;
+
+                    });
+
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+
+                            // $('[name="' + key + '"]').closest('.form-group').addClass("has-error");
+                            // $('[name="' + key + '"]').addClass("was-validated is-invalid invalid custom-select.is-invalid");
+                            // $('#Valid'+key).empty();
+                            // $('[name="' + key + '"]').closest('.form-group').append("<span id='Valid"+key+"' class=\"help-block\" style='color:red; font-family:Nunito, sans-serif;'>" + message[0] + "</span>");
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
+
+
+        }
+
+    </script>
+
+
+    <script>
+
+        function confirmProjectStatus(code){
+
+            if(code == 'CL'){
+                status = 'Cancel';
+            }
+            else{
+                status = 'Complete';
+            }
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "The project will be update as " + status,
+                type: 'warning',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes,submit it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitProjectStatus(code);
+                    }
+            })
+
+        }
+
+        function submitProjectStatus(statusCode){
+
+            projectCode = $('#projectCode').val();
+
+            var formData = new FormData();
+
+            formData.append('projectCode',projectCode);
+            formData.append('statusCode',statusCode);
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('project.updateStatus') }}",
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
