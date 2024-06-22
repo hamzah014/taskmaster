@@ -243,9 +243,7 @@
 
         })(jQuery);
 
-        function reloadTable(){
-
-            table.ajax.reload();
+        function reloadTable(){1
         }
 
     </script>

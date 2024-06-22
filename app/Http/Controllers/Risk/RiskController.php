@@ -43,10 +43,12 @@ class RiskController extends Controller
         $dropdownService = new DropdownService();
         $generalService = new GeneralService();
 
+        $allowRole = ['RL007', 'RL003'];
+
         $query = Project::where('PJStatus', 'RISK')
-                ->whereHas('projectTeam', function($query) use(&$user){
+                ->whereHas('projectTeam', function($query) use(&$user,$allowRole){
                     $query->where('PT_USCode', $user->USCode)
-                    ->where('PT_RLCode', 'RL007');
+                    ->where('PT_RLCode', $allowRole);
                 })
                 ->get();
 
@@ -136,19 +138,6 @@ class RiskController extends Controller
     }
 
     public function submitRisk(Request $request){
-
-        // security1
-        // security2
-        // operational1
-        // operational2
-        // architect
-        // regulatory
-        // reputation1
-        // reputation2
-        // financial
-        // buildApp
-        // integrate
-        // uicreate
 
         $messages = [
             'security1.required'  => 'Question 1 required.',

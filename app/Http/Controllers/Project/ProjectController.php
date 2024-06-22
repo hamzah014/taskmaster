@@ -61,7 +61,7 @@ class ProjectController extends Controller
             'description' => 'required',
             'startDate' => 'required',
             'endDate' => 'required',
-            'budget' => 'required',
+            // 'budget' => 'required',
         ];
 
         $request->validate($validation, $messages);
@@ -588,8 +588,11 @@ class ProjectController extends Controller
 
         $user = Auth::user();
 
-        $query = Project::where('PJCB',$user->USCode)
-                ->where('PJStatus', '!=', '')
+        $query = Project::where('PJStatus', '!=', '')
+                ->whereHas('projectTeam', function($query) use(&$user){
+                    $query->where('PT_USCode', $user->USCode);
+                })
+                ->orderBy('PJID', 'DESC')
                 ->get();
 
         return DataTables::of($query)
@@ -650,8 +653,11 @@ class ProjectController extends Controller
 
     public function edit(Request $request, $id){
 
+        $user = Auth::user();
+
         $dropdownService = new DropdownService();
         $editPage = 0;
+        $leader = 0;
 
         $projectCategory = $dropdownService->projectCategory();
         $roleUser = $dropdownService->roleUser();
@@ -665,11 +671,17 @@ class ProjectController extends Controller
 
         }
 
+        $myProjectRole = $project->myProjectRole($user->USCode)->where('PT_RLCode', 'RL003')->first();
+
+        if($myProjectRole){
+            $leader = 1;
+        }
+
         $projectRisk = $project->projectRisk ?? null;
 
         return view('project.edit',
         compact(
-            'editPage','projectStatus',
+            'editPage','projectStatus','leader',
             'projectCategory','roleUser','project','projectRisk'
         ));
 
@@ -691,7 +703,7 @@ class ProjectController extends Controller
             'description' => 'required',
             'startDate' => 'required',
             'endDate' => 'required',
-            'budget' => 'required',
+            // 'budget' => 'required',
         ];
 
         $request->validate($validation, $messages);
