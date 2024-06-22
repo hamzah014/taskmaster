@@ -25,6 +25,10 @@ class Project extends Model implements Auditable
         return $this->hasMany(ProjectTeam::class, 'PT_PJCode', 'PJCode');
     }
 
+    public function myProjectRole($usercode){
+        return $this->hasMany(ProjectTeam::class, 'PT_PJCode', 'PJCode')->where('PT_USCode', $usercode);
+    }
+
     public function projectDocument()
     {
         return $this->hasMany(ProjectDocument::class, 'PD_PJCode', 'PJCode');
@@ -40,6 +44,10 @@ class Project extends Model implements Auditable
 
     public function taskProject(){
         return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode');
+    }
+
+    public function myTaskProject($usercode){
+        return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode')->where('TPAssignee', $usercode);
     }
 
     public function projectStatus(){

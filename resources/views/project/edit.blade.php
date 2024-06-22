@@ -39,7 +39,7 @@
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
-                            <h2>View Project</h2>
+                            <h2>New Project</h2>
                         </div>
                     </div>
 
@@ -199,7 +199,7 @@
                                                     <div class="fv-row row mt-4">
                                                         <div class="col-md-6">
                                                             <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                                <span class="required">Budget</span>
+                                                                <span class="">Budget</span>
                                                                 <span class="ms-1" data-bs-toggle="tooltip" title="Enter budget">
                                                                     <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                                         <span class="path1"></span>
@@ -218,23 +218,26 @@
                                                     <div class="row">
                                                         <div class="col-md-12 text-end">
                                                             <div class="mt-7">
+                                                                @if($leader == 1)
 
-                                                                @if( in_array($project->PJStatus, ['PENDING']) )
+                                                                    @if( in_array($project->PJStatus, ['PENDING']) )
 
-                                                                    <button type="submit" class="btn btn-primary text-nowrap">
-                                                                    Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
-                                                                    </button>
+                                                                        <button type="submit" class="btn btn-primary text-nowrap">
+                                                                        Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
+                                                                        </button>
 
-                                                                @else
+                                                                    @else
 
-                                                                    @if( !in_array($project->PJStatus, ['COMPLETE','CANCEL']) )
+                                                                        @if( !in_array($project->PJStatus, ['COMPLETE','CANCEL']) )
 
-                                                                    <a class="btn btn-danger text-nowrap" onclick="confirmProjectStatus('CL')">
-                                                                    Project Cancel <i class="fa-solid fa-square-xmark text-white fs-4 ms-1 me-0"></i>
-                                                                    </a>
-                                                                    <a class="btn btn-success text-nowrap" onclick="confirmProjectStatus('CM')">
-                                                                    Project Complete <i class="fa-solid fa-square-check text-white fs-4 ms-1 me-0"></i>
-                                                                    </a>
+                                                                        <a class="btn btn-danger text-nowrap" onclick="confirmProjectStatus('CL')">
+                                                                        Project Cancel <i class="fa-solid fa-square-xmark text-white fs-4 ms-1 me-0"></i>
+                                                                        </a>
+                                                                        <a class="btn btn-success text-nowrap" onclick="confirmProjectStatus('CM')">
+                                                                        Project Complete <i class="fa-solid fa-square-check text-white fs-4 ms-1 me-0"></i>
+                                                                        </a>
+
+                                                                        @endif
 
                                                                     @endif
 
@@ -258,16 +261,21 @@
                                                             <h4 class="">Role Assignment</h4>
                                                             <h5>Please select member to be on this project:</h5>
 
-                                                            @if( in_array($project->PJStatus, ['PENDING']) )
-                                                            <div class="row mb-10 mt-8">
-                                                                <div class="col-md-12">
-                                                                    <div class="input-group mb-5">
-                                                                        <span class="input-group-text">Search by Email</span>
-                                                                        <input type="text" class="form-control" id="searchEmail" name="searchEmail" aria-label="Search Email"/>
-                                                                        <span class="input-group-text btn btn-info" onclick="searchUser()">Search</span>
+
+                                                            @if($leader == 1)
+
+                                                                @if( in_array($project->PJStatus, ['PENDING']) )
+                                                                <div class="row mb-10 mt-8">
+                                                                    <div class="col-md-12">
+                                                                        <div class="input-group mb-5">
+                                                                            <span class="input-group-text">Search by Email</span>
+                                                                            <input type="text" class="form-control" id="searchEmail" name="searchEmail" aria-label="Search Email"/>
+                                                                            <span class="input-group-text btn btn-info" onclick="searchUser()">Search</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                @endif
+
                                                             @endif
 
                                                             <div class="row mb-10 mt-8">
@@ -299,8 +307,13 @@
                                                                                     ]) !!}
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if( in_array($project->PJStatus, ['PENDING']) )
-                                                                                    <a class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove();">Delete</a>
+
+                                                                                    @if($leader == 1)
+
+                                                                                        @if( in_array($project->PJStatus, ['PENDING']) )
+                                                                                        <a class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove();">Delete</a>
+                                                                                        @endif
+
                                                                                     @endif
                                                                                 </td>
 
@@ -320,11 +333,17 @@
                                                                                 <i class="fas fa-arrow-left text-dark fs-4 ms-1 me-0"></i> Previous
                                                                             </a>
                                                                         </div>
-                                                                        <div class="text-end">
-                                                                            <a onclick="storeMember()" class="btn btn-primary btn-sm text-nowrap">
-                                                                                Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
-                                                                                </a>
-                                                                        </div>
+
+                                                                        @if($leader == 1)
+
+                                                                            <div class="text-end">
+                                                                                <a onclick="storeMember()" class="btn btn-primary btn-sm text-nowrap">
+                                                                                    Continue <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0"></i>
+                                                                                    </a>
+                                                                            </div>
+
+                                                                        @endif
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -346,10 +365,15 @@
 
                                                         <div class="row mb-10 mt-8">
 
-                                                            @if( in_array($project->PJStatus, ['PENDING']) )
-                                                            <div class="col-md-12 text-end">
-                                                                <a class="btn btn-primary btn-sm" onclick="addDocumentList()">Add Document</a>
-                                                            </div>
+
+                                                            @if($leader == 1)
+
+                                                                @if( in_array($project->PJStatus, ['PENDING']) )
+                                                                <div class="col-md-12 text-end">
+                                                                    <a class="btn btn-primary btn-sm" onclick="addDocumentList()">Add Document</a>
+                                                                </div>
+                                                                @endif
+
                                                             @endif
 
                                                             <div class="col-md-12">
@@ -375,8 +399,12 @@
                                                                             <td>
                                                                                 <a class="btn btn-secondary btn-sm" target="_blank" href="{{ route('file.view',$projectDocument->fileAttach->FAGuidID) }}">View</a>
 
-                                                                                @if( in_array($project->PJStatus, ['PENDING']) )
-                                                                                <a class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove();">Delete</a>
+                                                                                @if($leader == 1)
+
+                                                                                    @if( in_array($project->PJStatus, ['PENDING']) )
+                                                                                    <a class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove();">Delete</a>
+                                                                                    @endif
+
                                                                                 @endif
 
                                                                             </td>
@@ -397,14 +425,20 @@
                                                                             <i class="fas fa-arrow-left text-dark fs-4 ms-1 me-0"></i> Back
                                                                         </a>
                                                                     </div>
-                                                                    <div class="text-end">
-                                                                        <a onclick="storeDocument(0)" class="btn btn-cyan btn-sm text-nowrap">
-                                                                        Save
-                                                                        </a>
-                                                                        <a onclick="storeDocument(1)" class="btn btn-success btn-sm text-nowrap">
-                                                                        Finish
-                                                                        </a>
-                                                                    </div>
+
+                                                                    @if($leader == 1)
+
+                                                                        <div class="text-end">
+                                                                            <a onclick="storeDocument(0)" class="btn btn-cyan btn-sm text-nowrap">
+                                                                            Save
+                                                                            </a>
+                                                                            <a onclick="storeDocument(1)" class="btn btn-success btn-sm text-nowrap">
+                                                                            Finish
+                                                                            </a>
+                                                                        </div>
+
+                                                                    @endif
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -435,40 +469,44 @@
                                                                 </table>
                                                             </div>
 
-                                                            @if( in_array($project->PJStatus, ['IDEA']) )
-                                                            <div class="row">
-                                                                <div class="col-md-12 text-end">
-                                                                    <div class="mt-7">
-                                                                        <a onclick="confirmSubmitIdea()" class="btn btn-primary text-nowrap">
-                                                                        Submit Idea
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            @endif
+                                                            @if($leader == 1)
 
-                                                            @if( in_array($project->PJStatus, ['IDEA-ALS']) )
-                                                            <div class="row">
-                                                                <div class="col-md-12 text-end">
-                                                                    <div class="mt-7">
-                                                                        <a onclick="confirmSubmitReq()" class="btn btn-primary text-nowrap">
-                                                                        Submit Analysis
-                                                                        </a>
+                                                                @if( in_array($project->PJStatus, ['IDEA']) )
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-end">
+                                                                        <div class="mt-7">
+                                                                            <a onclick="confirmSubmitIdea()" class="btn btn-primary text-nowrap">
+                                                                            Submit Idea
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            @endif
+                                                                @endif
 
-                                                            @if( in_array($project->PJStatus, ['IDEA-SCR']) )
-                                                            <div class="row">
-                                                                <div class="col-md-12 text-end">
-                                                                    <div class="mt-7">
-                                                                        <a onclick="confirmSubmitScore()" class="btn btn-primary text-nowrap">
-                                                                        Submit Scoring
-                                                                        </a>
+                                                                @if( in_array($project->PJStatus, ['IDEA-ALS']) )
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-end">
+                                                                        <div class="mt-7">
+                                                                            <a onclick="confirmSubmitReq()" class="btn btn-primary text-nowrap">
+                                                                            Submit Analysis
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                @endif
+
+                                                                @if( in_array($project->PJStatus, ['IDEA-SCR']) )
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-end">
+                                                                        <div class="mt-7">
+                                                                            <a onclick="confirmSubmitScore()" class="btn btn-primary text-nowrap">
+                                                                            Submit Scoring
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                @endif
+
                                                             @endif
 
 
@@ -783,16 +821,22 @@
                                                                     </table>
                                                                 </div>
 
-                                                                @if( in_array($project->PJStatus, ['RISK']) )
-                                                                <div class="row">
-                                                                    <div class="col-md-12 text-end">
-                                                                        <div class="mt-7">
-                                                                            <a onclick="confirmSubmitRisk()" class="btn btn-primary text-nowrap">
-                                                                            Submit Risk
-                                                                            </a>
+
+
+                                                                @if($leader == 1)
+
+                                                                    @if( in_array($project->PJStatus, ['RISK']) )
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 text-end">
+                                                                            <div class="mt-7">
+                                                                                <a onclick="confirmSubmitRisk()" class="btn btn-primary text-nowrap">
+                                                                                Submit Risk
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                    @endif
+
                                                                 @endif
 
                                                             </div>

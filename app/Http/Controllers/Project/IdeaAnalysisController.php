@@ -41,10 +41,12 @@ class IdeaAnalysisController extends Controller
 
         $user = Auth::user();
 
+        $allowRole = ['RL007', 'RL003'];
+
         $query = Project::where('PJStatus', 'IDEA-ALS')
-                ->whereHas('projectTeam', function($query) use(&$user){
+                ->whereHas('projectTeam', function($query) use(&$user, $allowRole){
                     $query->where('PT_USCode', $user->USCode)
-                    ->where('PT_RLCode', 'RL007');
+                    ->whereIn('PT_RLCode', $allowRole);
                 })
                 ->get();
 

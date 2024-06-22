@@ -323,6 +323,144 @@ class TaskController extends Controller
 
         $user = Auth::user();
 
+        $query = Project::whereNotNull('PJStatus')
+        ->whereHas('taskProject', function($query) use(&$user){
+            $query->where('TPAssignee',$user->USCode);
+        })
+        ->get();
+
+        return DataTables::of($query)
+            ->addColumn('indexNo', function($row) use(&$count) {
+
+                $count++;
+
+                return $count;
+            })
+            ->editColumn('totalTask', function($row) use(&$user) {
+
+                $result = $row->myTaskProject($user->USCode)->count();
+
+                return $result;
+            })
+            ->editColumn('PJCode', function($row) {
+
+                $result = $row->PJCode;
+
+                return $result;
+            })
+            ->editColumn('PJStartDate', function($row) {
+
+                $result = Carbon::parse($row->PJStartDate)->format('d/m/Y');
+
+                return $result;
+            })
+            ->editColumn('PJEndDate', function($row) {
+
+                $result = Carbon::parse($row->PJEndDate)->format('d/m/Y');
+
+                return $result;
+            })
+            ->editColumn('PJStatus', function($row) use(&$dropdownService) {
+
+                $status = $dropdownService->projectStatus();
+
+                $statusProject = $status[$row->PJStatus] ?? "-";
+
+                $result = '<span class="badge badge-outline badge-primary">'.$statusProject.'</span>';
+
+                return $result;
+            })
+            ->addColumn('action', function($row) {
+
+                $routeView = route('task.user.viewUser',[$row->PJCode]);
+
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal-task"
+                 onclick="viewTask(\'' . $row->PJCode . '\')"><i class="fa fa-eye text-dark"></i></a>';
+
+                return $result;
+            })
+            ->rawColumns(['indexNo','totalTask','PJName','PJStatus','action'])
+            ->make(true);
+
+    }
+
+    public function myTaskDatatable(Request $request){
+
+        $dropdownService = new DropdownService();
+
+        $user = Auth::user();
+
+        $query = TaskProject::where('TPAssignee',$user->USCode)
+                ->where('TP_PJCode', $request->projectCode)
+                ->orderBy('TPCD', 'DESC')
+                ->get();
+
+        return DataTables::of($query)
+            ->addColumn('indexNo', function($row) use(&$count) {
+
+                $count++;
+
+                return $count;
+            })
+            ->editColumn('TPCode', function($row) {
+
+                $result = $row->TPCode;
+
+                return $result;
+            })
+            ->editColumn('PJName', function($row) {
+
+                $result = $row->project->PJName;
+
+                return $result;
+            })
+            ->editColumn('TPPriority', function($row) {
+
+                $result = $row->TPPriority;
+
+                return $result;
+            })
+            ->editColumn('TPDueDate', function($row) {
+
+                $result = Carbon::parse($row->TPDueDate)->format('d/m/Y');
+
+                return $result;
+            })
+            ->editColumn('TPAssignee', function($row) {
+
+                $result = $row->assignee->USName;
+
+                return $result;
+            })
+            ->editColumn('TPStatus', function($row) use(&$dropdownService) {
+
+                $status = $dropdownService->taskStatus();
+
+                $statusTask = $status[$row->TPStatus];
+
+                $result = '<span class="badge badge-outline badge-primary">'.$statusTask.'</span>';
+
+                return $result;
+            })
+            ->addColumn('action', function($row) {
+
+                $routeView = route('task.user.viewUser',[$row->TPCode]);
+
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-pen text-dark"></i></a>';
+
+                return $result;
+            })
+            ->rawColumns(['indexNo','TPCode','PJName','TPPriority','TPDueDate','TPAssignee','TPStatus','action'])
+            ->make(true);
+
+    }
+
+    public function taskUserDatatable2(Request $request){
+
+        $dropdownService = new DropdownService();
+
+        $user = Auth::user();
+
         $query = TaskProject::where('TPAssignee',$user->USCode)
                 ->orderBy('TPCD', 'DESC')
                 ->get();

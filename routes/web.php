@@ -497,6 +497,11 @@ Route::group(['middleware' => 'auth'], function () {
                 'as' => 'task.user.taskUserDatatable'
             ]);
 
+            Route::post('/myTaskDatatable', [
+                'uses' => 'Task\TaskController@myTaskDatatable',
+                'as' => 'task.user.myTaskDatatable'
+            ]);
+
             Route::get('/view/{id}', [
                 'uses' => 'Task\TaskController@viewUser',
                 'as' => 'task.user.viewUser'

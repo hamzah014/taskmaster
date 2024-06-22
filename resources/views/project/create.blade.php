@@ -39,7 +39,7 @@
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
-                            <h2>Create Project</h2>
+                            <h2>New Project</h2>
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@
                                                     <div class="fv-row row mt-4">
                                                         <div class="col-md-6">
                                                             <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                                <span class="required">Budget</span>
+                                                                <span class="">Budget</span>
                                                                 <span class="ms-1" data-bs-toggle="tooltip" title="Enter budget">
                                                                     <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                                         <span class="path1"></span>

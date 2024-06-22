@@ -41,10 +41,12 @@ class ProjectIdeaController extends Controller
 
         $user = Auth::user();
 
+        $allowRole = [ 'RL005', 'RL003' ]; //Team Lead and Product Owner
+
         $query = Project::where('PJStatus', 'IDEA')
-                ->whereHas('projectTeam', function($query) use(&$user){
+                ->whereHas('projectTeam', function($query) use(&$user,$allowRole){
                     $query->where('PT_USCode', $user->USCode)
-                    ->where('PT_RLCode', 'RL005');
+                    ->whereIn('PT_RLCode', $allowRole);
                 })
                 ->get();
 
