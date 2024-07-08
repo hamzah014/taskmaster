@@ -40,8 +40,27 @@
 
         $(document).ready(function(){
 
-
+            $('.select2-multiple').select2({
+                tags: true,
+                placeholder: "Select an Option",
+                allowClear: true,
+                width: '100%'
+            });
         });
+
+        function initializeSelect2(randomCode) {
+
+            console.log('randomCode',randomCode);
+
+            $('[id^="memberRole'+randomCode+'"]').select2({
+                tags: true,
+                placeholder: "Select an Option",
+                allowClear: true,
+                width: '100%'
+            });
+
+
+        }
 
         function toggleLoader(close) {
             close = close || false;

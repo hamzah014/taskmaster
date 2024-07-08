@@ -13,8 +13,11 @@
 			<div class="card-body p-9">
 
                 <div class="row flex-row mb-5">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <h2>Dashboard</h2>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <a href="{{ route('project.create') }}" class="btn text-light btn-orange btn-round">New Project</a>
                     </div>
                 </div>
 

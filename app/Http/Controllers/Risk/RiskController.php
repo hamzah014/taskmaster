@@ -46,11 +46,15 @@ class RiskController extends Controller
         $allowRole = ['RL007', 'RL003'];
 
         $query = Project::where('PJStatus', 'RISK')
-                ->whereHas('projectTeam', function($query) use(&$user,$allowRole){
-                    $query->where('PT_USCode', $user->USCode)
-                    ->where('PT_RLCode', $allowRole);
-                })
-                ->get();
+        ->whereHas('projectTeam', function($query) use($user, $allowRole){
+            $query->where('PT_USCode', $user->USCode)
+                  ->where(function($query) use ($allowRole) {
+                      foreach ($allowRole as $role) {
+                          $query->orWhereRaw('FIND_IN_SET(?, PT_RLCode)', [$role]);
+                      }
+                  });
+        })
+        ->get();
 
         return DataTables::of($query)
             ->addColumn('indexNo', function($row) use(&$count) {

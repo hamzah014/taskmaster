@@ -211,6 +211,17 @@ class ProjectController extends Controller
             $memberRoles = $request->memberRole;
             $projectTeamIDs = $request->projectTeamID;
 
+            $missingKeys = $this->arrayContainsKey($memberRoles, $roleMandatory);
+
+            if (!empty($missingKeys)) {
+                $message = "Must have at least 1 role for: " . implode(', ', $missingKeys);
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => $message
+                ], 400);
+            }
+
             $project = Project::where('PJCode', $request->projectCode)->first();
 
             if(!$project){
@@ -225,7 +236,8 @@ class ProjectController extends Controller
             $resultproject = array();
 
             if(count($memberIDs) == count($memberNames) &&
-                count($memberNames) == count($memberEmails))
+                count($memberNames) == count($memberEmails) &&
+                count($memberEmails) == count($memberRoles))
             {
 
                 $oldProjectTeams = $project->projectTeam;
@@ -237,8 +249,8 @@ class ProjectController extends Controller
 
                         $memberName = $memberNames[$count];
                         $memberEmail = $memberEmails[$count];
+                        $memberRole = $memberRoles[$count];
                         $projectTeamID = $projectTeamIDs[$count];
-                        $memberRole = implode(',', $memberRoles[$projectTeamID]);
 
                         if(!$memberRole){
 
@@ -294,8 +306,8 @@ class ProjectController extends Controller
 
                         $memberName = $memberNames[$index];
                         $memberEmail = $memberEmails[$index];
-                        $projectTeamID = $projectTeamIDs[$index];
-                        $memberRole = implode(',', $memberRoles[$projectTeamID]);
+                        $memberRole = $memberRoles[$index];
+                        $projectTeamIDs = $request->projectTeamID;
 
                         if(!$memberRole){
 
@@ -575,11 +587,8 @@ class ProjectController extends Controller
         $user = Auth::user();
 
         $query = Project::where('PJStatus', '!=', '')
-                ->where('PJCB', $user->USCode)
-                ->orWhere(function ($query2) use ($user) {
-                    $query2->whereHas('projectTeam', function ($query3) use ($user) {
-                        $query3->where('PT_USCode', $user->USCode);
-                    });
+                ->whereHas('projectTeam', function($query) use(&$user){
+                    $query->where('PT_USCode', $user->USCode);
                 })
                 ->orderBy('PJID', 'DESC')
                 ->get();
@@ -613,7 +622,7 @@ class ProjectController extends Controller
 
                 $status = $dropdownService->projectStatus();
 
-                $statusProject = $status[$row->PJStatus] ?? "";
+                $statusProject = $status[$row->PJStatus];
 
                 $result = '<span class="badge badge-outline badge-primary">'.$statusProject.'</span>';
 
@@ -660,11 +669,7 @@ class ProjectController extends Controller
 
         }
 
-        $roleCodeToFind = 'RL003';
-
-        $myProjectRole = $project->myProjectRole($user->USCode)
-            ->whereRaw('FIND_IN_SET(?, PT_RLCode)', [$roleCodeToFind])
-            ->first();
+        $myProjectRole = $project->myProjectRole($user->USCode)->where('PT_RLCode', 'RL003')->first();
 
         if($myProjectRole){
             $leader = 1;
