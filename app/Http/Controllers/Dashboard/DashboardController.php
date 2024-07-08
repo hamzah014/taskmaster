@@ -26,7 +26,13 @@ class DashboardController extends Controller{
 
         $projectStatus = $dropdownService->projectStatus();
 
-        $projectCount = Project::where('PJCB', $user->USCode)->get()->count();
+        $projectCount = Project::where('PJCB', $user->USCode)
+        ->orWhere(function ($query) use ($user) {
+            $query->whereHas('projectTeam', function ($query) use ($user) {
+                $query->where('PT_USCode', $user->USCode);
+            });
+        })
+        ->get()->count();
 
         $ideaCount = ProjectIdea::where('PICB', $user->USCode)->get()->count();
 

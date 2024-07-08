@@ -285,7 +285,7 @@
                                                                         <thead class="text-center bg-gray">
                                                                             <th>Member Name</th>
                                                                             <th>Member Email</th>
-                                                                            <th>Role</th>
+                                                                            <th class="w-35">Role</th>
                                                                             <th>Action</th>
                                                                         </thead>
                                                                         <tbody>
@@ -299,11 +299,15 @@
                                                                                 <td>
                                                                                     <input type="text" name="memberEmail[]" id="memberEmail[]" class="form-control" value="{{ $projectTeam->user->USEmail }}" readonly>
                                                                                 </td>
-                                                                                <td>
-                                                                                    {!! Form::select('memberRole[]', $roleUser , $projectTeam->PT_RLCode, [
-                                                                                        'id' => 'memberRole',
-                                                                                        'class' => 'form-select form-control',
-                                                                                        'placeholder' => 'Choose role',
+                                                                                <td class="selecthere">
+                                                                                    {!! Form::select('memberRole[' . $projectTeam->PTID . '][]', $roleUser , explode(',',$projectTeam->PT_RLCode), [
+                                                                                        'id' => 'memberRole' . $projectTeam->PTID,
+                                                                                        'class' => 'form-select form-control select2-multiple',
+                                                                                        'data-control' => 'select2',
+                                                                                        'data-close-on-select' => 'false',
+                                                                                        'data-placeholder' => 'Choose role',
+                                                                                        'data-allow-clear' => 'true',
+                                                                                        'multiple' => 'multiple'
                                                                                     ]) !!}
                                                                                 </td>
                                                                                 <td>
@@ -1180,11 +1184,18 @@
             name = $('#resultName').val();
             email = $('#resultEmail').val();
 
+            randomCode = generateRandomCode();
+
             var roleSelect = `
-                {!! Form::select('memberRole[]', $roleUser , null, [
-                    'id' => 'memberRole',
-                    'class' => 'form-select form-control',
-                    'placeholder' => 'Choose role',
+                {!! Form::select('memberRole[${randomCode}][]', $roleUser , null, [
+                    'id' => 'memberRole${randomCode}',
+                    'class' => 'form-select form-control select2-multiple',
+                    'data-control' => 'select2',
+                    'data-info' => 'select2',
+                    'data-close-on-select' => 'false',
+                    'data-placeholder' => 'Choose role',
+                    'data-allow-clear' => 'true',
+                    'multiple' => 'multiple'
                 ]) !!}
             `;
 
@@ -1203,7 +1214,7 @@
                 type: 'hidden',
                 class: 'form-control',
                 name: 'projectTeamID[]',
-                value: 0
+                value: randomCode
             }));
 
             newRow.append($('<td>').append($('<input>').attr({
@@ -1222,7 +1233,10 @@
                 readonly: true // Add readonly attribute
             })));
 
-            newRow.append($('<td>').append(roleSelect));
+            var roleSelectReset = $(roleSelect);
+            newRow.append($('<td>').append(roleSelectReset).attr({
+                class: 'selecthere' + randomCode,
+            }));
 
             var deleteButton = $('<a>').addClass('btn btn-danger btn-sm').text('Delete');
             deleteButton.on('click', function() {
@@ -1231,17 +1245,10 @@
 
             newRow.append($('<td>').append(deleteButton));
 
+
             tableBody.append(newRow);
-
+            initializeSelect2(randomCode);
             resetSearchUser();
-
-        }
-
-        function resetSearchUser(){
-
-            $('#resultID').val('');
-            $('#resultName').val('');
-            $('#resultEmail').val('');
 
         }
 
@@ -1328,6 +1335,13 @@
                 }
             });
 
+        }
+
+        function resetSearchUser(){
+
+            $('#resultID').val('');
+            $('#resultName').val('');
+            $('#resultEmail').val('');
         }
 
     </script>

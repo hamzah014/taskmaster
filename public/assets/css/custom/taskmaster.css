@@ -45,6 +45,15 @@
     background: #0C4DA1;
     color: white;
 }
+.btn-orange{
+    background: #f38042;
+    color: white;
+}
+.btn-orange:hover{
+    background: white;
+    border: 0.5px solid #f38042 !important;
+    color: #f38042 !important;
+}
 .bg-white{
     background-color: white;
 }
