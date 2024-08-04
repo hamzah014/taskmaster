@@ -172,13 +172,22 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                        {{-- <div class="row">
-                                            <div class="col-md-12 text-end">
-                                                <a onclick="confirmSubmitScore()" class="btn btn-primary btn-sm text-nowrap">
-                                                Submit Scoring
-                                                </a>
+
+                                        @if($leader == 1)
+
+                                            @if( in_array($project->PJStatus, ['IDEA-SCR']) )
+                                            <div class="row">
+                                                <div class="col-md-12 text-end">
+                                                    <div class="mt-7">
+                                                        <a onclick="confirmSubmitScore()" class="btn btn-primary text-nowrap">
+                                                        Accept Requirements
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div> --}}
+                                            @endif
+
+                                        @endif
 
                                     </div>
                                 </div>

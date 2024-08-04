@@ -17,6 +17,7 @@ use Auth;
 use Validator;
 use App\Models\WebSetting;
 use App\Services\DropdownService;
+use App\Services\GeneralService;
 use Defuse\Crypto\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -643,6 +644,7 @@ class ProjectController extends Controller
     public function edit(Request $request, $id){
 
         $user = Auth::user();
+        $generalService = new GeneralService();
 
         $dropdownService = new DropdownService();
         $editPage = 0;
@@ -671,11 +673,29 @@ class ProjectController extends Controller
         }
 
         $projectRisk = $project->projectRisk ?? null;
+        $riskStatus = 'P';
+
+        if($projectRisk){
+
+            $totalRisk = $generalService->totalRisk($project->projectRisk);
+
+            if($totalRisk <= 33){
+                $riskStatus = 'L';
+            }
+            elseif($totalRisk <= 66){
+                $riskStatus = 'M';
+            }
+            else{
+                $riskStatus = 'H';
+            }
+
+        }
+
 
         return view('project.edit',
         compact(
             'editPage','projectStatus','leader',
-            'projectCategory','roleUser','project','projectRisk'
+            'projectCategory','roleUser','project','projectRisk','riskStatus'
         ));
 
     }
@@ -786,6 +806,63 @@ class ProjectController extends Controller
                 'success' => '1',
                 'message' => 'Success',
                 'redirect' => route('project.index')
+            ]);
+
+
+        }catch (\Throwable $e) {
+            DB::rollback();
+
+            Log::info('ERROR', ['$e' => $e]);
+
+            return response()->json([
+                'error' => '1',
+                'message' => 'Error!'.$e->getMessage()
+            ], 400);
+        }
+
+    }
+
+    public function cancelProject(Request $request){
+
+        $messages = [
+            'reasonCancel.required' 		=> 'Reason required.',
+
+        ];
+
+        $validation = [
+            'reasonCancel' => 'required',
+        ];
+
+        $request->validate($validation, $messages);
+
+        try {
+
+            $autoNumber = new AutoNumber();
+            $user = Auth::user();
+
+            $id = $request->projectCode;
+            $reason = $request->reasonCancel;
+
+            $project = Project::where('PJCode', $id)->first();
+            if(!$project){
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Project not found!'
+                ], 400);
+
+            }
+
+            $status = 'CANCEL';
+
+            $project->PJStatus = $status;
+            $project->PJ_RejectReason = $reason;
+            $project->save();
+
+            return response()->json([
+                'success' => '1',
+                'message' => 'Success',
+                'redirect' => route('project.edit',[$project->PJCode])
             ]);
 
 

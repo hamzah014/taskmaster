@@ -211,7 +211,7 @@
                                         </div>
 
                                         <div class="fv-row text-center">
-                                            <a onclick="confirmSubmitAnalysis()" class="btn btn-success">Accept Requirement</a>
+                                            <a onclick="confirmSubmitAnalysis()" class="btn btn-success">Accept Requirements</a>
                                         </div>
 
                                     </div>

@@ -248,8 +248,12 @@ class RiskController extends Controller
 
         try {
 
+            DB::beginTransaction();
+
             $projectCode = $request->projectCode;
             $riskCode = $request->riskCode;
+            $riskStatus = $request->riskStatus;
+            $riskAccept = $request->riskAccept;
 
             $autoNumber = new AutoNumber();
 
@@ -268,10 +272,50 @@ class RiskController extends Controller
             }
 
             $status = "PROGRESS";
+            $acceptRisk = 0;
+
+            if($riskStatus == 'H'){
+
+                if($riskAccept == 0){
+                    $status = 'CANCEL';
+                }
+                else{
+                    $acceptRisk = 1;
+                }
+
+            }
 
             $project = $projectRisk->project;
             $project->PJStatus = $status;
+            $project->PJAcceptRisk = $acceptRisk;
             $project->save();
+
+            $idea = array();
+
+            if($status == 'PROGRESS'){
+
+                foreach($project->projectIdea as $index => $projectIdea){
+
+                    // array_push($idea, $projectIdea->PIDesc);
+
+                    $ideaTask = $projectIdea->PIDesc;
+
+                    $statusTask = "PENDING";
+                    $taskCode = $autoNumber->generateTaskCode();
+
+                    $taskProject = new TaskProject();
+                    $taskProject->TPCode = $taskCode;
+                    $taskProject->TP_PJCode = $project->PJCode;
+                    $taskProject->TPName = $ideaTask;
+                    $taskProject->TPStatus = $statusTask;
+                    $taskProject->TPCB = $user->USCode;
+                    $taskProject->save();
+
+                }
+
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => '1',

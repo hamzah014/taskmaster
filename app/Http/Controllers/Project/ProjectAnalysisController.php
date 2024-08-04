@@ -209,10 +209,12 @@ class ProjectAnalysisController extends Controller
             $project->PJStatus = $status;
             $project->save();
 
+            $routeRisk = route('risk.view',$project->PJCode);
+
             return response()->json([
                 'success' => '1',
                 'message' => 'Project idea has been successfully submitted.',
-                'redirect' => route('project.index')
+                'redirect' => $routeRisk
             ]);
 
 

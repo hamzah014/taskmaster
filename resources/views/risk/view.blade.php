@@ -166,7 +166,7 @@
                                                                 <th class="text-center" rowspan="2">Question</th>
                                                                 <th class="text-center" colspan="3">Risk Severity
                                                                     <span class="ms-1" data-bs-toggle="tooltip" title="50 = High, Medium = 5, Low = 0">
-                                                                        <i class="ki-duotone ki-information-5 text-info fs-3">
+                                                                        <i class="ki-duotone ki-information-5 text-primary fs-3">
                                                                             <span class="path1"></span>
                                                                             <span class="path2"></span>
                                                                             <span class="path3"></span>
@@ -175,9 +175,9 @@
                                                                 </th>
                                                             </tr>
                                                             <tr>
-                                                                <th class="text-center">High</th>
-                                                                <th class="text-center">Medium</th>
-                                                                <th class="text-center">Low</th>
+                                                                <th class="text-center">Yes</th>
+                                                                <th class="text-center">Neutral</th>
+                                                                <th class="text-center">No</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

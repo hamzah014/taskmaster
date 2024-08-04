@@ -105,6 +105,8 @@ class IdeaScoringController extends Controller
 
     public function edit(Request $request, $id){
 
+        $user = Auth::user();
+
         $dropdownService = new DropdownService();
 
         $projectCategory = $dropdownService->projectCategory();
@@ -113,10 +115,20 @@ class IdeaScoringController extends Controller
 
         $project = Project::where('PJCode', $id)->first();
 
+        $roleCodeToFind = 'RL003';
+
+        $myProjectRole = $project->myProjectRole($user->USCode)
+            ->whereRaw('FIND_IN_SET(?, PT_RLCode)', [$roleCodeToFind])
+            ->first();
+
+        if($myProjectRole){
+            $leader = 1;
+        }
+
         return view('ideaScoring.edit',
         compact(
             'projectStatus',
-            'projectCategory','roleUser','project'
+            'projectCategory','roleUser','project','leader'
         ));
 
     }
@@ -274,10 +286,12 @@ class IdeaScoringController extends Controller
             $project->PJStatus = $status;
             $project->save();
 
+            $routeAnalysis = route('project.analysis.view', $project->PJCode);
+
             return response()->json([
                 'success' => '1',
                 'message' => 'All scoring analysis of idea has been submitted.',
-                'redirect' => route('project.index')
+                'redirect' => $routeAnalysis
             ]);
 
 

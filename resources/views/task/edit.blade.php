@@ -176,7 +176,7 @@
                                                             </i>
                                                         </span>
                                                     </label>
-                                                    <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Due date" value="{{ $taskProject->TPDueDate }}">
+                                                    <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Due date" value="@if($taskProject->TPDueDate != null) {{ $taskProject->TPDueDate }} @endif">
                                                 </div>
                                             </div>
                                             <div class="fv-row mt-10">

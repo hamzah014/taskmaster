@@ -111,7 +111,21 @@
                                     <div class="flex-grow-1 me-2">
                                         <a class="fw-bold text-gray-800 text-hover-primary fs-6">Current Status</a>
                                     </div>
-                                    <span class="fw-bold text-primary py-1">{{ $projectStatus[$project->PJStatus] ?? "Pending" }}</span>
+                                    <span class="fw-bold text-primary py-1">
+
+                                        @if(isset($projectStatus[$project->PJStatus]))
+                                            @if($project->PJStatus == "COMPLETE")
+                                                <span class="badge badge-success fs-5">Completed</span>
+                                            @elseif ($project->PJStatus == 'CANCEL')
+                                                <span class="badge badge-danger fs-5">Cancelled</span>
+                                            @else
+                                                <span class="badge badge-warning fs-5">{{ $projectStatus[$project->PJStatus] }}</span>
+                                            @endif
+                                        @else
+                                            <span class="badge badge-warning fs-5">Pending</span>
+                                        @endif
+
+                                    </span>
                                 </div>
 
                                 <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-2">

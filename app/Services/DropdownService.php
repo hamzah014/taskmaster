@@ -127,8 +127,8 @@ class DropdownService
             'PROJ-ALS' => 'Project Analysis',
             'RISK' => 'Project Risk',
             'PROGRESS' => 'On-going',
-            'COMPLETE' => 'Complete',
-            'CANCEL' => 'Cancel',
+            'COMPLETE' => 'Completed',
+            'CANCEL' => 'Cancelled',
         ];
 
         return $projectStatus;

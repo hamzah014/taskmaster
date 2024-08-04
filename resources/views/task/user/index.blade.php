@@ -16,9 +16,9 @@
                     <div class="col-md-9">
                         <h2>List of Task - My Task</h2>
                     </div>
-                    <div class="col-md-3 text-end">
+                    {{-- <div class="col-md-3 text-end">
                         <a href="{{ route('task.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Create</a>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row flex-row mb-5">

@@ -222,6 +222,11 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'project.submitInfo'
         ]);
 
+        Route::post('/cancelProject', [
+            'uses' => 'Project\ProjectController@cancelProject',
+            'as' => 'project.cancelProject'
+        ]);
+
         Route::post('/searchUser', [
             'uses' => 'Project\ProjectController@searchUser',
             'as' => 'project.searchUser'
@@ -470,6 +475,21 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'task.add'
         ]);
 
+        Route::post('/projectTaskDatatable', [
+            'uses' => 'Task\TaskController@projectTaskDatatable',
+            'as' => 'task.projectTaskDatatable'
+        ]);
+
+        Route::get('/list/{id}', [
+            'uses' => 'Task\TaskController@listTask',
+            'as' => 'task.listTask'
+        ]);
+
+        Route::post('/detail', [
+            'uses' => 'Task\TaskController@detail',
+            'as' => 'task.view.detail'
+        ]);
+
         Route::post('/taskDatatable', [
             'uses' => 'Task\TaskController@taskDatatable',
             'as' => 'task.taskDatatable'
@@ -479,6 +499,7 @@ Route::group(['middleware' => 'auth'], function () {
             'uses' => 'Task\TaskController@edit',
             'as' => 'task.edit'
         ]);
+
 
         Route::post('/update', [
             'uses' => 'Task\TaskController@update',

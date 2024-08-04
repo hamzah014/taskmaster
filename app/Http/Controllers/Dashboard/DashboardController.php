@@ -36,9 +36,30 @@ class DashboardController extends Controller{
 
         $ideaCount = ProjectIdea::where('PICB', $user->USCode)->get()->count();
 
-        $taskCount = TaskProject::where('TPAssignee', $user->USCode)->get()->count();
+        $taskCount = TaskProject::where('TPAssignee', $user->USCode)
+        ->whereIn('TPStatus', ['PROGRESS'])
+        ->get()->count();
 
-        $projects = Project::where('PJCB', $user->USCode)->orderBy('PJID', 'DESC')->limit(10)->get();
+        $projects = Project::where('PJCB', $user->USCode)
+        ->orWhere(function ($query) use ($user) {
+            $query->whereHas('projectTeam', function ($query) use ($user) {
+                $query->where('PT_USCode', $user->USCode);
+            });
+        })
+        ->orderByRaw("CASE
+            WHEN PJStatus = 'PENDING' THEN 1
+            WHEN PJStatus = 'IDEA' THEN 2
+            WHEN PJStatus = 'IDEA-ALS' THEN 3
+            WHEN PJStatus = 'IDEA-SCR' THEN 4
+            WHEN PJStatus = 'PROJ-ALS' THEN 5
+            WHEN PJStatus = 'RISK' THEN 6
+            WHEN PJStatus = 'PROGRESS' THEN 7
+            WHEN PJStatus = 'COMPLETE' THEN 8
+            WHEN PJStatus = 'CANCEL' THEN 9
+            ELSE 10 END")
+        // ->orderBy('PJID', 'DESC')
+        ->limit(10)
+        ->get();
 
         // dd($projectCount);
 
