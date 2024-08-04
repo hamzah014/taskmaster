@@ -313,10 +313,12 @@ class ProjectIdeaController extends Controller
             $project->PJStatus = $status;
             $project->save();
 
+            $routeScore = route('project.idea.analysis.edit',[$project->PJCode]);
+
             return response()->json([
                 'success' => '1',
                 'message' => 'Project idea has been successfully submitted.',
-                'redirect' => route('project.index')
+                'redirect' => $routeScore
             ]);
 
 

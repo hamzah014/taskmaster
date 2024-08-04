@@ -104,6 +104,8 @@ class IdeaAnalysisController extends Controller
 
     public function edit(Request $request, $id){
 
+        $user = Auth::user();
+
         $dropdownService = new DropdownService();
         $editPage = 0;
 
@@ -119,10 +121,21 @@ class IdeaAnalysisController extends Controller
 
         }
 
+        $roleCodeToFind = 'RL003';
+
+        $myProjectRole = $project->myProjectRole($user->USCode)
+            ->whereRaw('FIND_IN_SET(?, PT_RLCode)', [$roleCodeToFind])
+            ->first();
+
+        if($myProjectRole){
+            $leader = 1;
+        }
+
         return view('ideaAnalysis.edit',
         compact(
             'editPage','projectStatus',
-            'projectCategory','roleUser','project'
+            'projectCategory','roleUser','project',
+            'leader'
         ));
 
     }
@@ -248,10 +261,12 @@ class IdeaAnalysisController extends Controller
             $project->PJStatus = $status;
             $project->save();
 
+            $routeScoring = route('project.idea.scoring.edit', $project->PJCode);
+
             return response()->json([
                 'success' => '1',
                 'message' => 'Requirement analysis of idea has been submitted.',
-                'redirect' => route('project.index')
+                'redirect' => $routeScoring
             ]);
 
 

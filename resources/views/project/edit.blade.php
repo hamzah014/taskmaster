@@ -48,7 +48,7 @@
                             <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid my-8" id="kt_create_account_stepper">
                                 <div class="d-flex justify-content-start justify-content-xl-start flex-row-auto w-100 w-xl-300px mb-10">
                                     <div class="stepper-nav ps-lg-10">
-                                        <div class="stepper-item current" data-kt-stepper-element="nav" data-step="1">
+                                        <div class="stepper-item @if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','PROGRESS','COMPLETE','CANCEL'])) current @endif" data-kt-stepper-element="nav" data-step="1">
                                             <div class="stepper-wrapper">
                                                 <div class="stepper-icon w-40px h-40px">
                                                     <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -92,7 +92,21 @@
 
                                         @if( !in_array($project->PJStatus, ['PENDING']) )
 
-                                            <div class="stepper-item" data-kt-stepper-element="nav" data-step="4">
+                                            <div class="stepper-item @if(in_array($project->PJStatus, ['IDEA'])) current @endif" data-kt-stepper-element="nav" data-step="4">
+                                                <div class="stepper-wrapper">
+                                                    <div class="stepper-icon w-40px h-40px">
+                                                        <i class="ki-duotone ki-check stepper-check fs-2"></i>
+                                                        <span class="stepper-number">4</span>
+                                                    </div>
+                                                    <div class="stepper-label">
+                                                        <h3 class="stepper-title">Idea Submission</h3>
+                                                        <div class="stepper-desc">Submit your idea</div>
+                                                    </div>
+                                                </div>
+                                                <div class="stepper-line h-40px"></div>
+                                            </div>
+
+                                            <div class="stepper-item @if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR'])) current @endif" data-kt-stepper-element="nav" data-step="5">
                                                 <div class="stepper-wrapper">
                                                     <div class="stepper-icon w-40px h-40px">
                                                         <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -110,7 +124,7 @@
 
                                             @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
 
-                                                <div class="stepper-item" data-kt-stepper-element="nav" data-step="5">
+                                                <div class="stepper-item @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="nav" data-step="6">
                                                     <div class="stepper-wrapper">
                                                         <div class="stepper-icon w-40px h-40px">
                                                             <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -132,15 +146,22 @@
                                 <div class="flex-row-fluid py-lg-5 px-lg-15">
                                     <div class="forms" id="kt_modal_create_app_form">
 
-                                        <div class="current" data-kt-stepper-element="content" data-step="1">
+                                        <div class="@if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','PROGRESS','COMPLETE','CANCEL'])) current @endif" data-kt-stepper-element="content" data-step="1">
                                             <div class="w-100">
                                                 <form id="daftarForm" class="ajax-form-register" method="POST" action="{{ route('project.updateInfo',[$project->PJCode]) }}" enctype="multipart/form-data">
                                                     @csrf
 
                                                     <input type="hidden" name="projectCode" id="projectCode" value="{{ $project->PJCode }}">
 
-                                                    <h4 class="">Details Project</h4>
-                                                    <h5>Project information:</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <h4 class="">Details Project</h4>
+                                                            <h5>Project information:</h5>
+                                                        </div>
+                                                        <div class="col-md-2 text-end">
+                                                            <a href="{{ route('task.listTask',[$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-clipboard-list"></i> View Task</a>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="fv-row mb-10 mt-5">
                                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
@@ -214,7 +235,36 @@
                                                                 aria-label="Budget project" aria-describedby="basic-addon1" value="{{ $project->PJBudget }}">
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-6">
+                                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
+                                                                <span class="">Status</span>
+                                                            </label>
+                                                            {!! Form::select('statusproject', $projectStatus , $project->PJStatus, [
+                                                                'id' => 'statusproject',
+                                                                'class' => 'form-select form-control',
+                                                                'readonly'
+                                                            ]) !!}
+                                                        </div>
                                                     </div>
+
+                                                    @if($project->PJStatus == 'CANCEL')
+
+                                                        <div class="fv-row">
+                                                            <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
+                                                                <span class="">Reason Cancel</span>
+                                                                <span class="ms-1" data-bs-toggle="tooltip" title="Project cancel reason">
+                                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                                        <span class="path1"></span>
+                                                                        <span class="path2"></span>
+                                                                        <span class="path3"></span>
+                                                                    </i>
+                                                                </span>
+                                                            </label>
+                                                            <textarea id="reasonCancel" name="reasonCancel" class="form-control" readonly data-kt-autosize="true" placeholder="Cancel reason">{{ $project->PJ_RejectReason }}</textarea>
+                                                        </div>
+
+                                                    @endif
+
                                                     <div class="row">
                                                         <div class="col-md-12 text-end">
                                                             <div class="mt-7">
@@ -455,7 +505,52 @@
 
                                         @if( !in_array($project->PJStatus, ['PENDING']) )
 
-                                            <div class="" data-kt-stepper-element="content" data-step="4">
+                                            <div class=" @if(in_array($project->PJStatus, ['IDEA'])) current @endif" data-kt-stepper-element="content" data-step="4">
+                                                <div class="w-100">
+
+                                                    @if( in_array($project->PJStatus, ['IDEA']) )
+
+                                                        <form id="projectIdeaForm" class="ajax-form-register" method="POST" enctype="multipart/form-data">
+                                                            @csrf
+
+                                                            <input type="hidden" name="projectCode" id="projectCode" value="{{ $project->PJCode }}">
+
+                                                            <h4 class="">Idea for Project</h4>
+                                                            <h5>Please submit your project idea:</h5>
+
+                                                            <div class="fv-row mb-2 mt-8">
+                                                                <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
+                                                                    <span class="required">What do you want the app to do, to be, or to look like?</span>
+                                                                </label>
+                                                                <input type="text" class="form-control" id="idea" name="idea">
+                                                            </div>
+                                                            <div class="fv-row">
+                                                                <a onclick="confirmIdeaSubmit()" class="btn btn-warning btn-sm">Submit</a>
+                                                            </div>
+
+                                                        </form>
+
+                                                        <hr class="mt-10 mb-8">
+
+                                                    @endif
+                                                    <div class="fv-row mb-4">
+                                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
+                                                            <span class=""><b>List Idea for {{ $project->PJName }}</b></span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="fv-row mb-4">
+                                                        <table class="table table-bordered text-center border-dark" id="ideaSubmit-tab">
+                                                            <thead class="text-center bg-gray">
+                                                                <th class="text-center w-5">No.</th>
+                                                                <th class="text-center w-65">Idea</th>
+                                                                <th class="text-center">Submitted By</th>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="@if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR'])) current @endif" data-kt-stepper-element="content" data-step="5">
                                                 <div class="w-100">
                                                     <form id="ideaForm" enctype="multipart/form-data">
                                                         @csrf
@@ -492,7 +587,7 @@
                                                                     <div class="col-md-12 text-end">
                                                                         <div class="mt-7">
                                                                             <a onclick="confirmSubmitReq()" class="btn btn-primary text-nowrap">
-                                                                            Submit Analysis
+                                                                            Submit Ideas
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -521,8 +616,9 @@
 
                                             @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
 
-                                                <div class="" data-kt-stepper-element="content" data-step="5">
+                                                <div class=" @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="content" data-step="6">
                                                     <input type="hidden" name="riskCode" id="riskCode" value="{{ $projectRisk ? $projectRisk->PRCode : 0 }}">
+                                                    <input type="hidden" name="riskStatus" id="riskStatus" value="{{ $riskStatus ?? 0 }}">
                                                     <div class="w-100">
                                                         <form id="ideaForm" enctype="multipart/form-data">
                                                             @csrf
@@ -531,6 +627,28 @@
                                                                 <h5>Risk analysis for this project:</h5>
 
                                                                 <div class="fv-row mt-8">
+
+                                                                    <p><b>Risk Status :</b>
+
+                                                                        @if($riskStatus == 'H')
+
+                                                                        <span class="badge badge-danger">High Risk</span>
+
+                                                                        @elseif($riskStatus == 'L')
+
+                                                                        <span class="badge badge-success">Low Risk</span>
+
+                                                                        @elseif($riskStatus == 'M')
+
+                                                                        <span class="badge badge-primary">Medium Risk</span>
+
+                                                                        @else
+
+                                                                        <span class="badge badge-secondary">Not submit yet</span>
+
+                                                                        @endif
+
+                                                                    </p>
 
                                                                     <table class="table table-bordered border-dark" id="functional-tab">
                                                                         <thead class="text-center bg-gray">
@@ -548,9 +666,9 @@
                                                                                 </th>
                                                                             </tr>
                                                                             <tr>
-                                                                                <th class="text-center">High</th>
-                                                                                <th class="text-center">Medium</th>
-                                                                                <th class="text-center">Low</th>
+                                                                                <th class="text-center">Yes</th>
+                                                                                <th class="text-center">Neutral</th>
+                                                                                <th class="text-center">No</th>
                                                                             </tr>
                                                                         </thead>
 
@@ -833,8 +951,8 @@
                                                                     <div class="row">
                                                                         <div class="col-md-12 text-end">
                                                                             <div class="mt-7">
-                                                                                <a onclick="confirmSubmitRisk()" class="btn btn-primary text-nowrap">
-                                                                                Submit Risk
+                                                                                <a onclick="confirmSubmitRisk('{{ $riskStatus }}')" class="btn btn-primary text-nowrap">
+                                                                                Accept Risk
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -930,12 +1048,44 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-cancel"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered justify-content-center">
+            <div class="modal-content w-80">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cancel Project</h3>
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-close fs-1"></i>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form id="cancelForm" class="ajax-form-register" method="POST" action="{{ route('project.cancelProject',[$project->PJCode]) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label for="reasonCancel"><b>Reason :</b></label>
+                                <textarea class="form-control" name="reasonCancel" id="reasonCancel" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12 text-end">
+                                <a class="btn btn-info btn-sm" onclick="cancelProject('{{ $project->PJCode }}')">Submit</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @endpush
 
 @push('script')
 
     <script>
+
+        var table;
 
 		(function ($) {
 
@@ -965,6 +1115,43 @@
             table.buttons().container().appendTo('.button-table-export');
 
         })(jQuery);
+
+
+        var tableIdea;
+
+		(function ($) {
+
+            projectCode = $('#projectCode').val();
+
+            tableIdea = $('#ideaSubmit-tab').DataTable({
+                dom: 'lfrtip',
+                @include('layouts._partials.lengthMenu')
+                processing: true,
+                serverSide: false,
+                ordering:false,
+                ajax:  {
+                    "url" :"{{ route('project.idea.ideaProjectDatatable') }}",
+                    "method": 'POST',
+                    "data": function(d) {
+                        d.projectCode = projectCode;
+                    }
+                },
+                order: [[1, 'desc']],
+                columns: [
+                    { name: 'indexNo', data: 'indexNo', class: 'text-center' },
+                    { name: 'PIDesc', data: 'PIDesc', class: 'text-start' },
+                    { name: 'PICB', data: 'PICB', class: 'text-center' },
+
+                ]
+            });
+            tableIdea.buttons().container().appendTo('.button-table-export');
+
+        })(jQuery);
+
+        function reloadTable(){
+            tableIdea.ajax.reload();
+            table.ajax.reload();
+        }
 
     </script>
 
@@ -1497,6 +1684,114 @@
 
     <script>
 
+        function confirmIdeaSubmit(){
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "Your idea will submitted for this project.",
+                type: 'warning',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes,submit it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitIdeaSubmission();
+                    }
+            })
+
+        }
+
+        function submitIdeaSubmission(){
+
+            projectCode = $('#projectCode').val();
+
+            form = $('#projectIdeaForm');
+            var formData = new FormData(form[0]);
+
+            formData.append('projectCode',projectCode);
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('project.idea.add') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+                    $('#idea').val("");
+                    reloadTable();
+
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+
+                            // $('[name="' + key + '"]').closest('.form-group').addClass("has-error");
+                            // $('[name="' + key + '"]').addClass("was-validated is-invalid invalid custom-select.is-invalid");
+                            // $('#Valid'+key).empty();
+                            // $('[name="' + key + '"]').closest('.form-group').append("<span id='Valid"+key+"' class=\"help-block\" style='color:red; font-family:Nunito, sans-serif;'>" + message[0] + "</span>");
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
+
+
+        }
+
+    </script>
+
+    <script>
+
         function confirmSubmitIdea(){
 
             swal.fire({
@@ -1630,10 +1925,10 @@
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes,submit it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        submitAllRequirement();
-                    }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitAllRequirement();
+                }
             })
 
         }
@@ -1865,34 +2160,63 @@
 
     <script>
 
-        function confirmSubmitRisk(){
+        function confirmSubmitRisk(status){
 
-            swal.fire({
-                title: 'Are you sure?',
-                text: "Risk analysis result will be submitted for this project.",
-                type: 'warning',
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes,submit it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        submitRisk();
-                    }
-            })
+            if(status == 'H'){
+
+
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "This project has been categorised as High Risk.",
+                    type: 'warning',
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes,continue!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            submitRisk(1);
+                        }
+                        else{
+                            submitRisk(0);
+                        }
+                })
+
+            }
+            else{
+
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: "Risk analysis result will be submitted for this project.",
+                    type: 'warning',
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes,submit it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            submitRisk(1);
+                        }
+                })
+
+            }
 
         }
 
-        function submitRisk(){
+        function submitRisk(riskAccept){
 
             projectCode = $('#projectCode').val();
             riskCode = $('#riskCode').val();
+            riskStatus = $('#riskStatus').val();
 
             var formData = new FormData();
 
             formData.append('projectCode',projectCode);
             formData.append('riskCode',riskCode);
+            formData.append('riskAccept',riskAccept);
+            formData.append('riskStatus',riskStatus);
             toggleLoader();
 
             $.ajax({
@@ -2010,9 +2334,117 @@
                 confirmButtonText: 'Yes,submit it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        submitProjectStatus(code);
+
+                        if(code == 'CL'){
+                            $('#modal-cancel').modal('show');
+                        }
+                        else{
+                            submitProjectStatus(code);
+                        }
+
+
                     }
             })
+
+        }
+
+        function cancelProject(code){
+
+            var formData = new FormData();
+
+            reasonCancel = $('#reasonCancel').val();
+
+            formData.append('projectCode',code);
+            formData.append('reasonCancel',reasonCancel);
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('project.cancelProject') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+
+                    swal.fire({
+                        title: "Success",
+                        text: resp.message,
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "Okay",
+                        customClass: {
+                            popup: 'swal-popup'
+                        }
+                    }).then((result) => {
+
+                        routeHref = resp.redirect;
+
+                        window.location.href = routeHref;
+
+                    });
+
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+
+                            // $('[name="' + key + '"]').closest('.form-group').addClass("has-error");
+                            // $('[name="' + key + '"]').addClass("was-validated is-invalid invalid custom-select.is-invalid");
+                            // $('#Valid'+key).empty();
+                            // $('[name="' + key + '"]').closest('.form-group').append("<span id='Valid"+key+"' class=\"help-block\" style='color:red; font-family:Nunito, sans-serif;'>" + message[0] + "</span>");
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
+
 
         }
 

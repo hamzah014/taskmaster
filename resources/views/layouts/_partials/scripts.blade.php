@@ -46,6 +46,7 @@
                 allowClear: true,
                 width: '100%'
             });
+
         });
 
         function initializeSelect2(randomCode) {
@@ -90,6 +91,12 @@
             }
 
             return code;
+        }
+
+        function viewModal(modalid){
+
+            $('#' + modalid).modal('show');
+
         }
 
         document.addEventListener('DOMContentLoaded', function() {

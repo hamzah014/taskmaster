@@ -144,6 +144,9 @@ class User extends Authenticatable implements Auditable
 		if ($fileAttach != null){
 			$profilePhotoURL = route( 'file.view' ,$fileAttach->FAGuidID);
 		}
+        else{
+            $profilePhotoURL = asset('assets/images/avatar/avatar-0.png');
+        }
 		return $profilePhotoURL;
 	}
 

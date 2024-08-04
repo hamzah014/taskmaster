@@ -14,7 +14,10 @@
 
                 <div class="row flex-row mb-5">
                     <div class="col-md-9">
-                        <h2>List of Project</h2>
+                        <h2>List of Task</h2>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <a href="{{ route('task.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Create</a>
                     </div>
                 </div>
 
@@ -25,9 +28,10 @@
                                 <th class="text-center">No.</th>
                                 <th class="text-center">Code</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Description</th>
-                                <th class="text-center">Start Date</th>
-                                <th class="text-center">End Date</th>
+                                <th class="text-center">Project Name</th>
+                                <th class="text-center">Level Priority</th>
+                                <th class="text-center">Due Date</th>
+                                <th class="text-center">Assignee</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Action</th>
                             </thead>
@@ -46,7 +50,9 @@
 
     <script>
 
-        (function ($) {
+		(function ($) {
+
+            projectCode = '{{ $projectCode }}';
 
             var table = $('#project-tab').DataTable({
                 dom: 'lfrtip',
@@ -55,18 +61,22 @@
                 serverSide: false,
                 ordering:false,
                 ajax:  {
-                    "url" :"{{ route('task.projectTaskDatatable') }}",
+                    "url" :"{{ route('task.taskDatatable') }}",
                     "method": 'POST',
+                    "data": function (d) {
+                        d.projectCode = projectCode;
+                    }
                 },
                 order: [[1, 'desc']],
                 columns: [
                     { name: 'indexNo', data: 'indexNo', class: 'text-center' },
-                    { name: 'PJCode', data: 'PJCode', class: 'text-center' },
+                    { name: 'TPCode', data: 'TPCode', class: 'text-center' },
+                    { name: 'TPName', data: 'TPName', class: 'text-center' },
                     { name: 'PJName', data: 'PJName', class: 'text-center' },
-                    { name: 'PJDesc', data: 'PJDesc', class: 'text-start' },
-                    { name: 'PJStartDate', data: 'PJStartDate', class: 'text-center' },
-                    { name: 'PJEndDate', data: 'PJEndDate', class: 'text-center' },
-                    { name: 'PJStatus', data: 'PJStatus', class: 'text-center' },
+                    { name: 'TPPriority', data: 'TPPriority', class: 'text-center' },
+                    { name: 'TPDueDate', data: 'TPDueDate', class: 'text-center' },
+                    { name: 'TPAssignee', data: 'TPAssignee', class: 'text-center' },
+                    { name: 'TPStatus', data: 'TPStatus', class: 'text-center' },
                     { name: 'action', data: 'action', class: 'text-center' },
 
                 ]

@@ -172,13 +172,20 @@
                                                 </thead>
                                             </table>
                                         </div>
-                                        {{-- <div class="row">
-                                            <div class="col-md-12 text-end">
-                                                <a onclick="confirmSubmitReq()" class="btn btn-primary btn-sm text-nowrap">
-                                                Submit Requirement
-                                                </a>
+
+                                        @if($leader == 1)
+
+                                            @if( in_array($project->PJStatus, ['IDEA-ALS']) )
+                                            <div class="row">
+                                                <div class="col-md-12 text-end">
+                                                    <a onclick="confirmSubmitReq()" class="btn btn-primary text-nowrap">
+                                                    Submit Idea Analysis
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div> --}}
+                                            @endif
+
+                                        @endif
 
                                     </div>
                                 </div>
@@ -286,10 +293,28 @@
                 processData: false,
                 cache: false,
                 success: function (resp) {
-                    console.log(resp);
                     toggleLoader();
-                    $('#idea').val("");
-                    reloadTable();
+                    console.log('Server response:', resp);
+                    if(resp.success == true){
+
+                        swal.fire({
+                            title: "Success",
+                            text: "Project has been completely updated.",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Okay",
+                            customClass: {
+                                popup: 'swal-popup'
+                            }
+                        }).then((result) => {
+
+                            routeHref = resp.redirect;
+
+                            window.location.href = routeHref;
+
+                        });
+
+                    }
 
 
                 },

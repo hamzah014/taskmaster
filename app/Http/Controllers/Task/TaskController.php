@@ -36,13 +36,185 @@ class TaskController extends Controller
 
     }
 
+    public function projectTaskDatatable(Request $request){
+
+        $dropdownService = new DropdownService();
+
+        $user = Auth::user();
+
+        $query = Project::whereHas('taskProject')
+                ->where('PJStatus', 'PROGRESS')
+                ->orderBy('PJCD', 'DESC')
+                ->get();
+
+
+        return DataTables::of($query)
+            ->addColumn('indexNo', function($row) use(&$count) {
+
+                $count++;
+
+                return $count;
+            })
+            ->editColumn('PJCode', function($row) {
+
+                $result = $row->PJCode;
+
+                return $result;
+            })
+            ->editColumn('PJStartDate', function($row) {
+
+                $result = Carbon::parse($row->PJStartDate)->format('d/m/Y');
+
+                return $result;
+            })
+            ->editColumn('PJEndDate', function($row) {
+
+                $result = Carbon::parse($row->PJEndDate)->format('d/m/Y');
+
+                return $result;
+            })
+            ->editColumn('PJStatus', function($row) use(&$dropdownService) {
+
+                $status = $dropdownService->projectStatus();
+
+                $statusProject = $status[$row->PJStatus] ?? "";
+
+                $result = '<span class="badge badge-outline badge-primary">'.$statusProject.'</span>';
+
+                return $result;
+            })
+            ->addColumn('action', function($row) {
+
+                $routeView = route('task.listTask',[$row->PJCode]);
+
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i></a>';
+
+                return $result;
+            })
+            ->rawColumns(['indexNo','PJCode','PJStatus','action'])
+            ->make(true);
+
+    }
+
+    public function listTask($id){
+
+        $dropdownService = new DropdownService();
+        $user = Auth::user();
+
+        $projectCode = $id;
+
+        $taskprojects = TaskProject::where('TP_PJCode', $projectCode)
+                ->orderBy('TPCD', 'DESC')
+                ->get();
+
+        $project = Project::orderBy('PJCD', 'DESC')
+                ->first();
+
+        $roleCodeToFind = 'RL003';
+        $leader = 0;
+
+        $myProjectRole = $project->myProjectRole($user->USCode)
+            ->whereRaw('FIND_IN_SET(?, PT_RLCode)', [$roleCodeToFind])
+            ->first();
+
+        if($myProjectRole){
+            $leader = 1;
+        }
+
+        $taskpending = array();
+        $taskprogress = array();
+        $tasksubmit = array();
+        $taskcomplete = array();
+
+        foreach($taskprojects as $taskproject){
+
+            if($taskproject->TPStatus == 'PENDING'){
+                array_push($taskpending, $taskproject);
+
+            }
+            elseif($taskproject->TPStatus == 'PROGRESS'){
+                array_push($taskprogress, $taskproject);
+
+            }
+            elseif($taskproject->TPStatus == 'SUBMIT'){
+                array_push($tasksubmit, $taskproject);
+            }
+            elseif($taskproject->TPStatus == 'COMPLETE'){
+                array_push($taskcomplete, $taskproject);
+            }
+
+        }
+
+        $tasks = array(
+            'pending' => $taskpending,
+            'progress' => $taskprogress,
+            'submit' => $tasksubmit,
+            'complete' => $taskcomplete
+        );
+
+        $project = $dropdownService->project();
+        $roleUser = $dropdownService->roleUser();
+        $priorityLevel = $dropdownService->priorityLevel();
+        $users = $dropdownService->users();
+        $taskStatus = $dropdownService->taskStatus();
+
+        return view('task.listTask',
+        compact(
+            'leader',
+            'project','roleUser','priorityLevel','users','taskStatus',
+            'projectCode','taskprojects','tasks'
+        ));
+
+    }
+
+    public function detail(Request $request){
+
+        $id = $request->id;
+
+        $dropdownService = new DropdownService();
+        $user = Auth::user();
+
+        $project = $dropdownService->project();
+        $roleUser = $dropdownService->roleUser();
+        $priorityLevel = $dropdownService->priorityLevel();
+        $users = $dropdownService->users();
+        $taskStatus = $dropdownService->taskStatus();
+
+        $taskProject = TaskProject::where('TPCode', $id)->first();
+        $taskProject->TPDueDate = $taskProject->TPDueDate != "" ? Carbon::parse($taskProject->TPDueDate)->format('Y-m-d') : null;
+
+        $taskIssue = $taskProject->taskIssue ?? null;
+
+        $roleCodeToFind = 'RL003';
+        $leader = 0;
+
+        $myProjectRole = $taskProject->project->myProjectRole($user->USCode)
+            ->whereRaw('FIND_IN_SET(?, PT_RLCode)', [$roleCodeToFind])
+            ->first();
+
+        if($myProjectRole){
+            $leader = 1;
+        }
+
+        return view('task.detail',
+        compact(
+            'leader','user',
+            'project','roleUser','priorityLevel','users','taskStatus',
+            'taskProject','taskIssue'
+        ));
+
+    }
+
     public function taskDatatable(Request $request){
 
         $dropdownService = new DropdownService();
 
         $user = Auth::user();
 
+        $projectCode = $request->projectCode;
+
         $query = TaskProject::where('TPCB',$user->USCode)
+                ->where('TP_PJCode', $projectCode)
                 ->orderBy('TPCD', 'DESC')
                 ->get();
 
@@ -67,7 +239,7 @@ class TaskController extends Controller
             })
             ->editColumn('TPPriority', function($row) {
 
-                $result = $row->TPPriority;
+                $result = $row->TPPriority ?? "Not set";
 
                 return $result;
             })
@@ -79,7 +251,7 @@ class TaskController extends Controller
             })
             ->editColumn('TPAssignee', function($row) {
 
-                $result = $row->assignee->USName;
+                $result = $row->assignee ? $row->assignee ->USName : "Not set";
 
                 return $result;
             })
@@ -154,6 +326,8 @@ class TaskController extends Controller
 
         try {
 
+            DB::beginTransaction();
+
             $autoNumber = new AutoNumber();
             $taskCode = $autoNumber->generateTaskCode();
 
@@ -171,6 +345,13 @@ class TaskController extends Controller
             $taskProject->TPDueDate = $request->dueDate;
             $taskProject->TPStatus = $status;
             $taskProject->TPCB = $user->USCode;
+
+            if($request->parentTask){
+
+                $taskProject->TP_ParentCode = $request->parentTask;
+
+            }
+
             $taskProject->save();
 
             if($request->file('taskFile')){
@@ -182,10 +363,13 @@ class TaskController extends Controller
 
             }
 
+            DB::commit();
+            $route = route('task.listTask',$taskProject->project->PJCode);
+
             return response()->json([
                 'success' => '1',
                 'message' => 'Task has been successfully saved',
-                'redirect' =>  route('task.edit', $taskCode)
+                'redirect' =>  $route
             ]);
 
         }catch (\Throwable $e) {
@@ -247,12 +431,20 @@ class TaskController extends Controller
             'taskStatus' => 'required',
         ];
 
-        $request->validate($validation, $messages);
+        $status = $request->status;
+
+        if($status == 1){
+
+            $request->validate($validation, $messages);
+
+        }
+
 
         try {
 
+            DB::beginTransaction();
+
             $taskCode = $request->taskCode;
-            $status = $request->status;
 
             $user = Auth::user();
 
@@ -267,12 +459,10 @@ class TaskController extends Controller
 
             }
 
+            $route = route('task.listTask',$taskProject->project->PJCode);
+
             if($status == 1){
                 $taskProject->TPStatus = 'PROGRESS';
-                $route = route('task.index');
-            }
-            else{
-                $route = route('task.edit', $taskCode);
             }
 
             $taskProject->TP_PJCode = $request->project;
@@ -291,6 +481,8 @@ class TaskController extends Controller
                 $result = $this->saveFile($documentFile, $fileType, $taskCode);
 
             }
+
+            DB::commit();
 
             return response()->json([
                 'success' => '1',
@@ -325,7 +517,8 @@ class TaskController extends Controller
 
         $query = Project::whereNotNull('PJStatus')
         ->whereHas('taskProject', function($query) use(&$user){
-            $query->where('TPAssignee',$user->USCode);
+            $query->where('TPAssignee',$user->USCode)
+            ->whereIn('TPStatus',['PROGRESS']);
         })
         ->get();
 
@@ -392,6 +585,7 @@ class TaskController extends Controller
 
         $query = TaskProject::where('TPAssignee',$user->USCode)
                 ->where('TP_PJCode', $request->projectCode)
+                ->whereIn('TPStatus',['PROGRESS'])
                 ->orderBy('TPCD', 'DESC')
                 ->get();
 
@@ -596,7 +790,8 @@ class TaskController extends Controller
             return response()->json([
                 'success' => '1',
                 'message' => 'Task progress has been successfully submitted',
-                'redirect' =>  route('task.user.index')
+                // 'redirect' =>  route('task.user.index')
+                'redirect' =>  route('task.listTask',[$taskProject->project->PJCode])
             ]);
 
         }catch (\Throwable $e) {
@@ -661,7 +856,7 @@ class TaskController extends Controller
             return response()->json([
                 'success' => '1',
                 'message' => 'Task progress has been update.',
-                'redirect' =>  route('task.index')
+                'redirect' =>  route('task.listTask',$taskProject->project->PJCode)
             ]);
 
         }catch (\Throwable $e) {
@@ -695,7 +890,8 @@ class TaskController extends Controller
             return response()->json([
                 'success' => '1',
                 'message' => 'Task progress has been updated to complete',
-                'redirect' =>  route('task.index')
+                // 'redirect' =>  route('task.index')
+                'redirect' =>  route('task.listTask',[$taskProject->project->PJCode])
             ]);
 
         }catch (\Throwable $e) {

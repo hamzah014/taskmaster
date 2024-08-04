@@ -90,7 +90,7 @@
                             </div>
                         </div>
 
-                        <div class="menu-sub menu-sub-accordion text-light">
+                        {{-- <div class="menu-sub menu-sub-accordion text-light">
                             <div class="menu-item">
                                 <a class="menu-link text-light" href="{{ route('project.idea.index') }}">
                                     <span class="menu-bullet">
@@ -99,7 +99,7 @@
                                     <span class="menu-title">Idea Submission</span>
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">

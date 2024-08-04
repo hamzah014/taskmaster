@@ -246,5 +246,8 @@
 .min-height-none{
     min-height: 0px !important;
 }
+.text-gray{
+    color: grey;
+}
 
 /* END LOADER CUSTOM */

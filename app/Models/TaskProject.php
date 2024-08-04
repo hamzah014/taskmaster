@@ -28,12 +28,20 @@ class TaskProject extends Model implements Auditable
         return $this->hasOne(User::class, 'USCode', 'TPAssignee');
     }
 
+    public function assigner(){
+        return $this->hasOne(User::class, 'USCode', 'TPCB');
+    }
+
     public function taskIssue(){
         return $this->hasMany(TaskProjectIssue::class, 'TPI_TPCode', 'TPCode');
     }
 
     public function fileAttach(){
         return $this->hasOne(FileAttach::class, 'FARefNo', 'TPCode');
+    }
+
+    public function parentTask(){
+        return $this->hasOne(TaskProject::class, 'TPCode', 'TP_ParentCode');
     }
 
 }
