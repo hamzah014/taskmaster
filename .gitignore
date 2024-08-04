@@ -49,3 +49,4 @@ Homestead.json
 *.log
 storage/logs/laravel-2024-01-24.log
 .idea/
+/storage
