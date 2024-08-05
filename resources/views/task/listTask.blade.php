@@ -700,7 +700,7 @@
                                                 </i>
                                             </span>
                                         </label>
-                                        {!! Form::select('project', $project , $taskproject->TP_PJCode, [
+                                        {!! Form::select('project', $project , $taskproject->TP_PJCode ?? null, [
                                             'id' => 'project',
                                             'class' => 'form-select form-control',
                                             'placeholder' => 'Select project',
