@@ -624,6 +624,14 @@ class ProjectController extends Controller
 
                 $routeView = route('project.edit',[$row->PJCode]);
 
+                if(in_array($row->PJStatus, ['PROGRESS'])){
+
+                    $routeView = route('task.listTask',[$row->PJCode]);
+
+                    // $result .= '<a class="btn btn-sm btn-primary cursor-pointer mx-2" href="'.$routeTask.'"><i class="fa fa-clipboard text-white"></i> Task</a>';
+
+                }
+
                 $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i></a>';
 
                 return $result;
