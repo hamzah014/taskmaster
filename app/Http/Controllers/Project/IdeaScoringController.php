@@ -283,6 +283,20 @@ class IdeaScoringController extends Controller
             $status = "PROJ-ALS";
 
             $project = Project::where('PJCode', $projectCode)->first();
+
+
+            $projectScorePending = ProjectIdea::where('PI_PJCode', $projectCode)->where('PI_PISComplete', 0)->get();
+
+            if(!$projectScorePending->isEmpty())
+            {
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Please complete all scoring for requirement analysis before submit.'
+                ], 400);
+
+            }
+
             $project->PJStatus = $status;
             $project->save();
 

@@ -12,9 +12,15 @@
 		<div id="kt_account_settings_profile_details">
 			<div class="card-body p-9">
 
+                <div class="row mb-5">
+                    <div class="col-md-12 text-start">
+                        <a class="btn btn-secondary btn-sm" href="{{ route('task.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                    </div>
+                </div>
+
                 <div class="row flex-row mb-5">
                     <div class="col-md-10">
-                        <h2>List of Task</h2>
+                        <h2>List of Task (<a class="text-hover" href="{{ route('project.edit', $projectThis->PJCode) }}" target="_blank">{{ $projectThis->PJName }}</a>)</h2>
                     </div>
                     @if ($leader == 1)
                     <div class="col-md-2 text-end">
@@ -358,11 +364,6 @@
                 </div>
                  --}}
 
-                <div class="row mt-5">
-                    <div class="col-md-12 text-start">
-                        <a class="btn btn-secondary btn-sm" href="{{ route('task.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
-                    </div>
-                </div>
 
 			</div>
 		</div>

@@ -36,6 +36,11 @@
             <div id="kt_account_settings_profile_details">
                 <div class="card-body p-9">
 
+                    <div class="row mb-5">
+                        <div class="col-md-12 text-start">
+                            <a class="btn btn-secondary btn-sm" href="{{ route('project.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                        </div>
+                    </div>
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
@@ -110,7 +115,7 @@
                                                 <div class="stepper-wrapper">
                                                     <div class="stepper-icon w-40px h-40px">
                                                         <i class="ki-duotone ki-check stepper-check fs-2"></i>
-                                                        <span class="stepper-number">4</span>
+                                                        <span class="stepper-number">5</span>
                                                     </div>
                                                     <div class="stepper-label">
                                                         <h3 class="stepper-title">Project Idea</h3>
@@ -128,13 +133,14 @@
                                                     <div class="stepper-wrapper">
                                                         <div class="stepper-icon w-40px h-40px">
                                                             <i class="ki-duotone ki-check stepper-check fs-2"></i>
-                                                            <span class="stepper-number">5</span>
+                                                            <span class="stepper-number">6</span>
                                                         </div>
                                                         <div class="stepper-label">
                                                             <h3 class="stepper-title">Project Risk</h3>
                                                             <div class="stepper-desc">Project Risk list</div>
                                                         </div>
                                                     </div>
+
                                                 </div>
 
                                             @endif
@@ -995,11 +1001,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col-md-12 text-start">
-                            <a class="btn btn-secondary btn-sm" href="{{ route('project.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
                         </div>
                     </div>
 
@@ -2162,26 +2163,30 @@
 
         function confirmSubmitRisk(status){
 
-            if(status == 'H'){
+            if(status == 'H' || status == 'M'){
 
+                riskText = status == 'H' ? 'High' : 'Medium';
 
                 swal.fire({
                     title: 'Are you sure?',
-                    text: "This project has been categorised as High Risk.",
+                    text: "This project has been categorised as "+riskText+" Risk.",
                     type: 'warning',
                     icon: "warning",
-                    showCancelButton: true,
+                    showCancelButton: false,
+                    showCloseButton: true,
+                    showDenyButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
+                    denyButtonText: `Cancel Project`,
                     confirmButtonText: 'Yes,continue!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             submitRisk(1);
                         }
-                        else{
-                            submitRisk(0);
+                        else if(result.isDenied){
+                            confirmProjectStatus('CL');
                         }
-                })
+                });
 
             }
             else{
@@ -2325,10 +2330,11 @@
 
             swal.fire({
                 title: 'Are you sure?',
-                text: "The project will be update as " + status,
+                text: "The project will be update as " + status + " project.",
                 type: 'warning',
                 icon: "warning",
                 showCancelButton: true,
+                showCloseButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes,submit it!'

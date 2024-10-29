@@ -21,6 +21,11 @@
             <div id="kt_account_settings_profile_details">
                 <div class="card-body p-9">
 
+                    <div class="row mb-5">
+                        <div class="col-md-12 text-start">
+                            <a class="btn btn-secondary btn-sm" href="{{ route('task.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                        </div>
+                    </div>
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
@@ -363,12 +368,6 @@
                         </div>
 
                     @endif
-
-                    <div class="row mt-5">
-                        <div class="col-md-12 text-start">
-                            <a class="btn btn-secondary btn-sm" href="{{ route('task.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
-                        </div>
-                    </div>
 
                 </div>
             </div>
