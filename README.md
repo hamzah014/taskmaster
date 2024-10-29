@@ -35,3 +35,31 @@
 1. TP_ParentCode - task project
 2. PRAcceptRisk - project risk
 2. PJ_RejectReason - project reject reason
+
+# 29/10/2024
+
+- handle error - add document✅
+- redirect back to project view - after finish✅
+- idea submission - add next button
+- project idea no change to 5 - now no 4✅
+- project idea analysis edit - action button add text - Next Action✅
+- check idea analysis - all complete before submit analysis✅
+- button back put top
+- Requirement analysis button - add text Next Action ✅
+- submit risk - stuck submit not proceed submit ✅
+- accept risk - error db ✅
+- project cancel if risk is high/medium, button show on popup confirm (Cancel Project) ✅
+
+
+# hold for next update
+- add step 7 - Project Design (all access exclude programmer&technical support - disabled button)
+    - show table - requirement analysis list (name, type, details,status, action)
+    - add auto listing for requirement analysis - Others
+   - for action - Next Action
+        - go to list task - where related to requirement analysis
+        - task list - add button complete design - top
+            - allow when theres no pending, in-progress, review
+            - complete design - update requirement analysis status
+
+     - once all requirement analysis status complete, add button complete phase to update project status (future development)
+     - popup "Now you have the minimum viavle product" . Proceed / No

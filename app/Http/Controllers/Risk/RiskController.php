@@ -274,7 +274,7 @@ class RiskController extends Controller
             $status = "PROGRESS";
             $acceptRisk = 0;
 
-            if($riskStatus == 'H'){
+            if($riskStatus == 'H' || $riskStatus == 'M'){
 
                 if($riskAccept == 0){
                     $status = 'CANCEL';
@@ -289,6 +289,8 @@ class RiskController extends Controller
             $project->PJStatus = $status;
             $project->PJAcceptRisk = $acceptRisk;
             $project->save();
+
+            $route = route('project.index');
 
             $idea = array();
 
@@ -313,6 +315,8 @@ class RiskController extends Controller
 
                 }
 
+                $route = route('task.listTask', $project->PJCode);
+
             }
 
             DB::commit();
@@ -320,7 +324,7 @@ class RiskController extends Controller
             return response()->json([
                 'success' => '1',
                 'message' => 'Risk analysis result has been successfully submitted.',
-                'redirect' => route('project.index')
+                'redirect' => $route
             ]);
 
 

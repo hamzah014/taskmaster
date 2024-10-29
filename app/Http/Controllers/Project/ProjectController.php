@@ -537,12 +537,12 @@ class ProjectController extends Controller
 
             if($request->status == 1){
                 $status = 'IDEA';
-                $route = route('project.index');
             }
             else{
                 $status = 'PENDING';
-                $route = route('project.edit',$request->projectCode);
             }
+
+            $route = route('project.edit',$request->projectCode);
 
             $project->PJStatus = $status;
             $project->save();
@@ -632,7 +632,7 @@ class ProjectController extends Controller
 
                 }
 
-                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i></a>';
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i> View</a>';
 
                 return $result;
             })
@@ -640,7 +640,7 @@ class ProjectController extends Controller
 
                 $routeView = route('project.analysis.view',[$row->PJCode]);
 
-                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i></a>';
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i> View</a>';
 
                 return $result;
             })

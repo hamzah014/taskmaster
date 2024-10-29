@@ -36,6 +36,11 @@
             <div id="kt_account_settings_profile_details">
                 <div class="card-body p-9">
 
+                    <div class="row mb-5">
+                        <div class="col-md-12 text-start">
+                            <a class="btn btn-secondary btn-sm" href="{{ route('risk.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                        </div>
+                    </div>
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
@@ -195,12 +200,12 @@
                                                                 </td>
                                                                 <td>
                                                                     <center>
-                                                                        <input class="form-check-input" type="radio" value="M" name="security1" @if($projectRisk && $projectRisk->PR_Security1 == 'H') checked @endif >
+                                                                        <input class="form-check-input" type="radio" value="M" name="security1" @if($projectRisk && $projectRisk->PR_Security1 == 'M') checked @endif >
                                                                     </center>
                                                                 </td>
                                                                 <td>
                                                                     <center>
-                                                                        <input class="form-check-input" type="radio" value="L" name="security1" @if($projectRisk && $projectRisk->PR_Security1 == 'H') checked @endif >
+                                                                        <input class="form-check-input" type="radio" value="L" name="security1" @if($projectRisk && $projectRisk->PR_Security1 == 'L') checked @endif >
                                                                     </center>
                                                                 </td>
                                                             </tr>
@@ -459,11 +464,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col-md-12 text-start">
-                            <a class="btn btn-secondary btn-sm" href="{{ route('risk.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
                         </div>
                     </div>
 

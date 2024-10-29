@@ -93,7 +93,7 @@ class IdeaAnalysisController extends Controller
 
                 $routeView = route('project.idea.analysis.edit',[$row->PJCode]);
 
-                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i></a>';
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i> View</a>';
 
                 return $result;
             })
@@ -253,15 +253,32 @@ class IdeaAnalysisController extends Controller
 
         try {
 
+            DB::beginTransaction();
+
             $projectCode = $request->projectCode;
 
             $status = "IDEA-SCR";
 
             $project = Project::where('PJCode', $projectCode)->first();
+
+            $projectIdeaPending = ProjectIdea::where('PI_PJCode', $projectCode)->where('PI_ReqComplete', 0)->get();
+
+            if(!$projectIdeaPending->isEmpty())
+            {
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Please complete all requirement analysis before submit.'
+                ], 400);
+
+            }
+
             $project->PJStatus = $status;
             $project->save();
 
             $routeScoring = route('project.idea.scoring.edit', $project->PJCode);
+
+            DB::commit();
 
             return response()->json([
                 'success' => '1',

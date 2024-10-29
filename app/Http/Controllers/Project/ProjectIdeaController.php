@@ -242,7 +242,9 @@ class ProjectIdeaController extends Controller
                 $routeView = route('project.idea.analysis.formRequirement',[$row->PICode]);
                 $result = "";
 
-                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa-regular fa-file-lines text-dark"></i></a>';
+                $btnText = $row->PI_ReqComplete ? 'View Analysis' : 'Create Analysis';
+
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa-regular fa-file-lines text-dark"></i> ' .$btnText. '</a>';
 
                 // if($row->project->PJStatus == 'IDEA-ALS'){
                 //     $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa-regular fa-file-lines text-dark"></i></a>';
@@ -266,7 +268,9 @@ class ProjectIdeaController extends Controller
 
                 $routeView = route('project.idea.scoring.formScoring',[$row->PICode]);
 
-                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa-solid fa-file-pen text-dark"></i></a>';
+                $btnText = $row->ideaScoring ? 'View Scoring' : 'Create Scoring';
+
+                $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa-solid fa-file-pen text-dark"></i> '.$btnText.'</a>';
 
                 return $result;
             })

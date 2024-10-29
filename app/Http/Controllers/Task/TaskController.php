@@ -107,6 +107,8 @@ class TaskController extends Controller
                 ->orderBy('TPCD', 'DESC')
                 ->get();
 
+        $projectThis = Project::where('PJCode', $projectCode)->first();
+
         $project = Project::orderBy('PJCD', 'DESC')
                 ->first();
 
@@ -160,7 +162,7 @@ class TaskController extends Controller
 
         return view('task.listTask',
         compact(
-            'leader',
+            'leader','projectThis',
             'project','roleUser','priorityLevel','users','taskStatus',
             'projectCode','taskprojects','tasks'
         ));
