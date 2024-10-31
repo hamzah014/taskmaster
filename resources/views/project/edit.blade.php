@@ -180,7 +180,7 @@
                                                                 </i>
                                                             </span>
                                                         </label>
-                                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter project name" value="{{ $project->PJName }}" />
+                                                        <input {{ $inputDisable }} type="text" class="form-control" id="name" name="name" placeholder="Enter project name" value="{{ $project->PJName }}" />
                                                     </div>
                                                     <div class="fv-row">
                                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
@@ -193,7 +193,7 @@
                                                                 </i>
                                                             </span>
                                                         </label>
-                                                        <textarea id="description" name="description" class="form-control" data-kt-autosize="true" placeholder="Project description">{{ $project->PJDesc }}</textarea>
+                                                        <textarea {{ $inputDisable }} id="description" name="description" class="form-control" data-kt-autosize="true" placeholder="Project description">{{ $project->PJDesc }}</textarea>
                                                     </div>
                                                     <div class="fv-row row mt-4">
                                                         <div class="col-md-6">
@@ -207,7 +207,7 @@
                                                                     </i>
                                                                 </span>
                                                             </label>
-                                                            <input type="date" class="form-control" id="startDate" name="startDate" placeholder="Start date" value="{{ $project->PJStartDate }}"/>
+                                                            <input {{ $inputDisable }} type="date" class="form-control" id="startDate" name="startDate" placeholder="Start date" value="{{ $project->PJStartDate }}"/>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="d-flex align-items-center fs-5 fw-semibold my-4">
@@ -220,7 +220,7 @@
                                                                     </i>
                                                                 </span>
                                                             </label>
-                                                            <input type="date" class="form-control" id="endDate" name="endDate" placeholder="End date" value="{{ $project->PJEndDate }}"/>
+                                                            <input {{ $inputDisable }} type="date" class="form-control" id="endDate" name="endDate" placeholder="End date" value="{{ $project->PJEndDate }}"/>
                                                         </div>
                                                     </div>
                                                     <div class="fv-row row mt-4">
@@ -237,7 +237,7 @@
                                                             </label>
                                                             <div class="input-group mb-5">
                                                                 <span class="input-group-text" id="basic-addon1">RM</span>
-                                                                <input type="number" step="0.01" id="budget" name="budget" class="form-control" placeholder="Budget project"
+                                                                <input {{ $inputDisable }} type="number" step="0.01" id="budget" name="budget" class="form-control" placeholder="Budget project"
                                                                 aria-label="Budget project" aria-describedby="basic-addon1" value="{{ $project->PJBudget }}">
                                                             </div>
                                                         </div>
@@ -350,10 +350,10 @@
                                                                                 <td>
                                                                                     <input type="hidden" name="projectTeamID[]" value="{{ $projectTeam->PTID }}">
                                                                                     <input type="hidden" name="memberID[]" value="{{ $projectTeam->user->USCode }}">
-                                                                                    <input type="text" name="memberName[]" id="memberName[]" class="form-control" value="{{ $projectTeam->user->USName }}" readonly>
+                                                                                    <input type="text" name="memberName[]" id="memberName[]" class="form-control" value="{{ $projectTeam->user->USName }}" {{ $inputDisable }}>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <input type="text" name="memberEmail[]" id="memberEmail[]" class="form-control" value="{{ $projectTeam->user->USEmail }}" readonly>
+                                                                                    <input type="text" name="memberEmail[]" id="memberEmail[]" class="form-control" value="{{ $projectTeam->user->USEmail }}" {{ $inputDisable }}>
                                                                                 </td>
                                                                                 <td class="selecthere">
                                                                                     {!! Form::select('memberRole[' . $projectTeam->PTID . '][]', $roleUser , explode(',',$projectTeam->PT_RLCode), [
@@ -363,7 +363,8 @@
                                                                                         'data-close-on-select' => 'false',
                                                                                         'data-placeholder' => 'Choose role',
                                                                                         'data-allow-clear' => 'true',
-                                                                                        'multiple' => 'multiple'
+                                                                                        'multiple' => 'multiple',
+                                                                                        $inputDisable => $inputDisable
                                                                                     ]) !!}
                                                                                 </td>
                                                                                 <td>
@@ -449,7 +450,7 @@
                                                                         <tr>
                                                                             <td>
                                                                                 <input type="hidden" name="documentID[]" value="{{ $projectDocument->PDCode }}">
-                                                                                <input type="text" name="documentDesc[]" id="documentDesc[]" class="form-control" value="{{ $projectDocument->PDDesc }}">
+                                                                                <input {{ $inputDisable }} type="text" name="documentDesc[]" id="documentDesc[]" class="form-control" value="{{ $projectDocument->PDDesc }}">
                                                                             </td>
                                                                             <td>
                                                                                 <input type="hidden" name="fileID[]" value="documentFile_{{ $projectDocument->PDCode }}">
@@ -457,7 +458,7 @@
                                                                                  class="form-control" @if( !in_array($project->PJStatus, ['PENDING']) ) disabled @endif>
                                                                             </td>
                                                                             <td>
-                                                                                <a class="btn btn-secondary btn-sm" target="_blank" href="{{ route('file.view',$projectDocument->fileAttach->FAGuidID) }}">View</a>
+                                                                                <a class="btn btn-primary btn-sm" target="_blank" href="{{ route('file.view',$projectDocument->fileAttach->FAGuidID) }}">View</a>
 
                                                                                 @if($leader == 1)
 

@@ -699,10 +699,12 @@ class ProjectController extends Controller
 
         }
 
+        $inputDisable = in_array($project->PJStatus, ['PENDING']) ? '' : 'disabled';
+
 
         return view('project.edit',
         compact(
-            'editPage','projectStatus','leader',
+            'editPage','projectStatus','leader','inputDisable',
             'projectCategory','roleUser','project','projectRisk','riskStatus'
         ));
 
