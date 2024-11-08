@@ -168,6 +168,46 @@
                         <div class="menu-sub menu-sub-accordion text-light">
 
                             <div class="menu-item">
+                                <a class="menu-link text-light" href="{{ route('task.index','PD') }}">
+                                    <span class="menu-bullet">
+                                        <i class="fa fa-regular fa-circle"></i>
+                                    </span>
+                                    <span class="menu-title">Project Design</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="menu-sub menu-sub-accordion text-light">
+
+                            <div class="menu-item">
+                                <a class="menu-link text-light" href="{{ route('task.index','FD') }}">
+                                    <span class="menu-bullet">
+                                        <i class="fa fa-regular fa-circle"></i>
+                                    </span>
+                                    <span class="menu-title">Future Development</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="menu-sub menu-sub-accordion text-light">
+
+                            <div class="menu-item">
+                                <a class="menu-link text-light" href="{{ route('task.index','PC') }}">
+                                    <span class="menu-bullet">
+                                        <i class="fa fa-regular fa-circle"></i>
+                                    </span>
+                                    <span class="menu-title">Project Closure</span>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        {{--
+                        <div class="menu-sub menu-sub-accordion text-light">
+
+                            <div class="menu-item">
                                 <a class="menu-link text-light" href="{{ route('task.index') }}">
                                     <span class="menu-bullet">
                                         <i class="fa fa-regular fa-circle"></i>
@@ -190,6 +230,7 @@
                             </div>
 
                         </div>
+                        --}}
 
                     </div>
 

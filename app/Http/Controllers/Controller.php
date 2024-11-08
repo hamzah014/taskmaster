@@ -2,37 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Pelaksana\Approval\ApprovalController;
-use App\Services\DropdownService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Dompdf\Dompdf;
-use Symfony\Component\HttpFoundation\Response;
 use Auth;
 use App\Models\FileAttach;
 use App\Models\AutoNumber;
-use App\Models\BoardMeeting;
-use App\Models\ClaimMeeting;
-use App\Models\KickOffMeeting;
-use App\Models\Meeting;
-use App\Models\MeetingEOT;
-use App\Models\MeetingLI;
-use App\Models\MeetingNP;
-use App\Models\MeetingPT;
-use App\Models\MeetingPTA;
-use App\Models\MeetingPTE1;
-use App\Models\MeetingPTE2;
-use App\Models\MeetingVO;
-use App\Models\ProjectTender;
-use App\Models\Tender;
-use App\Models\TenderAdv;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use NumberToWords\NumberToWords;
 use Illuminate\Support\Str;
 
 class Controller extends BaseController
@@ -106,6 +86,63 @@ class Controller extends BaseController
             ], 400);
         }
 
+    }
+
+    public function copyFile($originalRefNo, $copyRefNo)
+    {
+        DB::beginTransaction();
+        try {
+            // Retrieve the original file data
+            $originalFileAttach = FileAttach::where('FARefNo', $originalRefNo)->first();
+
+            if (!$originalFileAttach || !Storage::disk('local')->exists($originalFileAttach->FAFilePath . '\\' . $originalFileAttach->FAFileName . '.' . $originalFileAttach->FAFileExtension)) {
+                // throw new \Exception("File does not exist.");
+            }
+            else{
+
+                // Read the original file content
+                $fileContent = Storage::disk('local')->get($originalFileAttach->FAFilePath . '\\' . $originalFileAttach->FAFileName . '.' . $originalFileAttach->FAFileExtension);
+
+                // Generate new details for the copied file
+                $newRefNo = $copyRefNo; // Update with the new reference number
+                $autoNumber = new AutoNumber();
+                $generateRandomSHA256 = $autoNumber->generateRandomSHA256();
+                $folderPath = Carbon::now()->format('ymd');
+                $newFileName = strval($generateRandomSHA256);
+                $newFilePath = $folderPath . '\\' . $newFileName;
+
+                // Save the copied file in a new path
+                Storage::disk('local')->put($newFilePath . '.' . $originalFileAttach->FAFileExtension, $fileContent);
+
+                // Create a new file attach record
+                $newFileAttach = new FileAttach();
+                $newFileAttach->FARefNo = $newRefNo;
+                $newFileAttach->FAFilePath = $folderPath . '\\' . $newFileName;
+                $newFileAttach->FAFileName = $newFileName;
+                $newFileAttach->FAOriginalName = $originalFileAttach->FAOriginalName;
+                $newFileAttach->FAFileExtension = $originalFileAttach->FAFileExtension;
+                $newFileAttach->FACB = Auth::user() ? Auth::user()->USCode : $newRefNo;
+                $newFileAttach->FAMB = Auth::user() ? Auth::user()->USCode : $newRefNo;
+                $newFileAttach->FAFileType = $originalFileAttach->FAFileType;
+                $newFileAttach->FAGuidID = $this->generateGuid();
+                $newFileAttach->save();
+
+            }
+
+            DB::commit();
+
+            return $originalFileAttach;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::info('ERROR', ['$e' => $e]);
+
+            return response()->json([
+                'error' => '1',
+                'message' => 'Error!'.$e->getMessage()
+            ], 400);
+        }
     }
 
 

@@ -108,8 +108,8 @@ class DropdownService
     {
         $taskStatus = [
             'PENDING' => 'Pending',
-            'PROGRESS' => 'On-Progress',
-            'SUBMIT' => 'Submitted',
+            'PROGRESS' => 'In-Progress',
+            'SUBMIT' => 'Review',
             'COMPLETE' => 'Complete',
             'CANCEL' => 'Cancel',
         ];
@@ -126,7 +126,9 @@ class DropdownService
             'IDEA-SCR' => 'Idea Scoring',
             'PROJ-ALS' => 'Project Analysis',
             'RISK' => 'Project Risk',
-            'PROGRESS' => 'On-going',
+            'PROGRESS-PD' => 'Project Design',
+            'PROGRESS-FD' => 'Future Design',
+            'PROGRESS-PC' => 'Project Closure',
             'COMPLETE' => 'Completed',
             'CANCEL' => 'Cancelled',
         ];
@@ -154,6 +156,36 @@ class DropdownService
         ];
 
         return $requirementType;
+    }
+
+    public function taskType()
+    {
+        $taskType = [
+            'PD' => 'Project Design',
+            'FD' => 'Future Development',
+            'PC' => 'Project Closure', //final product,acceptance,deployment,maintenance
+        ];
+
+        return $taskType;
+    }
+
+    public function taskStatusType($type)
+    {
+
+        $taskStatusPC = [
+            'FIP' => 'Final Product',
+            'ACP' => 'Acceptance',
+            'DEP' => 'Deployment',
+            'MAN' => 'Maintenance'
+        ];
+
+        if($type == 'PC')
+        {
+            return $taskStatusPC;
+        }
+
+        return $this->taskStatus();
+
     }
 
 }

@@ -271,7 +271,7 @@ class RiskController extends Controller
 
             }
 
-            $status = "PROGRESS";
+            $status = "PROGRESS-PD";
             $acceptRisk = 0;
 
             if($riskStatus == 'H' || $riskStatus == 'M'){
@@ -294,7 +294,9 @@ class RiskController extends Controller
 
             $idea = array();
 
-            if($status == 'PROGRESS'){
+            $firstTaskType = 'PD';
+
+            if($status == 'PROGRESS-PD'){
 
                 foreach($project->projectIdea as $index => $projectIdea){
 
@@ -309,13 +311,15 @@ class RiskController extends Controller
                     $taskProject->TPCode = $taskCode;
                     $taskProject->TP_PJCode = $project->PJCode;
                     $taskProject->TPName = $ideaTask;
+                    $taskProject->TPType = $firstTaskType;
+                    $taskProject->TPComplete = 0;
                     $taskProject->TPStatus = $statusTask;
                     $taskProject->TPCB = $user->USCode;
                     $taskProject->save();
 
                 }
 
-                $route = route('task.listTask', $project->PJCode);
+                $route = route('task.listTask', [$firstTaskType,$project->PJCode]);
 
             }
 
