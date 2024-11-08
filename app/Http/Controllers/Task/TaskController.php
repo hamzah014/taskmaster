@@ -413,7 +413,7 @@ class TaskController extends Controller
 
             $user = Auth::user();
 
-            $status = "PENDING";
+            $status =  $request->taskType == 'PC' ? 'FIP' : "PENDING";
 
             $taskProject = new TaskProject();
             $taskProject->TPCode = $taskCode;
