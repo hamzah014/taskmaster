@@ -131,17 +131,33 @@
                                 <div class="d-flex align-items-center bg-light-warning rounded p-5 mb-2">
                                     <i class="fa fa-solid fa-lightbulb fs-1 me-5 text-warning"></i>
                                     <div class="flex-grow-1 me-2">
-                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Ideas</a>
+                                        <a class="fw-bold text-gray-800 text-hover-warning fs-6">Ideas</a>
                                     </div>
                                     <span class="fw-bold text-warning py-1">{{ count($project->projectIdea) }}</span>
                                 </div>
 
                                 <div class="d-flex align-items-center bg-light-info rounded p-5 mb-2">
-                                    <i class="fa fa-solid fa-list-check fs-1 me-5 text-info"></i>
+                                    <i class="fa fa-solid fa-object-group fs-1 me-5 text-info"></i>
                                     <div class="flex-grow-1 me-2">
-                                        <a class="fw-bold text-gray-800 text-hover-info fs-6">Task</a>
+                                        <a class="fw-bold text-gray-800 text-hover-info fs-6">Project Design</a>
                                     </div>
-                                    <span class="fw-bold text-info py-1">{{ count($project->taskProject) }}</span>
+                                    <span class="fw-bold text-info py-1">{{ count($project->taskProjectPD) }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center bg-light-primary rounded p-5 mb-2">
+                                    <i class="fa fa-solid fa-tree-city fs-1 me-5 text-primary"></i>
+                                    <div class="flex-grow-1 me-2">
+                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Future Development</a>
+                                    </div>
+                                    <span class="fw-bold text-primary py-1">{{ count($project->taskProjectFD) }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center bg-light-secondary rounded p-5 mb-2">
+                                    <i class="fa fa-solid fa-book fs-1 me-5 text-dark"></i>
+                                    <div class="flex-grow-1 me-2">
+                                        <a class="fw-bold text-gray-800 text-hover-dark fs-6">Project Closure</a>
+                                    </div>
+                                    <span class="fw-bold text-dark py-1">{{ count($project->taskProjectPC) }}</span>
                                 </div>
 
                                 <div class="d-flex align-items-center flex-column mt-8 w-100">

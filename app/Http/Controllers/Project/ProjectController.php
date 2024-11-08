@@ -624,11 +624,11 @@ class ProjectController extends Controller
 
                 $routeView = route('project.edit',[$row->PJCode]);
 
-                if(in_array($row->PJStatus, ['PROGRESS'])){
+                if(in_array($row->PJStatus, ['PROGRESS-PD','PROGRESS-FD','PROGRESS-PC'])){
 
-                    $routeView = route('task.listTask',[$row->PJCode]);
+                    $type = str_replace('PROGRESS-','',$row->PJStatus);
 
-                    // $result .= '<a class="btn btn-sm btn-primary cursor-pointer mx-2" href="'.$routeTask.'"><i class="fa fa-clipboard text-white"></i> Task</a>';
+                    $routeView = route('task.listTask',[$type,$row->PJCode]);
 
                 }
 
@@ -701,6 +701,7 @@ class ProjectController extends Controller
 
         $inputDisable = in_array($project->PJStatus, ['PENDING']) ? '' : 'disabled';
 
+        $project->progressCode = (in_array($project->PJStatus, ['PROGRESS-PD','PROGRESS-FD','PROGRESS-PC'])) ? str_replace('PROGRESS-','',$project->PJStatus) : "#";
 
         return view('project.edit',
         compact(

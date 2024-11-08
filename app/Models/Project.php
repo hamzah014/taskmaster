@@ -79,5 +79,18 @@ class Project extends Model implements Auditable
 
     }
 
+    public function taskProjectPD(){
+        return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode')->where('TPType', 'PD');
+    }
+
+    public function taskProjectFD(){
+        return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode')->where('TPType', 'FD');
+    }
+
+    public function taskProjectPC(){
+        return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode')->where('TPType', 'PC');
+    }
+
+
 }
 

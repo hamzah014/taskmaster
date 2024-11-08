@@ -14,355 +14,99 @@
 
                 <div class="row mb-5">
                     <div class="col-md-12 text-start">
-                        <a class="btn btn-secondary btn-sm" href="{{ route('task.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                        <a class="btn btn-secondary btn-sm" href="{{ route('task.index',$type) }}"><i class="fa fa-chevron-left"></i> Back</a>
                     </div>
                 </div>
 
                 <div class="row flex-row mb-5">
-                    <div class="col-md-10">
-                        <h2>List of Task (<a class="text-hover" href="{{ route('project.edit', $projectThis->PJCode) }}" target="_blank">{{ $projectThis->PJName }}</a>)</h2>
+                    <div class="col-md-8">
+                        <h2>List of {{ $typeName }} (<a class="text-hover" href="{{ route('project.edit', $projectThis->PJCode) }}" target="_blank">{{ $projectThis->PJName }}</a>)</h2>
                     </div>
                     @if ($leader == 1)
-                    <div class="col-md-2 text-end">
-                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-create"><i class="fa-plus fa-solid"></i>Create</a>
+                    <div class="col-md-4 text-end">
+                        @if ($projectThis->PJStatus == 'PROGRESS-' . $type)
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-create"><i class="fa-plus fa-solid"></i>Create</button>
+                            <button type="button" class="btn btn-sm btn-success" onclick="proceedTask('{{ $type }}')"><i class="fa-arrow-right fa-solid"></i>Proceed Next</button>
+                        @endif
                     </div>
                     @endif
                 </div>
 
-                <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
-                    <div class="col-xxl-3 col-md-3 col-sm-12 col-12 card p-5">
-                        <h4 class="text-underline"><center>Pending</center></h4>
-                        <div class="row">
 
-                            @foreach ( $tasks['pending'] as $index => $taskproject)
-
-                                <div class="col-12">
-                                    <div class="card card-flush h-xl-100 cursor-pointer card-hover" onclick="viewTask('{{ $taskproject->TPCode }}')">
-                                        <div class="card-body py-9">
-
-                                            <div class="d-flex flex-column h-100">
-                                                <div class="mb-7">
-                                                    <div class="d-flex flex-stack mb-6">
-                                                        <div class="">
-                                                            <span class="text-gray-800 fs-4 fw-bold">{{ $taskproject->TPName }}</span>
-                                                        </div>
-                                                    </div>
-                                                    @if ($taskproject->TPStatus == 'PENDING')
-
-                                                        <span class="badge badge-secondary flex-shrink-0 align-self-center py-3 px-4 fs-7">Pending</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'PROGRESS')
-
-                                                        <span class="badge badge-light-primary flex-shrink-0 align-self-center py-3 px-4 fs-7">In-progress</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'COMPLETE')
-
-                                                        <span class="badge badge-light-success flex-shrink-0 align-self-center py-3 px-4 fs-7">Complete</span>
-
-                                                    @endif
-                                                </div>
-
-                                                <div class="d-flex flex-stack mt-auto bd-highlight no-flex">
-                                                    <span class="d-flex align-items-center opacity-75-hover fs-6 fw-semibold text-gray">
-                                                    <i class="fa fa-bookmark text-success mx-2"></i> {{ $taskproject->TPCode }}
-                                                    </span>
-
-                                                    @if($taskproject->parentTask)
-                                                        <span class="d-flex align-items-center text-light badge badge-info">
-                                                            {{ $taskproject->parentTask->TPCode }}
-                                                        </span>
-                                                    @endif
-
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
-                                                        @if($taskproject->assignee)
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
-                                                                <img alt="Pic" src="{{ $taskproject->assignee->getProfileURL() }}" />
-                                                            </div>
-                                                        @else
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
-                                                                N.S
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xxl-3 col-md-3 col-sm-12 col-12 card p-5">
-                        <h4 class="text-underline"><center>In-Progress</center></h4>
-                        <div class="row">
-
-                            @foreach ( $tasks['progress']  as $index => $taskproject)
-
-                                <div class="col-12">
-                                    <div class="card card-flush h-xl-100 cursor-pointer card-hover" onclick="viewTask('{{ $taskproject->TPCode }}')">
-                                        <div class="card-body py-9">
-
-                                            <div class="d-flex flex-column h-100">
-                                                <div class="mb-7">
-                                                    <div class="d-flex flex-stack mb-6">
-                                                        <div class="">
-                                                            <span class="text-gray-800 fs-4 fw-bold">{{ $taskproject->TPName }}</span>
-                                                        </div>
-                                                    </div>
-                                                    @if ($taskproject->TPStatus == 'PENDING')
-
-                                                        <span class="badge badge-secondary flex-shrink-0 align-self-center py-3 px-4 fs-7">Pending</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'PROGRESS')
-
-                                                        <span class="badge badge-light-primary flex-shrink-0 align-self-center py-3 px-4 fs-7">In-progress</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'COMPLETE')
-
-                                                        <span class="badge badge-light-success flex-shrink-0 align-self-center py-3 px-4 fs-7">Complete</span>
-
-                                                    @endif
-                                                </div>
-
-                                                <div class="d-flex flex-stack mt-auto bd-highlight no-flex">
-                                                    <span class="d-flex align-items-center opacity-75-hover fs-6 fw-semibold text-gray">
-                                                    <i class="fa fa-bookmark text-success mx-2"></i> {{ $taskproject->TPCode }}
-                                                    </span>
-
-                                                    @if($taskproject->parentTask)
-                                                        <span class="d-flex align-items-center text-light badge badge-info">
-                                                            {{ $taskproject->parentTask->TPCode }}
-                                                        </span>
-                                                    @endif
-
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
-                                                        @if($taskproject->assignee)
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
-                                                                <img alt="Pic" src="{{ $taskproject->assignee->getProfileURL() }}" />
-                                                            </div>
-                                                        @else
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
-                                                                N.S
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xxl-3 col-md-3 col-sm-12 col-12 card p-5">
-                        <h4 class="text-underline"><center>Review</center></h4>
-                        <div class="row">
-
-                            @foreach ( $tasks['submit'] as $index => $taskproject)
-
-                                <div class="col-12">
-                                    <div class="card card-flush h-xl-100 cursor-pointer card-hover" onclick="viewTask('{{ $taskproject->TPCode }}')">
-                                        <div class="card-body py-9">
-
-                                            <div class="d-flex flex-column h-100">
-                                                <div class="mb-7">
-                                                    <div class="d-flex flex-stack mb-6">
-                                                        <div class="">
-                                                            <span class="text-gray-800 fs-4 fw-bold">{{ $taskproject->TPName }}</span>
-                                                        </div>
-                                                    </div>
-                                                    @if ($taskproject->TPStatus == 'PENDING')
-
-                                                        <span class="badge badge-secondary flex-shrink-0 align-self-center py-3 px-4 fs-7">Pending</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'PROGRESS')
-
-                                                        <span class="badge badge-light-primary flex-shrink-0 align-self-center py-3 px-4 fs-7">In-progress</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'COMPLETE')
-
-                                                        <span class="badge badge-light-success flex-shrink-0 align-self-center py-3 px-4 fs-7">Complete</span>
-
-                                                    @endif
-                                                </div>
-
-                                                <div class="d-flex flex-stack mt-auto bd-highlight no-flex">
-                                                    <span class="d-flex align-items-center opacity-75-hover fs-6 fw-semibold text-gray">
-                                                    <i class="fa fa-bookmark text-success mx-2"></i> {{ $taskproject->TPCode }}
-                                                    </span>
-
-                                                    @if($taskproject->parentTask)
-                                                        <span class="d-flex align-items-center text-light badge badge-info">
-                                                            {{ $taskproject->parentTask->TPCode }}
-                                                        </span>
-                                                    @endif
-
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
-                                                        @if($taskproject->assignee)
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
-                                                                <img alt="Pic" src="{{ $taskproject->assignee->getProfileURL() }}" />
-                                                            </div>
-                                                        @else
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
-                                                                N.S
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-xxl-3 col-md-3 col-sm-12 col-12 card p-5">
-                        <h4 class="text-underline"><center>Complete</center></h4>
-                        <div class="row">
-
-                            @foreach ( $tasks['complete'] as $index => $taskproject)
-
-                                <div class="col-12">
-                                    <div class="card card-flush h-xl-100 cursor-pointer card-hover" onclick="viewTask('{{ $taskproject->TPCode }}')">
-                                        <div class="card-body py-9">
-
-                                            <div class="d-flex flex-column h-100">
-                                                <div class="mb-7">
-                                                    <div class="d-flex flex-stack mb-6">
-                                                        <div class="">
-                                                            <span class="text-gray-800 fs-4 fw-bold">{{ $taskproject->TPName }}</span>
-                                                        </div>
-                                                    </div>
-                                                    @if ($taskproject->TPStatus == 'PENDING')
-
-                                                        <span class="badge badge-secondary flex-shrink-0 align-self-center py-3 px-4 fs-7">Pending</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'PROGRESS')
-
-                                                        <span class="badge badge-light-primary flex-shrink-0 align-self-center py-3 px-4 fs-7">In-progress</span>
-
-                                                    @elseif ($taskproject->TPStatus == 'COMPLETE')
-
-                                                        <span class="badge badge-light-success flex-shrink-0 align-self-center py-3 px-4 fs-7">Complete</span>
-
-                                                    @endif
-                                                </div>
-
-                                                <div class="d-flex flex-stack mt-auto bd-highlight no-flex">
-                                                    <span class="d-flex align-items-center opacity-75-hover fs-6 fw-semibold text-gray">
-                                                    <i class="fa fa-bookmark text-success mx-2"></i> {{ $taskproject->TPCode }}
-                                                    </span>
-
-                                                    @if($taskproject->parentTask)
-                                                        <span class="d-flex align-items-center text-light badge badge-info">
-                                                            {{ $taskproject->parentTask->TPCode }}
-                                                        </span>
-                                                    @endif
-
-                                                    <div class="symbol-group symbol-hover flex-nowrap">
-                                                        @if($taskproject->assignee)
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
-                                                                <img alt="Pic" src="{{ $taskproject->assignee->getProfileURL() }}" />
-                                                            </div>
-                                                        @else
-                                                            <div class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
-                                                                N.S
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-                </div>
-
-                {{--
                 <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
 
-                    @foreach ( $taskprojects as $index => $taskproject)
+                    @foreach ($taskStatusType as $index => $taskStatusTaip)
 
-                        <div class="col-xxl-4 col-md-4 col-sm-12 col-12">
-                            <div class="card card-flush h-xl-100 cursor-pointer card-hover" onclick="viewTask('{{ $taskproject->TPCode }}')">
-                                <div class="card-body py-9">
+                        @if(isset($tasks[$index]))
+                        <div class="col-xxl-3 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 card p-5">
+                            <h4 class="text-underline"><center>{{ $taskStatusTaip }}</center></h4>
+                            <div class="row">
 
-                                    <div class="d-flex flex-column h-100">
-                                        <div class="mb-7">
-                                            <div class="d-flex flex-stack mb-6">
-                                                <div class="">
-                                                    <span class="text-gray-800 fs-4 fw-bold">{{ $taskproject->TPName }}</span>
+                                @foreach ( $tasks[$index] as $index => $taskproject)
+
+                                    <div class="col-12">
+
+                                        <div class="card card-flush h-xl-100 cursor-pointer" onclick="viewTask('{{ $taskproject->TPCode }}')">
+                                            <div class="card-body text-center pb-5">
+                                                <div class="d-flex align-items-end flex-stack mb-1">
+                                                    <div class="text-start">
+                                                        <span class="fw-bold text-gray-800 fs-4 d-block">{{ $taskproject->TPName }}</span>
+                                                        <span class="text-gray-500 mt-1 fw-bold fs-6">
+
+                                                            @if ( in_array($taskproject->TPStatus, ['PENDING','FIP']))
+
+                                                                <span class="badge badge-secondary">{{ $taskproject->TPStatusName }}</span>
+
+                                                            @elseif (in_array($taskproject->TPStatus, ['PROGRESS','ACP']))
+
+                                                                <span class="badge badge-light-primary">{{ $taskproject->TPStatusName }}</span>
+
+                                                            @elseif (in_array($taskproject->TPStatus, ['SUBMIT','DEP']))
+
+                                                                <span class="badge badge-light-info">{{ $taskproject->TPStatusName }}</span>
+
+                                                            @elseif (in_array($taskproject->TPStatus, ['COMPLETE','MAN']))
+
+                                                                <span class="badge badge-light-success">{{ $taskproject->TPStatusName }}</span>
+
+                                                            @endif
+
+                                                        </span>
+                                                    </div>
+
+                                                    @if($taskproject->parentTask)
+                                                    <span class="text-light-600 text-end fw-bold fs-7 btn btn-outline btn-outline-info btn-active-light-info btn-sm" onclick="event.stopPropagation(); viewTask('{{ $taskproject->parentTask->TPCode }}')">{{ $taskproject->parentTask->TPCode }}</span>
+                                                    @endif
+
                                                 </div>
                                             </div>
-                                            @if ($taskproject->TPStatus == 'PENDING')
+                                            <div class="card-footer d-flex flex-stack pt-0">
+                                                <span class=" btn btn-outline btn-outline-primary btn-active-light-primary btn-sm flex-shrink-0 me-2 fs-5">{{ $taskproject->TPCode }}</span>
 
-                                                <span class="badge badge-secondary flex-shrink-0 align-self-center py-3 px-4 fs-7">Pending</span>
-
-                                            @elseif ($taskproject->TPStatus == 'PROGRESS')
-
-                                                <span class="badge badge-light-primary flex-shrink-0 align-self-center py-3 px-4 fs-7">In-progress</span>
-
-                                            @elseif ($taskproject->TPStatus == 'COMPLETE')
-
-                                                <span class="badge badge-light-success flex-shrink-0 align-self-center py-3 px-4 fs-7">Complete</span>
-
-                                            @endif
-                                        </div>
-
-                                        <div class="d-flex flex-stack mt-auto bd-highlight no-flex">
-                                            <span class="d-flex align-items-center opacity-75-hover fs-6 fw-semibold text-gray">
-                                            <i class="fa fa-bookmark text-success mx-2"></i> {{ $taskproject->TPCode }}
-                                            </span>
-
-                                            @if($taskproject->parentTask)
-                                                <span class="d-flex align-items-center text-light badge badge-info">
-                                                    {{ $taskproject->parentTask->TPCode }}
-                                                </span>
-                                            @endif
-
-                                            <div class="symbol-group symbol-hover flex-nowrap">
                                                 @if($taskproject->assignee)
-                                                    <div class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
+                                                    <span class="symbol symbol-35px symbol-circle bg-primary" data-bs-toggle="tooltip" title="{{ $taskproject->assignee->USName }}">
                                                         <img alt="Pic" src="{{ $taskproject->assignee->getProfileURL() }}" />
-                                                    </div>
+                                                    </span>
                                                 @else
-                                                    <div class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
+                                                    <span class="symbol symbol-35px symbol-circle bg-primary p-2 text-white" data-bs-toggle="tooltip" title="Not set">
                                                         N.S
-                                                    </div>
+                                                    </span>
                                                 @endif
+
                                             </div>
                                         </div>
+
                                     </div>
 
-                                </div>
+                                @endforeach
+
                             </div>
                         </div>
 
-                    @endforeach
+                        @endif
 
+                    @endforeach
                 </div>
-                 --}}
 
 
 			</div>
@@ -405,164 +149,13 @@
                 </div>
 
                 <div class="modal-body">
-
                     <div class="row card flex-row p-5">
                         <div class="col-md-12 col-sm-12">
                             <div class="w-100 mt-5">
                                 <form id="subtaskForm" class="ajax-form" method="POST" action="{{ route('task.add') }}" enctype="multipart/form-data">
                                     @csrf
 
-                                    <h4 class="">Details Project Task</h4>
-                                    <h5>Task information:</h5>
-
-                                    <input type="hidden" name="parentTask" id="parentTask" value="0">
-
-                                    <div class="fv-row row mt-10">
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                                <span class="required">Choose Project</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Select project for your task">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            {!! Form::select('project', $project , null, [
-                                                'id' => 'projectSub',
-                                                'class' => 'form-select form-control',
-                                                'placeholder' => 'Select project',
-                                                'readonly'
-                                            ]) !!}
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                                <span class="required">Parent Task</span>
-                                            </label>
-                                            <input type="text" class="form-control" readonly id="parentDetail" name="parentDetail" placeholder="Parent Task">
-                                        </div>
-                                    </div>
-                                    <div class="fv-row row mb-4">
-                                        <div class="col-md-12">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                <span class="required">Task Name</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Enter task name">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Task name"/>
-                                        </div>
-                                    </div>
-                                    <div class="fv-row row mb-4">
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                <span class="required">Search Assignee</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Search assignee for the task">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            <div class="input-group mb-5">
-                                                <input type="text" class="form-control" disabled placeholder="Find user by email" aria-label="Find user by email" aria-describedby="basic-addon2"/>
-                                                <span class="input-group-text cursor-pointer btn btn-info" id="basic-addon2" onclick="viewModal('modal-subSearch')"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                <span class="required">Task Assignee</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Select assignee for the task">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            {!! Form::select('assignee', $users , null, [
-                                                'id' => 'assigneeSub',
-                                                'class' => 'form-select form-control',
-                                                'placeholder' => 'Select assignee',
-                                                'readonly'
-                                            ]) !!}
-                                        </div>
-                                    </div>
-                                    <div class="fv-row">
-                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                            <span class="required">Description</span>
-                                            <span class="ms-1" data-bs-toggle="tooltip" title="Task description">
-                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                    <span class="path3"></span>
-                                                </i>
-                                            </span>
-                                        </label>
-                                        <textarea id="description" name="description" class="form-control" data-kt-autosize="true" placeholder="Task description"></textarea>
-                                    </div>
-                                    <div class="fv-row row mb-4">
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                <span class="required">Level of Priority</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Select level of project priority">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            {!! Form::select('priority', $priorityLevel , null, [
-                                                'id' => 'priority',
-                                                'class' => 'form-select form-control',
-                                                'placeholder' => 'Choose priority',
-                                            ]) !!}
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="d-flex align-items-center fs-5 fw-semibold my-4">
-                                                <span class="required">Due Date</span>
-                                                <span class="ms-1" data-bs-toggle="tooltip" title="Enter task due date">
-                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                        <span class="path3"></span>
-                                                    </i>
-                                                </span>
-                                            </label>
-                                            <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Due date"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="fv-row mb-10 mt-5">
-                                        <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
-                                            <span class="">Upload File</span>
-                                            <span class="ms-1" data-bs-toggle="tooltip" title="Select file for reference">
-                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                    <span class="path3"></span>
-                                                </i>
-                                            </span>
-                                        </label>
-                                        <input type="file" class="form-control" id="taskFile" name="taskFile" placeholder="Select task file">
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-12 text-end">
-                                            <div class="mt-7">
-                                                <button type="submit" class="btn btn-primary text-nowrap">
-                                                Submit
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div id="subTaskDetail"></div>
 
                                 </form>
                             </div>
@@ -670,7 +263,7 @@
     </div>
 
     <div class="modal fade" id="modal-create" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered justify-content-center">
+        <div class="modal-dialog modal-xl modal-dialog-centered justify-content-center">
             <div class="modal-content w-80">
                 <div class="modal-header">
                     <h3 class="modal-title">Create Task</h3>
@@ -689,6 +282,7 @@
 
                                     <h4 class="">Details Project Task</h4>
                                     <h5>Task information:</h5>
+                                    <input type="hidden" name="taskType" id="taskType" value="{{ $type }}">
 
                                     <div class="fv-row mt-10">
                                         <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
@@ -701,7 +295,7 @@
                                                 </i>
                                             </span>
                                         </label>
-                                        {!! Form::select('project', $project , $taskproject->TP_PJCode ?? null, [
+                                        {!! Form::select('project', $projects , $projectCode, [
                                             'id' => 'project',
                                             'class' => 'form-select form-control',
                                             'placeholder' => 'Select project',
@@ -912,7 +506,7 @@
                 processData: false,
                 cache: false,
                 success: function (resp) {
-                    console.log(resp);
+                    // console.log(resp);
                     toggleLoader();
                     $('#detailHere').html(resp);
                     $('#modal-task').modal('show');
@@ -977,12 +571,90 @@
 
         function createSubtask(taskcode, taskName, projectCode){
 
-            $('#parentDetail').val(taskcode + " - " + taskName);
-            $('#parentTask').val(taskcode);
-            $('#projectSub').val(projectCode);
+            parentDetail = taskcode + " - " + taskName;
+            parentTask = taskcode;
+            projectSub = projectCode;
 
-            $('#modal-task').modal('hide');
-            $('#modal-subtask').modal('show');
+            formData = new FormData();
+
+            formData.append('parentDetail',parentDetail);
+            formData.append('parentTask',parentTask);
+            formData.append('projectSub',projectSub);
+
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('task.view.subTaskForm') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+                    $('#subTaskDetail').html(resp);
+                    $('#modal-task').modal('hide');
+                    $('#modal-subtask').modal('show');
+
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+
+                            // $('[name="' + key + '"]').closest('.form-group').addClass("has-error");
+                            // $('[name="' + key + '"]').addClass("was-validated is-invalid invalid custom-select.is-invalid");
+                            // $('#Valid'+key).empty();
+                            // $('[name="' + key + '"]').closest('.form-group').append("<span id='Valid"+key+"' class=\"help-block\" style='color:red; font-family:Nunito, sans-serif;'>" + message[0] + "</span>");
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
 
         }
 
@@ -1107,7 +779,6 @@
 
     </script>
 
-
     <script>
 
         function searchNewUser(){
@@ -1226,5 +897,125 @@
 
     </script>
 
+    <script>
+
+        function proceedTask(type){
+
+            projectCode = '{{ $projectCode }}';
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "Your current task will be submitted for the phase.",
+                type: 'warning',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        completeTask(projectCode, type);
+                    }
+            })
+
+        }
+
+        function completeTask(projectCode, taskType){
+
+            formData = new FormData();
+
+            formData.append('projectCode', projectCode);
+            formData.append('taskType', taskType);
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('task.submit.complete') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+
+                    if(resp.success == true){
+
+                        swal.fire({
+                            title: "Success",
+                            text: resp.message,
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonText: "Okay",
+                            customClass: {
+                                popup: 'swal-popup'
+                            }
+                        }).then((result) => {
+
+                            routeHref = resp.redirect;
+
+                            window.location.href = routeHref;
+
+                        });
+
+                    }
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
+
+        }
+
+
+    </script>
 
 @endpush

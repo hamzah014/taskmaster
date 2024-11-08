@@ -53,7 +53,7 @@
                             <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid my-8" id="kt_create_account_stepper">
                                 <div class="d-flex justify-content-start justify-content-xl-start flex-row-auto w-100 w-xl-300px mb-10">
                                     <div class="stepper-nav ps-lg-10">
-                                        <div class="stepper-item @if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','PROGRESS','COMPLETE','CANCEL'])) current @endif" data-kt-stepper-element="nav" data-step="1">
+                                        <div class="stepper-item @if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','CANCEL'])) current @endif" data-kt-stepper-element="nav" data-step="1">
                                             <div class="stepper-wrapper">
                                                 <div class="stepper-icon w-40px h-40px">
                                                     <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -122,12 +122,12 @@
                                                         <div class="stepper-desc">Project idea list</div>
                                                     </div>
                                                 </div>
-                                                @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
+                                                @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
                                                 <div class="stepper-line h-40px"></div>
                                                 @endif
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
 
                                                 <div class="stepper-item @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="nav" data-step="6">
                                                     <div class="stepper-wrapper">
@@ -140,8 +140,71 @@
                                                             <div class="stepper-desc">Project Risk list</div>
                                                         </div>
                                                     </div>
-
+                                                    <div class="stepper-line h-40px"></div>
                                                 </div>
+
+                                                <div class="stepper-item @if(in_array($project->PJStatus, ['PROGRESS-PD'])) current @endif" data-kt-stepper-element="nav" data-step="7">
+                                                    <div class="stepper-wrapper">
+                                                        <div class="stepper-icon w-40px h-40px">
+                                                            <i class="ki-duotone ki-check stepper-check fs-2"></i>
+                                                            <span class="stepper-number">7</span>
+                                                        </div>
+                                                        <div class="stepper-label">
+                                                            <h3 class="stepper-title">Project Design</h3>
+                                                            <div class="stepper-desc">Project Design List</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="stepper-line h-40px"></div>
+                                                </div>
+
+                                                <div class="stepper-item @if(in_array($project->PJStatus, ['PROGRESS-FD'])) current @endif" data-kt-stepper-element="nav" data-step="8">
+                                                    <div class="stepper-wrapper">
+                                                        <div class="stepper-icon w-40px h-40px">
+                                                            <i class="ki-duotone ki-check stepper-check fs-2"></i>
+                                                            <span class="stepper-number">8</span>
+                                                        </div>
+                                                        <div class="stepper-label">
+                                                            <h3 class="stepper-title">Future Development</h3>
+                                                            <div class="stepper-desc">Future Development List</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="stepper-line h-40px"></div>
+                                                </div>
+
+                                                <div class="stepper-item @if(in_array($project->PJStatus, ['PROGRESS-PC'])) current @endif" data-kt-stepper-element="nav" data-step="9">
+                                                    <div class="stepper-wrapper">
+                                                        <div class="stepper-icon w-40px h-40px">
+                                                            <i class="ki-duotone ki-check stepper-check fs-2"></i>
+                                                            <span class="stepper-number">9</span>
+                                                        </div>
+                                                        <div class="stepper-label">
+                                                            <h3 class="stepper-title">Project Closure</h3>
+                                                            <div class="stepper-desc">Project Closure List</div>
+                                                        </div>
+                                                    </div>
+                                                    @if( in_array($project->PJStatus, ['COMPLETE']) )
+                                                    <div class="stepper-line h-40px"></div>
+                                                    @endif
+                                                </div>
+
+
+                                                @if( in_array($project->PJStatus, ['COMPLETE']) )
+
+
+                                                    <div class="stepper-item @if(in_array($project->PJStatus, ['COMPLETE'])) current @endif" data-kt-stepper-element="nav" data-step="10">
+                                                        <div class="stepper-wrapper">
+                                                            <div class="stepper-icon w-40px h-40px">
+                                                                <i class="ki-duotone ki-check stepper-check fs-2"></i>
+                                                                <span class="stepper-number">10</span>
+                                                            </div>
+                                                            <div class="stepper-label">
+                                                                <h3 class="stepper-title">Viavle Product</h3>
+                                                                <div class="stepper-desc">Product process decision.</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                @endif
 
                                             @endif
 
@@ -152,7 +215,7 @@
                                 <div class="flex-row-fluid py-lg-5 px-lg-15">
                                     <div class="forms" id="kt_modal_create_app_form">
 
-                                        <div class="@if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','PROGRESS','COMPLETE','CANCEL'])) current @endif" data-kt-stepper-element="content" data-step="1">
+                                        <div class="@if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','CANCEL'])) current @endif" data-kt-stepper-element="content" data-step="1">
                                             <div class="w-100">
                                                 <form id="daftarForm" class="ajax-form-register" method="POST" action="{{ route('project.updateInfo',[$project->PJCode]) }}" enctype="multipart/form-data">
                                                     @csrf
@@ -164,9 +227,13 @@
                                                             <h4 class="">Details Project</h4>
                                                             <h5>Project information:</h5>
                                                         </div>
-                                                        <div class="col-md-2 text-end">
-                                                            <a href="{{ route('task.listTask',[$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-clipboard-list"></i> View Task</a>
-                                                        </div>
+                                                        @if (in_array($project->PJStatus, ['PROGRESS-PD','PROGRESS-FD','PROGRESS-PC']))
+
+                                                            <div class="col-md-2 text-end">
+                                                                <a href="{{ route('task.listTask',[$project->progressCode,$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-clipboard-list"></i> View Task</a>
+                                                            </div>
+
+                                                        @endif
                                                     </div>
 
                                                     <div class="fv-row mb-10 mt-5">
@@ -621,7 +688,7 @@
                                                 </div>
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS','COMPLETE']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
 
                                                 <div class=" @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="content" data-step="6">
                                                     <input type="hidden" name="riskCode" id="riskCode" value="{{ $projectRisk ? $projectRisk->PRCode : 0 }}">
@@ -972,6 +1039,103 @@
                                                         </form>
                                                     </div>
                                                 </div>
+
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PD'])) current @endif" data-kt-stepper-element="content" data-step="7">
+                                                    <div class="w-100">
+                                                        <div class="fv-row">
+                                                            <h4 class="">Project Design</h4>
+                                                            <h5>List project design for this project:</h5>
+
+                                                            <div class="fv-row mt-8 text-end">
+                                                                <a href="{{ route('task.listTask',['PD',$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Project Design</a>
+                                                            </div>
+                                                            <div class="fv-row mt-2">
+                                                                <table class="table table-bordered text-center border-dark" id="projectDesign-tab">
+                                                                    <thead class="text-center bg-gray">
+                                                                        <th class="text-center w-10">Code</th>
+                                                                        <th class="text-center w-50">Name</th>
+                                                                        <th class="text-center">Assignee</th>
+                                                                        <th class="text-center">Parent Code</th>
+                                                                        <th class="text-center">Due Date</th>
+                                                                        <th class="text-center">Status</th>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-FD'])) current @endif" data-kt-stepper-element="content" data-step="8">
+                                                    <div class="w-100">
+                                                        <div class="fv-row">
+                                                            <h4 class="">Future Development</h4>
+                                                            <h5>List of future development for this project:</h5>
+
+                                                            <div class="fv-row mt-8 text-end">
+                                                                <a href="{{ route('task.listTask',['FD',$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Future Development</a>
+                                                            </div>
+                                                            <div class="fv-row mt-2">
+                                                                <table class="table table-bordered text-center border-dark" id="futureDev-tab">
+                                                                    <thead class="text-center bg-gray">
+                                                                        <th class="text-center w-10">Code</th>
+                                                                        <th class="text-center w-50">Name</th>
+                                                                        <th class="text-center">Assignee</th>
+                                                                        <th class="text-center">Parent Code</th>
+                                                                        <th class="text-center">Due Date</th>
+                                                                        <th class="text-center">Status</th>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PC'])) current @endif" data-kt-stepper-element="content" data-step="9">
+                                                    <div class="w-100">
+                                                        <div class="fv-row">
+                                                            <h4 class="">Project Closure</h4>
+                                                            <h5>List of project closure for this project:</h5>
+
+                                                            <div class="fv-row mt-8 text-end">
+                                                                <a href="{{ route('task.listTask',['PC',$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Project Closure</a>
+                                                            </div>
+                                                            <div class="fv-row mt-2">
+                                                                <table class="table table-bordered text-center border-dark" id="projectClosure-tab">
+                                                                    <thead class="text-center bg-gray">
+                                                                        <th class="text-center w-10">Code</th>
+                                                                        <th class="text-center w-50">Name</th>
+                                                                        <th class="text-center">Assignee</th>
+                                                                        <th class="text-center">Parent Code</th>
+                                                                        <th class="text-center">Due Date</th>
+                                                                        <th class="text-center">Status</th>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                @if( in_array($project->PJStatus, ['COMPLETE']) )
+
+                                                    <div class=" @if(in_array($project->PJStatus, ['COMPLETE'])) current @endif" data-kt-stepper-element="content" data-step="10">
+                                                        <div class="w-100">
+                                                            <div class="fv-row">
+                                                                <h4 class="">Viavle Product</h4>
+                                                                <h5>Decision process for project:</h5>
+
+                                                                <div class="fv-row mt-8">
+                                                                    <h4>You have Viavle Product ?</h4>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                @endif
 
                                             @endif
 
@@ -2051,7 +2215,7 @@
                     if (result.isConfirmed) {
                         submitAllScore();
                     }
-            })
+            });
 
         }
 
@@ -2314,6 +2478,97 @@
 
 
         }
+
+    </script>
+
+    <script>
+
+        (function ($) {
+
+            projectCode = $('#projectCode').val();
+
+            var table = $('#projectDesign-tab').DataTable({
+                dom: 'lfrtip',
+                @include('layouts._partials.lengthMenu')
+                processing: true,
+                serverSide: false,
+                ordering:false,
+                ajax:  {
+                    "url" :"{{ route('task.taskTypeDatatable') }}",
+                    "method": 'POST',
+                    "data": {
+                        projectCode: projectCode,
+                        taskType: 'PD'
+                    }
+                },
+                order: [[1, 'desc']],
+                columns: [
+                    { name: 'TPCode', data: 'TPCode', class: 'text-center' },
+                    { name: 'TPName', data: 'TPName', class: 'text-start' },
+                    { name: 'TPAssignee', data: 'TPAssignee', class: 'text-center' },
+                    { name: 'TP_ParentCode', data: 'TP_ParentCode', class: 'text-center' },
+                    { name: 'TPDueDate', data: 'TPDueDate', class: 'text-center' },
+                    { name: 'TPStatus', data: 'TPStatus', class: 'text-center' }
+
+                ]
+            });
+            table.buttons().container().appendTo('.button-table-export');
+
+            var tableFD = $('#futureDev-tab').DataTable({
+                dom: 'lfrtip',
+                @include('layouts._partials.lengthMenu')
+                processing: true,
+                serverSide: false,
+                ordering:false,
+                ajax:  {
+                    "url" :"{{ route('task.taskTypeDatatable') }}",
+                    "method": 'POST',
+                    "data": {
+                        projectCode: projectCode,
+                        taskType: 'FD'
+                    }
+                },
+                order: [[1, 'desc']],
+                columns: [
+                    { name: 'TPCode', data: 'TPCode', class: 'text-center' },
+                    { name: 'TPName', data: 'TPName', class: 'text-start' },
+                    { name: 'TPAssignee', data: 'TPAssignee', class: 'text-center' },
+                    { name: 'TP_ParentCode', data: 'TP_ParentCode', class: 'text-center' },
+                    { name: 'TPDueDate', data: 'TPDueDate', class: 'text-center' },
+                    { name: 'TPStatus', data: 'TPStatus', class: 'text-center' }
+
+                ]
+            });
+            tableFD.buttons().container().appendTo('.button-table-export');
+
+            var tablePC = $('#projectClosure-tab').DataTable({
+                dom: 'lfrtip',
+                @include('layouts._partials.lengthMenu')
+                processing: true,
+                serverSide: false,
+                ordering:false,
+                ajax:  {
+                    "url" :"{{ route('task.taskTypeDatatable') }}",
+                    "method": 'POST',
+                    "data": {
+                        projectCode: projectCode,
+                        taskType: 'PC'
+                    }
+                },
+                order: [[1, 'desc']],
+                columns: [
+                    { name: 'TPCode', data: 'TPCode', class: 'text-center' },
+                    { name: 'TPName', data: 'TPName', class: 'text-start' },
+                    { name: 'TPAssignee', data: 'TPAssignee', class: 'text-center' },
+                    { name: 'TP_ParentCode', data: 'TP_ParentCode', class: 'text-center' },
+                    { name: 'TPDueDate', data: 'TPDueDate', class: 'text-center' },
+                    { name: 'TPStatus', data: 'TPStatus', class: 'text-center' }
+
+                ]
+            });
+            tablePC.buttons().container().appendTo('.button-table-export');
+
+        })(jQuery);
 
     </script>
 

@@ -460,7 +460,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'task'], function () {
 
-        Route::get('/', [
+        Route::get('/{type}', [
             'uses' => 'Task\TaskController@index',
             'as' => 'task.index'
         ]);
@@ -480,7 +480,7 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'task.projectTaskDatatable'
         ]);
 
-        Route::get('/list/{id}', [
+        Route::get('/list/{type}/{id}', [
             'uses' => 'Task\TaskController@listTask',
             'as' => 'task.listTask'
         ]);
@@ -488,6 +488,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/detail', [
             'uses' => 'Task\TaskController@detail',
             'as' => 'task.view.detail'
+        ]);
+
+        Route::post('/subTaskForm', [
+            'uses' => 'Task\TaskController@subTaskForm',
+            'as' => 'task.view.subTaskForm'
         ]);
 
         Route::post('/taskDatatable', [
@@ -504,6 +509,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/update', [
             'uses' => 'Task\TaskController@update',
             'as' => 'task.update'
+        ]);
+
+        Route::post('/complete/submit', [
+            'uses' => 'Task\TaskController@submitComplete',
+            'as' => 'task.submit.complete'
+        ]);
+
+        Route::post('/taskTypeDatatable', [
+            'uses' => 'Task\TaskController@taskTypeDatatable',
+            'as' => 'task.taskTypeDatatable'
         ]);
 
         Route::group(['prefix' => 'user'], function () {

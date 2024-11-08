@@ -52,14 +52,21 @@
 
 
 # hold for next update
-- add step 7 - Project Design (all access exclude programmer&technical support - disabled button)
-    - show table - requirement analysis list (name, type, details,status, action)
-    - add auto listing for requirement analysis - Others
-   - for action - Next Action
-        - go to list task - where related to requirement analysis
-        - task list - add button complete design - top
-            - allow when theres no pending, in-progress, review
-            - complete design - update requirement analysis status
+copy task management
+   - pecahkan jadi 3 section
+      - project design - 7
+            - listing from task management - change to project design
+      - future development - 8
+            - listing from project design
+      - project closure - 9
+            - listing from future development
+            - final product, acceptance, deployment, maintenance
 
-     - once all requirement analysis status complete, add button complete phase to update project status (future development)
-     - popup "Now you have the minimum viavle product" . Proceed / No
+DB change
+- TPTaskProject
+  - add column
+    - TPType - varchar
+    - TPComplete - bit
+
+- TPIssue
+  - TPIID - auto increment

@@ -14,7 +14,7 @@
 
                 <div class="row flex-row mb-5">
                     <div class="col-md-9">
-                        <h2>List of Project</h2>
+                        <h2>List of Project ({{ $typeName }})</h2>
                     </div>
                 </div>
 
@@ -48,6 +48,8 @@
 
         (function ($) {
 
+            taskType = '{{ $type }}';
+
             var table = $('#project-tab').DataTable({
                 dom: 'lfrtip',
                 @include('layouts._partials.lengthMenu')
@@ -57,6 +59,9 @@
                 ajax:  {
                     "url" :"{{ route('task.projectTaskDatatable') }}",
                     "method": 'POST',
+                    "data": {
+                            taskType: taskType
+                        }
                 },
                 order: [[1, 'desc']],
                 columns: [
