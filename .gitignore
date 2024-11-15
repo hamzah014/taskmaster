@@ -50,3 +50,16 @@ Homestead.json
 storage/logs/laravel-2024-01-24.log
 .idea/
 /storage
+
+
+Homestead.json
+/.vagrant
+.phpunit.result.cache
+.idea/
+storage/logs
+.env
+.rnd
+
+!public/
+!.gitignore
+
