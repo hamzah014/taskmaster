@@ -121,6 +121,7 @@ class DropdownService
     {
         $projectStatus = [
             'PENDING' => 'Pending',
+            'CANCEL' => 'Cancelled',
             'IDEA' => 'Request Idea',
             'IDEA-ALS' => 'Idea Analysis',
             'IDEA-SCR' => 'Idea Scoring',
@@ -130,7 +131,7 @@ class DropdownService
             'PROGRESS-FD' => 'Future Design',
             'PROGRESS-PC' => 'Project Closure',
             'COMPLETE' => 'Completed',
-            'CANCEL' => 'Cancelled',
+            'CLOSED' => 'Project Closed',
         ];
 
         return $projectStatus;
@@ -162,7 +163,7 @@ class DropdownService
     {
         $taskType = [
             'PD' => 'Project Design',
-            'FD' => 'Future Development',
+            'FD' => 'Further Development',
             'PC' => 'Project Closure', //final product,acceptance,deployment,maintenance
         ];
 

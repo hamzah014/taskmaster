@@ -38,13 +38,13 @@
 
                     <div class="row mb-5">
                         <div class="col-md-12 text-start">
-                            <a class="btn btn-secondary btn-sm" href="{{ route('project.index') }}"><i class="fa fa-chevron-left"></i> Back</a>
+                            <a class="btn btn-secondary btn-sm" href="{{ url()->previous() }}"><i class="fa fa-chevron-left"></i> Back</a>
                         </div>
                     </div>
 
                     <div class="row flex-row mb-5">
                         <div class="col-md-12">
-                            <h2>New Project</h2>
+                            <h2>{{ $project->PJName }}</h2>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid my-8" id="kt_create_account_stepper">
                                 <div class="d-flex justify-content-start justify-content-xl-start flex-row-auto w-100 w-xl-300px mb-10">
                                     <div class="stepper-nav ps-lg-10">
-                                        <div class="stepper-item @if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','CANCEL'])) current @endif" data-kt-stepper-element="nav" data-step="1">
+                                        <div class="stepper-item @if(in_array($project->PJStatus, ['PENDING','CANCEL','CLOSED'])) current @endif" data-kt-stepper-element="nav" data-step="1">
                                             <div class="stepper-wrapper">
                                                 <div class="stepper-icon w-40px h-40px">
                                                     <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -111,7 +111,7 @@
                                                 <div class="stepper-line h-40px"></div>
                                             </div>
 
-                                            <div class="stepper-item @if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR'])) current @endif" data-kt-stepper-element="nav" data-step="5">
+                                            <div class="stepper-item @if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR','PROJ-ALS'])) current @endif" data-kt-stepper-element="nav" data-step="5">
                                                 <div class="stepper-wrapper">
                                                     <div class="stepper-icon w-40px h-40px">
                                                         <i class="ki-duotone ki-check stepper-check fs-2"></i>
@@ -122,12 +122,12 @@
                                                         <div class="stepper-desc">Project idea list</div>
                                                     </div>
                                                 </div>
-                                                @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
+                                                @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','CLOSED','COMPLETE']) )
                                                 <div class="stepper-line h-40px"></div>
                                                 @endif
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','CLOSED','COMPLETE']) )
 
                                                 <div class="stepper-item @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="nav" data-step="6">
                                                     <div class="stepper-wrapper">
@@ -164,8 +164,8 @@
                                                             <span class="stepper-number">8</span>
                                                         </div>
                                                         <div class="stepper-label">
-                                                            <h3 class="stepper-title">Future Development</h3>
-                                                            <div class="stepper-desc">Future Development List</div>
+                                                            <h3 class="stepper-title">Further Development</h3>
+                                                            <div class="stepper-desc">Further Development List</div>
                                                         </div>
                                                     </div>
                                                     <div class="stepper-line h-40px"></div>
@@ -182,14 +182,13 @@
                                                             <div class="stepper-desc">Project Closure List</div>
                                                         </div>
                                                     </div>
-                                                    @if( in_array($project->PJStatus, ['COMPLETE']) )
+                                                    @if( in_array($project->PJStatus, ['COMPLETE','CLOSED']) )
                                                     <div class="stepper-line h-40px"></div>
                                                     @endif
                                                 </div>
 
 
-                                                @if( in_array($project->PJStatus, ['COMPLETE']) )
-
+                                                @if( in_array($project->PJStatus, ['COMPLETE','CLOSED']) )
 
                                                     <div class="stepper-item @if(in_array($project->PJStatus, ['COMPLETE'])) current @endif" data-kt-stepper-element="nav" data-step="10">
                                                         <div class="stepper-wrapper">
@@ -198,8 +197,8 @@
                                                                 <span class="stepper-number">10</span>
                                                             </div>
                                                             <div class="stepper-label">
-                                                                <h3 class="stepper-title">Viavle Product</h3>
-                                                                <div class="stepper-desc">Product process decision.</div>
+                                                                <h3 class="stepper-title">Project Closure Report</h3>
+                                                                <div class="stepper-desc">Report for project closure.</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -215,7 +214,7 @@
                                 <div class="flex-row-fluid py-lg-5 px-lg-15">
                                     <div class="forms" id="kt_modal_create_app_form">
 
-                                        <div class="@if(in_array($project->PJStatus, ['PENDING','PROJ-ALS','CANCEL'])) current @endif" data-kt-stepper-element="content" data-step="1">
+                                        <div class="@if(in_array($project->PJStatus, ['PENDING','CANCEL','CLOSED'])) current @endif  stepper-content" data-kt-stepper-element="content" data-step="1">
                                             <div class="w-100">
                                                 <form id="daftarForm" class="ajax-form-register" method="POST" action="{{ route('project.updateInfo',[$project->PJCode]) }}" enctype="multipart/form-data">
                                                     @csrf
@@ -351,14 +350,14 @@
 
                                                                     @else
 
-                                                                        @if( !in_array($project->PJStatus, ['COMPLETE','CANCEL']) )
+                                                                        @if( !in_array($project->PJStatus, ['COMPLETE','CLOSED','CANCEL']) )
 
                                                                         <a class="btn btn-danger text-nowrap" onclick="confirmProjectStatus('CL')">
                                                                         Project Cancel <i class="fa-solid fa-square-xmark text-white fs-4 ms-1 me-0"></i>
                                                                         </a>
-                                                                        <a class="btn btn-success text-nowrap" onclick="confirmProjectStatus('CM')">
+                                                                        {{-- <a class="btn btn-success text-nowrap" onclick="confirmProjectStatus('CM')">
                                                                         Project Complete <i class="fa-solid fa-square-check text-white fs-4 ms-1 me-0"></i>
-                                                                        </a>
+                                                                        </a> --}}
 
                                                                         @endif
 
@@ -373,7 +372,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="" data-kt-stepper-element="content" data-step="2">
+                                        <div class=" stepper-content" data-kt-stepper-element="content" data-step="2">
                                             <div class="w-100">
                                                 <form id="memberForm" enctype="multipart/form-data">
                                                     @csrf
@@ -483,7 +482,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="" data-kt-stepper-element="content" data-step="3">
+                                        <div class=" stepper-content" data-kt-stepper-element="content" data-step="3">
                                             <div class="w-100">
                                                 <form id="documentForm" enctype="multipart/form-data">
                                                     @csrf
@@ -579,7 +578,7 @@
 
                                         @if( !in_array($project->PJStatus, ['PENDING']) )
 
-                                            <div class=" @if(in_array($project->PJStatus, ['IDEA'])) current @endif" data-kt-stepper-element="content" data-step="4">
+                                            <div class=" @if(in_array($project->PJStatus, ['IDEA'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="4">
                                                 <div class="w-100">
 
                                                     @if( in_array($project->PJStatus, ['IDEA']) )
@@ -624,13 +623,35 @@
                                                 </div>
                                             </div>
 
-                                            <div class="@if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR'])) current @endif" data-kt-stepper-element="content" data-step="5">
+                                            <div class="@if(in_array($project->PJStatus, ['IDEA-ALS','IDEA-SCR','PROJ-ALS'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="5">
                                                 <div class="w-100">
                                                     <form id="ideaForm" enctype="multipart/form-data">
                                                         @csrf
                                                         <div class="fv-row">
-                                                            <h4 class="">Project Idea</h4>
-                                                            <h5>List idea for this project:</h5>
+
+                                                            <div class="row flex-row mb-5">
+                                                                <div class="col-md-9">
+                                                                    <h4 class="">Project Idea</h4>
+                                                                    <h5>List idea for this project:</h5>
+                                                                </div>
+
+                                                                @if(in_array($project->PJStatus, ['IDEA-ALS']) )
+                                                                <div class="col-md-3 text-end">
+                                                                    <a href="{{ route('project.idea.analysis.edit',[$project->PJCode]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Requirement Analysis</a>
+                                                                </div>
+
+                                                                @elseif(in_array($project->PJStatus, ['IDEA-SCR']) )
+                                                                <div class="col-md-3 text-end">
+                                                                    <a href="{{ route('project.idea.scoring.edit',[$project->PJCode]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Requirement Analysis</a>
+                                                                </div>
+
+                                                                @elseif(in_array($project->PJStatus, ['PROJ-ALS']) )
+                                                                <div class="col-md-3 text-end">
+                                                                    <a href="{{ route('project.analysis.view',[$project->PJCode]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Project Analysis</a>
+                                                                </div>
+                                                                @endif
+
+                                                            </div>
 
                                                             <div class="fv-row mt-8">
                                                                 <table class="table table-bordered text-center border-dark" id="project-tab">
@@ -688,17 +709,30 @@
                                                 </div>
                                             </div>
 
-                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE']) )
+                                            @if( in_array($project->PJStatus, ['RISK','PROGRESS-PD','PROGRESS-FD','PROGRESS-PC','COMPLETE','CLOSED']) )
 
-                                                <div class=" @if(in_array($project->PJStatus, ['RISK'])) current @endif" data-kt-stepper-element="content" data-step="6">
+                                                <div class=" @if(in_array($project->PJStatus, ['RISK'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="6">
                                                     <input type="hidden" name="riskCode" id="riskCode" value="{{ $projectRisk ? $projectRisk->PRCode : 0 }}">
                                                     <input type="hidden" name="riskStatus" id="riskStatus" value="{{ $riskStatus ?? 0 }}">
                                                     <div class="w-100">
                                                         <form id="ideaForm" enctype="multipart/form-data">
                                                             @csrf
                                                             <div class="fv-row">
-                                                                <h4 class="">Project Risk</h4>
-                                                                <h5>Risk analysis for this project:</h5>
+
+                                                                <div class="row flex-row mb-5">
+                                                                    <div class="col-md-9">
+                                                                        <h4 class="">Project Risk</h4>
+                                                                        <h5>Risk analysis for this project:</h5>
+                                                                    </div>
+
+                                                                    @if(in_array($project->PJStatus, ['RISK']) )
+                                                                    <div class="col-md-3 text-end">
+                                                                        <a href="{{ route('risk.view',[$project->PJCode]) }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View Risk</a>
+                                                                    </div>
+
+                                                                    @endif
+
+                                                                </div>
 
                                                                 <div class="fv-row mt-8">
 
@@ -1040,7 +1074,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PD'])) current @endif" data-kt-stepper-element="content" data-step="7">
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PD'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="7">
                                                     <div class="w-100">
                                                         <div class="fv-row">
                                                             <h4 class="">Project Design</h4>
@@ -1066,14 +1100,14 @@
                                                     </div>
                                                 </div>
 
-                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-FD'])) current @endif" data-kt-stepper-element="content" data-step="8">
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-FD'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="8">
                                                     <div class="w-100">
                                                         <div class="fv-row">
-                                                            <h4 class="">Future Development</h4>
+                                                            <h4 class="">Further Development</h4>
                                                             <h5>List of future development for this project:</h5>
 
                                                             <div class="fv-row mt-8 text-end">
-                                                                <a href="{{ route('task.listTask',['FD',$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Future Development</a>
+                                                                <a href="{{ route('task.listTask',['FD',$project->PJCode]) }}" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Further Development</a>
                                                             </div>
                                                             <div class="fv-row mt-2">
                                                                 <table class="table table-bordered text-center border-dark" id="futureDev-tab">
@@ -1092,7 +1126,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PC'])) current @endif" data-kt-stepper-element="content" data-step="9">
+                                                <div class=" @if(in_array($project->PJStatus, ['PROGRESS-PC'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="9">
                                                     <div class="w-100">
                                                         <div class="fv-row">
                                                             <h4 class="">Project Closure</h4>
@@ -1118,36 +1152,126 @@
                                                     </div>
                                                 </div>
 
+                                                <div class=" @if(in_array($project->PJStatus, ['COMPLETE'])) current @endif stepper-content" data-kt-stepper-element="content" data-step="10">
+                                                    <div class="w-100">
+                                                        <div class="fv-row">
+                                                            <h4 class="">Project Closure</h4>
+                                                            <h5>List of project closure for this project:</h5>
 
-                                                @if( in_array($project->PJStatus, ['COMPLETE']) )
+                                                            @if(in_array($project->PJStatus, ['COMPLETE']))
 
-                                                    <div class=" @if(in_array($project->PJStatus, ['COMPLETE'])) current @endif" data-kt-stepper-element="content" data-step="10">
-                                                        <div class="w-100">
-                                                            <div class="fv-row">
-                                                                <h4 class="">Viavle Product</h4>
-                                                                <h5>Decision process for project:</h5>
-
-                                                                <div class="fv-row mt-8">
-                                                                    <h4>You have Viavle Product ?</h4>
-                                                                </div>
-
+                                                            <div class="fv-row mt-8 text-end">
+                                                                <button type="button" class="btn btn-sm btn-success" onclick="closeProject()">
+                                                                    <i class="fa-solid fa-boxes-packing"></i> Close Project
+                                                                </button>
                                                             </div>
+
+                                                            @endif
+
+                                                            <div class="card my-8 p-5">
+                                                                <div class="card-header card-header-stretch min-height-none">
+                                                                    <div class="card-toolbar m-0">
+                                                                        <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
+                                                                            <li class="nav-item" role="presentation">
+                                                                                <a id="info_tab" class="nav-link justify-content-center text-active-gray-800 active" data-bs-toggle="tab" role="tab" href="#submit_content">
+                                                                                    Report Submission
+                                                                                </a>
+                                                                            </li>
+                                                                            <li class="nav-item" role="presentation">
+                                                                                <a id="idea_tab" class="nav-link justify-content-center text-active-gray-800" data-bs-toggle="tab" role="tab" href="#history_content">
+                                                                                    Audit Trail
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="tab-content">
+                                                                        <div id="submit_content" class="card-body p-0 tab-pane fade show active" role="tabpanel" aria-labelledby="submit_content">
+                                                                            <div class="w-100">
+
+                                                                                @if(in_array($project->PJStatus, ['COMPLETE']))
+
+                                                                                    <form class="ajax-form" method="POST" action="{{ route('report.closure.upload') }}" enctype="multipart/form-data">
+                                                                                        @csrf
+
+                                                                                        <input type="hidden" name="projectCode" id="projectCode" value="{{ $project->PJCode }}">
+
+                                                                                        <div class="fv-row mb-5 mt-5">
+                                                                                            <label class="d-flex align-items-center fs-5 fw-semibold mb-4">
+                                                                                                <span class="required">Upload Report File</span>
+                                                                                                <span class="ms-1" data-bs-toggle="tooltip" title="Upload project closure report">
+                                                                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                                                                        <span class="path1"></span>
+                                                                                                        <span class="path2"></span>
+                                                                                                        <span class="path3"></span>
+                                                                                                    </i>
+                                                                                                </span>
+                                                                                            </label>
+                                                                                            <input type="file" accept=".pdf" class="form-control" id="reportFile" name="reportFile" placeholder="Upload report file">
+                                                                                        </div>
+
+                                                                                        <div class="fv-row text-end mb-10">
+                                                                                            <button type="submit" class="btn btn-primary text-nowrap btn-sm">
+                                                                                            Submit
+                                                                                            </button>
+                                                                                        </div>
+
+                                                                                    </form>
+
+                                                                                @endif
+
+                                                                                <div class="fv-row mb-5">
+
+                                                                                    @if($project->fileAttachCLR->isNotEmpty())
+                                                                                    <div class="fv-row">
+                                                                                        <a class="btn btn-secondary btn-sm" href="{{ route('file.download',[$project->fileAttachCLR->first()->FAGuidID]) }}">
+                                                                                        Download <i class="fa-solid fa-download text-dark"></i>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <iframe class="embed-responsive-item card-rounded h-700px w-100" src="{{ route('file.view', $project->fileAttachCLR->first()->FAGuidID) }}" allowfullscreen="allowfullscreen"></iframe>
+                                                                                    @endif
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="history_content" class="card-body p-0 tab-pane fade" role="tabpanel" aria-labelledby="history_content">
+                                                                            <div class="w-100">
+
+                                                                                <h4 class="">Audit Trail - Report Submission</h4>
+                                                                                <div class="fv-row mb-4">
+                                                                                    <table class="table table-bordered text-center border-dark" id="reportCLR-tab">
+                                                                                        <thead class="text-center bg-gray">
+                                                                                            <th class="text-center w-50">Name</th>
+                                                                                            <th class="text-center">Submitted By</th>
+                                                                                            <th class="text-center">Submitted Date</th>
+                                                                                            <th class="text-center">Action</th>
+                                                                                        </thead>
+                                                                                    </table>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </div>
-
-                                                @endif
+                                                </div>
 
                                             @endif
 
                                         @endif
 
-                                        <div class="d-flex flex-stack pt-10">
+                                        <div class="d-flex flex-stack pt-10 d-none">
                                             <div class="mr-2 d-none">
                                                 <button id="backButton" type="button" class="btn vksb-btn btn-secondary me-3" data-kt-stepper-action="previous">
                                                 <i class="fas fa-arrow-left text-white fs-4 me-1">
                                                 </i>Kembali</button>
                                             </div>
-                                            <div class="text-end d-none">
+                                            <div class="text-end">
                                                 <button type="button" class="btn btn-lg btn-primary me-3" data-kt-stepper-action="submit">
                                                     <span class="indicator-label">Hantar
                                                     <i class="ki-duotone ki-arrow-right fs-3 ms-2 me-0">
@@ -1157,8 +1281,21 @@
                                                     <span class="indicator-progress">Sila tunggu...
                                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                                 </button>
-                                                <button id="nextButton" type="button" class="btn vksb-btn btn-cyan d-none" data-kt-stepper-action="next">Seterusnya
+                                                <button id="nextButton" type="button" class="btn vksb-btn btn-cyan" data-kt-stepper-action="next">Seterusnya
                                                 <i class="fas fa-arrow-right text-white fs-4 ms-1 me-0">
+                                                </i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-stack pt-10">
+                                            <div class="mr-2">
+                                                <button id="backButton" type="button" class="btn btn-sm btn-secondary me-3 stepper-back">
+                                                <i class="fas fa-arrow-left text-dark fs-4 me-1">
+                                                </i>Back</button>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="button" class="btn btn-secondary btn-sm stepper-next">Next
+                                                <i class="fas fa-arrow-right text-dark fs-4 ms-1 me-0">
                                                 </i></button>
                                             </div>
                                         </div>
@@ -1243,7 +1380,6 @@
             </div>
         </div>
     </div>
-
 
 @endpush
 
@@ -2572,7 +2708,6 @@
 
     </script>
 
-
     <script>
 
         function confirmProjectStatus(code){
@@ -2722,6 +2857,167 @@
 
             $.ajax({
                 url: "{{ route('project.updateStatus') }}",
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                data: formData,
+                processData: false,
+                cache: false,
+                success: function (resp) {
+                    console.log(resp);
+                    toggleLoader();
+
+                    swal.fire({
+                        title: "Success",
+                        text: resp.message,
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonText: "Okay",
+                        customClass: {
+                            popup: 'swal-popup'
+                        }
+                    }).then((result) => {
+
+                        routeHref = resp.redirect;
+
+                        window.location.href = routeHref;
+
+                    });
+
+
+                },
+                error: function (xhr, status) {
+                    toggleLoader();
+                    var response = xhr.responseJSON;
+
+                    if ( $.isEmptyObject(response.errors) )
+                    {
+                        var message = response.message;
+
+                        if (! message.length && response.exception)
+                        {
+                            message = response.exception;
+                        }
+
+                        swal.fire("Warning", message, "warning");
+                    }
+                    else
+                    {
+                        var errors = '<p  id="fontSize" style="margin-top:2%; margin-bottom:1%; font-size: 25px;"><i>Invalid Information</i></p>';
+                        $.each(response.errors, function (key, message) {
+                            errors = errors;
+                            errors += '<p style="margin-top:2%; margin-bottom:1%">'+message;
+                            errors += '</p>';
+
+                            if (key.indexOf('.') !== -1) {
+
+                                var splits = key.split('.');
+
+                                key = '';
+
+                                $.each(splits, function(i, val) {
+                                    if (i === 0)
+                                    {
+                                        key = val;
+                                    }
+                                    else
+                                    {
+                                        key += '[' + val + ']';
+                                    }
+                                });
+                            }
+
+                            // $('[name="' + key + '"]').closest('.form-group').addClass("has-error");
+                            // $('[name="' + key + '"]').addClass("was-validated is-invalid invalid custom-select.is-invalid");
+                            // $('#Valid'+key).empty();
+                            // $('[name="' + key + '"]').closest('.form-group').append("<span id='Valid"+key+"' class=\"help-block\" style='color:red; font-family:Nunito, sans-serif;'>" + message[0] + "</span>");
+                        });
+                        swal.fire("Warning", errors, "warning",{html:true});
+                        $('html, body').animate({
+                            scrollTop: ($(".has-error").first().offset().top) - 200
+                        }, 500);
+                    }
+                }
+            });
+
+
+        }
+
+    </script>
+
+    <script>
+
+        (function ($) {
+
+            projectCode = $('#projectCode').val();
+
+            var table = $('#reportCLR-tab').DataTable({
+                dom: 'lfrtip',
+                @include('layouts._partials.lengthMenu')
+                processing: true,
+                serverSide: false,
+                ordering:false,
+                ajax:  {
+                    "url" :"{{ route('report.closure.closureDatatable') }}",
+                    "method": 'POST',
+                    "data": {
+                        projectCode: projectCode,
+                        taskType: 'CLR'
+                    }
+                },
+                columns: [
+                    { name: 'FAOriginalName', data: 'FAOriginalName', class: 'text-center' },
+                    { name: 'FACB', data: 'FACB', class: 'text-center' },
+                    { name: 'FACD', data: 'FACD', class: 'text-center' },
+                    { name: 'action', data: 'action', class: 'text-center' }
+
+                ]
+            });
+            table.buttons().container().appendTo('.button-table-export');
+
+
+        })(jQuery);
+
+    </script>
+
+
+    <script>
+
+        function closeProject(){
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "This project status will be update as Project Closed.",
+                type: 'warning',
+                icon: "warning",
+                showCancelButton: false,
+                showCloseButton: true,
+                showDenyButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                denyButtonText: `Cancel`,
+                confirmButtonText: 'Yes,continue!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitComplete();
+                    }
+            });
+
+        }
+
+        function submitComplete(){
+
+            projectCode = $('#projectCode').val();
+
+            var formData = new FormData();
+
+            formData.append('projectCode',projectCode);;
+            toggleLoader();
+
+            $.ajax({
+                url: "{{ route('report.closure.updateComplete') }}",
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

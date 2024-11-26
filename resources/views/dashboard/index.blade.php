@@ -116,10 +116,13 @@
                                         @if(isset($projectStatus[$project->PJStatus]))
                                             @if($project->PJStatus == "COMPLETE")
                                                 <span class="badge badge-success fs-5">Completed</span>
-                                            @elseif ($project->PJStatus == 'CANCEL')
-                                                <span class="badge badge-danger fs-5">Cancelled</span>
+
+                                            @elseif (in_array($project->PJStatus, ['CANCEL','CLOSED']))
+                                                <span class="badge badge-danger fs-5">{{ $projectStatus[$project->PJStatus] }}</span>
+
                                             @else
                                                 <span class="badge badge-warning fs-5">{{ $projectStatus[$project->PJStatus] }}</span>
+                                                
                                             @endif
                                         @else
                                             <span class="badge badge-warning fs-5">Pending</span>
@@ -147,7 +150,7 @@
                                 <div class="d-flex align-items-center bg-light-primary rounded p-5 mb-2">
                                     <i class="fa fa-solid fa-tree-city fs-1 me-5 text-primary"></i>
                                     <div class="flex-grow-1 me-2">
-                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Future Development</a>
+                                        <a class="fw-bold text-gray-800 text-hover-primary fs-6">Further Development</a>
                                     </div>
                                     <span class="fw-bold text-primary py-1">{{ count($project->taskProjectFD) }}</span>
                                 </div>

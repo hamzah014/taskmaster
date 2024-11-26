@@ -91,6 +91,10 @@ class Project extends Model implements Auditable
         return $this->hasMany(TaskProject::class, 'TP_PJCode', 'PJCode')->where('TPType', 'PC');
     }
 
+    public function fileAttachCLR(){ //project closure report
+        return $this->hasMany(FileAttach::class, 'FARefNo', 'PJCode')->where('FAFileType', 'CLR');
+    }
+
 
 }
 

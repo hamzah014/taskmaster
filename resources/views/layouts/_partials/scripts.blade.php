@@ -103,6 +103,8 @@
             const stepperItems = document.querySelectorAll('.stepper-item[data-step]');
             const contentItems = document.querySelectorAll('.forms [data-kt-stepper-element="content"]');
 
+            updateBtnTabNav();
+
             stepperItems.forEach(stepper => {
                 stepper.addEventListener('click', function() {
                     const step = this.getAttribute('data-step');
@@ -114,8 +116,99 @@
                     // Add 'current' class to the clicked stepper item and the corresponding content item
                     this.classList.add('current');
                     document.querySelector(`.forms [data-step="${step}"]`).classList.add('current');
+
+                    updateBtnTabNav();
+
                 });
             });
+
+            const stepperNexts = document.querySelectorAll('.stepper-next');
+            const stepperBacks = document.querySelectorAll('.stepper-back');
+            const stepperTab = document.querySelectorAll('.stepper-item[data-step]');
+            const contentItem2 = document.querySelectorAll('[data-kt-stepper-element="content"]');
+
+            stepperNexts.forEach(stepperNext => {
+                stepperNext.addEventListener('click', function() {
+
+                    const stepperItemsCurr = document.querySelector('.stepper-item.current');
+
+                    currentStep = Number(stepperItemsCurr.getAttribute('data-step'));
+
+                    nextStep = Number(stepperItemsCurr.getAttribute('data-step')) < 1
+                                ? 1
+                                : Number(stepperItemsCurr.getAttribute('data-step')) + 1;
+
+                    stepperTab.forEach(item => item.classList.remove('current'));
+                    contentItem2.forEach(content => content.classList.remove('current'));
+
+                    document.querySelector(`.stepper-item[data-step="${nextStep}"]`).classList.add('current');
+                    document.querySelector(`.stepper-content[data-step="${nextStep}"]`).classList.add('current');
+
+                    updateBtnTabNav();
+
+                });
+            });
+
+            stepperBacks.forEach(stepperBack => {
+                stepperBack.addEventListener('click', function() {
+
+                    const stepperItemsCurr = document.querySelector('.stepper-item.current');
+
+                    currentStep = Number(stepperItemsCurr.getAttribute('data-step'));
+
+                    nextStep = Number(stepperItemsCurr.getAttribute('data-step')) < 1
+                                ? 1
+                                : Number(stepperItemsCurr.getAttribute('data-step')) - 1;
+
+                    stepperTab.forEach(item => item.classList.remove('current'));
+                    contentItem2.forEach(content => content.classList.remove('current'));
+
+                    document.querySelector(`.stepper-item[data-step="${nextStep}"]`).classList.add('current');
+                    document.querySelector(`.stepper-content[data-step="${nextStep}"]`).classList.add('current');
+
+                    updateBtnTabNav();
+
+                });
+            });
+
+
+            function updateBtnTabNav() {
+
+                const stepperNext = document.querySelectorAll('.stepper-next');
+                const stepperBack = document.querySelectorAll('.stepper-back');
+
+                const stepperItemsCurr = document.querySelector('.stepper-item.current');
+                currentStep = Number(stepperItemsCurr.getAttribute('data-step'));
+
+                // stepperNext.forEach(content => content.classList.add('d-none'));
+                // stepperBack.forEach(content => content.classList.add('d-none'));
+
+                const stepperItems = document.querySelectorAll('.stepper-item');
+                const lastItem = stepperItems[stepperItems.length - 1];
+                maxStep = Number(lastItem.getAttribute('data-step'));
+
+                console.log(lastItem, 'lastItem');
+                console.log(maxStep, 'maxStep');
+                console.log(currentStep, 'currentStep');
+
+                if(currentStep == 1){
+                    stepperBack.forEach(content => content.classList.add('d-none'));
+                }
+
+                else if(currentStep == maxStep){
+                    stepperNext.forEach(content => content.classList.add('d-none'));
+                }
+
+                else {
+                    stepperNext.forEach(content => content.classList.remove('d-none'));
+                    stepperBack.forEach(content => content.classList.remove('d-none'));
+                }
+
+
+
+            }
+
+
         });
 
 

@@ -31,37 +31,6 @@
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <span class="menu-link text-light">
                             <span class="menu-icon">
-                                <i class="fa fa-solid fa-gears fs-2"></i>
-                            </span>
-                            <span class="menu-title">Resource Manager</span>
-                            <span class="menu-arrow"></span>
-                        </span>
-                        <div class="menu-sub menu-sub-accordion text-light">
-                            <div class="menu-item">
-                                <a class="menu-link text-light" href="{{ route('dashboard.index') }}">
-                                    <span class="menu-bullet">
-                                        <i class="fa fa-regular fa-circle"></i>
-                                    </span>
-                                    <span class="menu-title">Add</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="menu-sub menu-sub-accordion text-light">
-                            <div class="menu-item">
-                                <a class="menu-link text-light" href="{{ route('dashboard.index') }}">
-                                    <span class="menu-bullet">
-                                        <i class="fa fa-regular fa-circle"></i>
-                                    </span>
-                                    <span class="menu-title">View</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    --}}
-
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                        <span class="menu-link text-light">
-                            <span class="menu-icon">
                                 <i class="fa-solid fa-rocket fs-2"></i>
                             </span>
                             <span class="menu-title">Project Builder</span>
@@ -89,19 +58,52 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    --}}
 
-                        {{-- <div class="menu-sub menu-sub-accordion text-light">
-                            <div class="menu-item">
-                                <a class="menu-link text-light" href="{{ route('project.idea.index') }}">
-                                    <span class="menu-bullet">
-                                        <i class="fa fa-regular fa-circle"></i>
-                                    </span>
-                                    <span class="menu-title">Idea Submission</span>
-                                </a>
-                            </div>
-                        </div> --}}
+                    <div class="menu-item">
+                        <a class="menu-link text-light" href="{{ route('project.index') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-rocket fs-2"></i>
+                            </span>
+                            <span class="menu-title">Project Builder</span>
+                        </a>
                     </div>
 
+                    <div class="menu-item pt-5">
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase fs-7">Information</span>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link text-light" href="{{ route('info.about') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-book-open fs-2"></i>
+                            </span>
+                            <span class="menu-title">About</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link text-light" href="{{ route('info.analysis') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-chart-bar fs-2"></i>
+                            </span>
+                            <span class="menu-title">Analysis & Scoring</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link text-light" href="{{ route('info.risk') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-triangle-exclamation fs-2"></i>
+                            </span>
+                            <span class="menu-title">Risk Management</span>
+                        </a>
+                    </div>
+
+                    {{--
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <span class="menu-link text-light">
                             <span class="menu-icon">
@@ -145,7 +147,9 @@
                         </div>
 
                     </div>
+                    --}}
 
+                    {{--
                     <div class="menu-item">
                         <a class="menu-link text-light" href="{{ route('risk.index') }}">
                             <span class="menu-icon">
@@ -154,7 +158,9 @@
                             <span class="menu-title">Risk Management</span>
                         </a>
                     </div>
+                    --}}
 
+                    {{--
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 
                         <span class="menu-link text-light">
@@ -185,7 +191,7 @@
                                     <span class="menu-bullet">
                                         <i class="fa fa-regular fa-circle"></i>
                                     </span>
-                                    <span class="menu-title">Future Development</span>
+                                    <span class="menu-title">Further Development</span>
                                 </a>
                             </div>
 
@@ -204,35 +210,8 @@
 
                         </div>
 
-                        {{--
-                        <div class="menu-sub menu-sub-accordion text-light">
-
-                            <div class="menu-item">
-                                <a class="menu-link text-light" href="{{ route('task.index') }}">
-                                    <span class="menu-bullet">
-                                        <i class="fa fa-regular fa-circle"></i>
-                                    </span>
-                                    <span class="menu-title">View</span>
-                                </a>
-                            </div>
-
-                        </div>
-
-                        <div class="menu-sub menu-sub-accordion text-light">
-
-                            <div class="menu-item">
-                                <a class="menu-link text-light" href="{{ route('task.user.index') }}">
-                                    <span class="menu-bullet">
-                                        <i class="fa fa-regular fa-circle"></i>
-                                    </span>
-                                    <span class="menu-title">My Task</span>
-                                </a>
-                            </div>
-
-                        </div>
-                        --}}
-
                     </div>
+                    --}}
 
 				</div>
 
