@@ -48,17 +48,18 @@ class DashboardController extends Controller{
         })
         ->orderByRaw("CASE
             WHEN PJStatus = 'PENDING' THEN 1
-            WHEN PJStatus = 'IDEA' THEN 2
-            WHEN PJStatus = 'IDEA-ALS' THEN 3
-            WHEN PJStatus = 'IDEA-SCR' THEN 4
-            WHEN PJStatus = 'PROJ-ALS' THEN 5
-            WHEN PJStatus = 'RISK' THEN 6
-            WHEN PJStatus = 'PROGRESS-PD' THEN 7
-            WHEN PJStatus = 'PROGRESS-FD' THEN 8
-            WHEN PJStatus = 'PROGRESS-PC' THEN 9
-            WHEN PJStatus = 'COMPLETE' THEN 10
-            WHEN PJStatus = 'CANCEL' THEN 11
-            ELSE 12 END")
+            WHEN PJStatus = 'CANCEL' THEN 2
+            WHEN PJStatus = 'IDEA' THEN 3
+            WHEN PJStatus = 'IDEA-ALS' THEN 4
+            WHEN PJStatus = 'IDEA-SCR' THEN 5
+            WHEN PJStatus = 'PROJ-ALS' THEN 6
+            WHEN PJStatus = 'RISK' THEN 7
+            WHEN PJStatus = 'PROGRESS-PD' THEN 8
+            WHEN PJStatus = 'PROGRESS-FD' THEN 9
+            WHEN PJStatus = 'PROGRESS-PC' THEN 10
+            WHEN PJStatus = 'COMPLETE' THEN 11
+            WHEN PJStatus = 'CLOSED' THEN 12
+            ELSE 13 END")
         // ->orderBy('PJID', 'DESC')
         ->limit(10)
         ->get();

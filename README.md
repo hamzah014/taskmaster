@@ -72,31 +72,31 @@ DB change
   - TPIID - auto increment
 
 --------------------------------------------
-Complete project closure -> redirect to detail project
-10 - closure report
-     - upload pdf file
-     - view upload transaction -> name,upload by,datetime
+Complete project closure -> redirect to detail project ✅
+10 - closure report ✅
+     - upload pdf file ✅
+     - view upload transaction -> name,upload by,datetime ✅
 
 
 Fix part
-- future change to -> Further
-- add next to each tab
-- redirect back button to previous page
-- enable delete project
-- add footer copyright
+- future change to -> Further ✅
+- add next to each tab ✅
+- redirect back button to previous page ✅
+- enable delete project ✅
+- add footer copyright ✅
 
 - Project design
-   - name for task take from requirement name
+   - name for task take from requirement name ✅
 
-- Task information (modal)
-  - progress update tab
-    - change task description to task update
+- Task information (modal) ✅
+  - progress update tab ✅
+    - change task description to task update ✅
 
 - Project details
-  - New Project change to -> display project name
+  - New Project change to -> display project name ✅
 
 
-Menu Navigation
+Menu Navigation ✅
 - Dashboard
 - Project Builder
 - About -> static info

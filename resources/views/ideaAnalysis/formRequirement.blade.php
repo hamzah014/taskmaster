@@ -38,7 +38,7 @@
 
                     <div class="row mb-5">
                         <div class="col-md-12 text-start">
-                            <a class="btn btn-secondary btn-sm" href="{{ route('project.idea.analysis.edit', $project->PJCode) }}"><i class="fa fa-chevron-left"></i> Back</a>
+                            <a class="btn btn-secondary btn-sm" href="{{ url()->previous() }}"><i class="fa fa-chevron-left"></i> Back</a>
                         </div>
                     </div>
 

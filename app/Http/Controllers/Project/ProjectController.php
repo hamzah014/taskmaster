@@ -575,11 +575,11 @@ class ProjectController extends Controller
 
         $user = Auth::user();
 
-        $query = Project::where('PJStatus', '!=', '')
+        $query = Project::whereNotIn('PJStatus', ['','DELETED'])
                 ->where('PJCB', $user->USCode)
-                ->orWhere(function ($query2) use ($user) {
+                ->where(function ($query2) use ($user) {
                     $query2->whereHas('projectTeam', function ($query3) use ($user) {
-                        $query3->where('PT_USCode', $user->USCode);
+                        $query3->orWhere('PT_USCode', $user->USCode);
                     });
                 })
                 ->orderBy('PJID', 'DESC')
@@ -633,6 +633,7 @@ class ProjectController extends Controller
                 }
 
                 $result = '<a class="btn btn-sm btn-secondary cursor-pointer" href="'.$routeView.'"><i class="fa fa-eye text-dark"></i> View</a>';
+                $result .= '<button class="btn btn-sm btn-danger cursor-pointer mx-2" onclick="projectDelete(\''.$row->PJCode.'\')"><i class="fa fa-trash"></i> Delete</button>';
 
                 return $result;
             })
@@ -760,6 +761,62 @@ class ProjectController extends Controller
                 'success' => '1',
                 'message' => 'Success',
                 'code' => $projectCode
+            ]);
+
+
+        }catch (\Throwable $e) {
+            DB::rollback();
+
+            Log::info('ERROR', ['$e' => $e]);
+
+            return response()->json([
+                'error' => '1',
+                'message' => 'Error!'.$e->getMessage()
+            ], 400);
+        }
+
+    }
+
+    public function deleteProject(Request $request){
+
+        $messages = [
+            // 'name.required' 		=> 'Application name required.',
+
+        ];
+
+        $validation = [
+            // 'name' => 'required',
+        ];
+
+        $request->validate($validation, $messages);
+
+        try {
+
+            $autoNumber = new AutoNumber();
+
+            $id = $request->projectCode;
+
+            $user = Auth::user();
+
+            $project = Project::where('PJCode', $id)->first();
+            if(!$project){
+
+                return response()->json([
+                    'error' => '1',
+                    'message' => 'Project not found!'
+                ], 400);
+
+            }
+
+            $status = 'DELETED';
+
+            $project->PJStatus = $status;
+            $project->save();
+
+            return response()->json([
+                'success' => '1',
+                'message' => 'Success',
+                'redirect' => route('project.index')
             ]);
 
 

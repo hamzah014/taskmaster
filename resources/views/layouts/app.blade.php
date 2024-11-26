@@ -4,7 +4,7 @@
 
     <head>
 
-        <title>CollabTech</title>
+        <title>{{ env('APP_NAME') }}</title>
         @include('layouts._partials.head')
         <style>
             .nav-staff{
@@ -42,6 +42,15 @@
                             @yield('content')
                         </div>
 
+                    </div>
+
+                    <div id="kt_app_footer" class="app-footer">
+                        <div class="app-container container-fluid d-flex flex-column py-3 text-center">
+                            <div class="text-gray-900">
+                                <span class="text-muted fw-semibold me-1">2024&copy;</span>
+                                <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">{{ env('APP_NAME') }} (Imran Harith)</a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

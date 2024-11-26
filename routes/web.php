@@ -272,6 +272,11 @@ Route::group(['middleware' => 'auth'], function () {
             'as' => 'project.updateStatus'
         ]);
 
+        Route::post('/deleteProject', [
+            'uses' => 'Project\ProjectController@deleteProject',
+            'as' => 'project.deleteProject'
+        ]);
+
         Route::group(['prefix' => 'idea'], function () {
 
             Route::get('/list', [
@@ -560,6 +565,52 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+
+    });
+
+    Route::group(['prefix' => 'report'], function () {
+
+        Route::group(['prefix' => 'closure'], function () {
+
+            Route::post('/upload', [
+                'uses' => 'Report\ClosureController@upload',
+                'as' => 'report.closure.upload'
+            ]);
+
+            Route::post('/closureDatatable', [
+                'uses' => 'Report\ClosureController@closureDatatable',
+                'as' => 'report.closure.closureDatatable'
+            ]);
+
+            Route::post('/updateComplete', [
+                'uses' => 'Report\ClosureController@updateComplete',
+                'as' => 'report.closure.updateComplete'
+            ]);
+
+
+        });
+
+
+
+    });
+
+
+    Route::group(['prefix' => 'information'], function () {
+
+        Route::get('/about', [
+            'uses' => 'Info\InfoController@about',
+            'as' => 'info.about'
+        ]);
+
+        Route::get('/analysis', [
+            'uses' => 'Info\InfoController@analysis',
+            'as' => 'info.analysis'
+        ]);
+
+        Route::get('/risk', [
+            'uses' => 'Info\InfoController@risk',
+            'as' => 'info.risk'
+        ]);
 
     });
 

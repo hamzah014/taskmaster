@@ -215,7 +215,7 @@ class RiskController extends Controller
             return response()->json([
                 'success' => '1',
                 'message' => 'Project analysis has been successfully submitted.',
-                'redirect' => route('risk.index')
+                'redirect' => route('project.edit',[$projectCode])
             ]);
 
 
